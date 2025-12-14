@@ -1,0 +1,468 @@
+:root {
+    --primary-color: #2e7d32; /* Verde principal */
+    --primary-dark: #1b5e20;
+    --secondary-color: #1976d2; /* Azul botões */
+    --secondary-dark: #1565c0;
+    --text-color: #333;
+    --text-light: #666;
+    --bg-light: #f8f9fa;
+    --bg-accent: #e8f5e9; /* Fundo verde claro para resultados */
+    --white: #ffffff;
+    --max-width: 1100px;
+    --border-radius: 8px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg-light);
+    color: var(--text-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Container Geral --- */
+.container {
+    width: 90%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+/* --- Header --- */
+header {
+    background: var(--white); /* Header branco fica mais limpo */
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+}
+
+nav a {
+    color: var(--text-light);
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+}
+
+/* --- Hero & Seções (Index) --- */
+.hero {
+    padding: 60px 0;
+    text-align: center;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #111;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+}
+
+.cta {
+    display: inline-block;
+    padding: 15px 35px;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+}
+
+.cta:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
+}
+
+.placeholder-img {
+    background-color: #e9ecef;
+    width: 100%;
+    max-width: 700px;
+    height: 350px;
+    margin: 40px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: #adb5bd;
+    border: 2px dashed #dee2e6;
+}
+
+section { padding: 50px 0; }
+section h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; color: #222; }
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.feature-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    text-align: left;
+    border-top: 4px solid var(--primary-color);
+    transition: transform 0.3s;
+}
+.feature-card:hover { transform: translateY(-5px); }
+.feature-card h3 { margin-top: 0; color: var(--primary-color); }
+.benefits { background-color: var(--white); text-align: center; }
+
+/* =========================================
+   ESTILOS DA CALCULADORA (UI/UX Foco)
+========================================= */
+
+/* Fundo sutil para a área da calculadora */
+.calculator-section {
+    min-height: calc(100vh - 70px); /* Altura total menos o header */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #f0f2f5; /* Cor de fundo neutra moderna */
+    background-image: radial-gradient(#cfd8dc 1px, transparent 1px); /* Padrão sutil de pontinhos */
+    background-size: 20px 20px;
+}
+
+/* O Card Principal */
+.calculator-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 16px; /* Bordas mais arredondadas */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); /* Sombra suave e profunda */
+    width: 100%;
+    max-width: 480px; /* Largura ideal para leitura */
+}
+
+/* Títulos do Card */
+.calculator-card h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+.form-description {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--text-light);
+}
+
+/* Estilização do Formulário */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+/* Inputs e Selects Modernos */
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 14px; /* Mais espaço interno para facilitar o toque no mobile */
+    margin-bottom: 20px;
+    border: 2px solid #e0e0e0; /* Borda mais grossa */
+    border-radius: var(--border-radius);
+    font-size: 1rem; /* Tamanho de fonte que evita zoom no iOS */
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+/* Efeito de Foco (Quando clica no input) */
+input:focus, select:focus {
+    border-color: var(--secondary-color); /* Muda para azul */
+    background-color: var(--white);
+    box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.1); /* "Brilho" azul ao redor */
+    outline: none;
+}
+
+/* Botão de Calcular */
+.btn-calcular {
+    width: 100%;
+    padding: 16px;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(25, 118, 210, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.btn-calcular:hover {
+    background: var(--secondary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(25, 118, 210, 0.3);
+}
+
+.btn-calcular:active {
+    transform: translateY(0);
+}
+
+/* Área de Resultado */
+#resultado {
+    margin-top: 30px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: none; /* Escondido por padrão */
+}
+
+/* Classe adicionada via JS para animar a entrada */
+.fade-in {
+    animation: fadeInScale 0.5s ease-out forwards;
+    display: block !important;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Estilo do "Recibo" de resultado */
+.result-box {
+    background: var(--bg-accent);
+    padding: 25px;
+    border: 1px solid #c8e6c9;
+}
+
+.result-box h2 {
+    color: var(--primary-dark);
+    margin-top: 0;
+    font-size: 1.4rem;
+    border-bottom: 2px solid rgba(46, 125, 50, 0.2);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.result-row.total {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed #a5d6a7;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+}
+
+/* Aviso e Footer */
+.aviso-legal {
+    text-align: center; font-size: 0.85rem; color: #999; margin-top: 25px;
+}
+
+footer {
+    background: var(--white);
+    color: var(--text-light);
+    text-align: center;
+    padding: 30px 0;
+    border-top: 1px solid #eee;
+}
+footer a { color: var(--primary-color); text-decoration: none; margin: 0 10px; font-weight: 600; }
+
+/* --- Estilos Novos para as Datas (Desktop) --- */
+.row-dates {
+    display: flex;
+    gap: 15px;
+}
+
+.row-dates .input-group {
+    flex: 1;
+}
+
+/* =========================================
+   MOBILE RESPONSIVO (CORREÇÃO DO BUG)
+========================================= */
+@media (max-width: 600px) {
+    /* Reduz o padding lateral da seção principal */
+    .calculator-section {
+        padding: 20px 10px; 
+    }
+
+    /* Reduz o padding interno do cartão para ganhar espaço */
+    .calculator-card {
+        padding: 20px; 
+        width: 100%;
+        border-radius: 12px;
+    }
+
+    /* Título menor para não quebrar linha feio */
+    .calculator-card h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Empilha as datas uma embaixo da outra no celular */
+    .row-dates {
+        flex-direction: column;
+        gap: 0; /* O gap é removido pois o input já tem margin-bottom */
+    }
+
+    /* Garante que nada vaze a largura da tela */
+    input, select, button {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* Ajuste no checkbox para ficar alinhado */
+    label[for="feriasVencidas"] {
+        font-size: 0.85rem;
+        line-height: 1.2;
+    }
+}
+
+/* =========================================
+   PÁGINAS DE TEXTO (FAQ, SOBRE, TERMOS)
+========================================= */
+
+/* Container de leitura (tipo folha de papel) */
+.doc-container {
+    background: var(--white);
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    margin: 40px auto;
+    max-width: 800px; /* Leitura confortável */
+}
+
+.doc-container h1 {
+    color: var(--primary-color);
+    border-bottom: 2px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.doc-container h2 {
+    color: #333;
+    margin-top: 40px;
+    font-size: 1.4rem;
+}
+
+.doc-container p, .doc-container li {
+    color: #555;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+/* --- Estilo do FAQ (Acordeão) --- */
+details.faq-item {
+    background: #f8f9fa;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+details.faq-item[open] {
+    background: var(--white);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+summary {
+    padding: 20px;
+    cursor: pointer;
+    font-weight: 700;
+    color: #333;
+    list-style: none; /* Remove triângulo padrão */
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Ícone personalizado (+) */
+summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 300;
+}
+
+details[open] summary::after {
+    content: '-';
+}
+
+.faq-answer {
+    padding: 0 20px 20px 20px;
+    color: #666;
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    padding-top: 15px;
+}
+
+/* Responsivo para textos */
+@media (max-width: 600px) {
+    .doc-container {
+        padding: 25px;
+        margin: 20px auto;
+        width: 95%;
+    }
+}
+
+/* --- Estilo da Imagem da Home --- */
+.hero-image {
+    /* O Pulo do Gato para Responsividade: */
+    max-width: 100%; /* A imagem nunca excederá a largura da tela/container */
+    height: auto;    /* Mantém a proporção correta (não achata) */
+
+    /* Estética e Posicionamento (Desktop) */
+    display: block;  /* Permite centralizar com margin auto */
+    width: 800px;    /* Define uma largura máxima ideal para telas grandes */
+    margin: 40px auto 0 auto; /* Espaço em cima (40px) e centraliza (auto) */
+    border-radius: 12px;      /* Cantos arredondados modernos */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra suave para dar destaque */
+}
+
+/* Ajuste fino para celular, se necessário (opcional, o de cima já resolve 99%) */
+@media (max-width: 600px) {
+    .hero-image {
+        margin-top: 30px; /* Um pouco menos de espaço no celular */
+        border-radius: 8px; /* Cantos um pouco menores */
+    }
+}
