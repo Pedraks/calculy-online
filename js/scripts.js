@@ -976,45 +976,24 @@ function calcularProporcional() {
         </div>`;
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
 /* ============================================================
-   CALCULADORA DE DIAS ÚTEIS 
+   CALCULADORA DE DIAS ÚTEIS
    ============================================================ */
 function calcularDiasUteis() {
-    const mesAnoInput = document.getElementById("mesAnoUteis").value; // ex: "2025-05"
+    // Pegamos os valores direto dos seletores (já vêm como número/string limpa)
+    const mes = parseInt(document.getElementById("mesSelecionado").value);
+    const ano = parseInt(document.getElementById("anoSelecionado").value);
     const contaSabado = document.getElementById("contarSabado").checked;
 
-    if (!mesAnoInput) { 
-        alert("Selecione o mês e ano."); 
-        return; 
-    }
-
-    // 1. FORÇAR A DATA COMO LOCAL (Solução do Bug do Safari)
-    // Em vez de deixar o navegador ler a string, nós dividimos ela manualmente.
-    const partes = mesAnoInput.split('-'); 
-    const ano = parseInt(partes[0]);
-    const mes = parseInt(partes[1]); // Janeiro é 1 aqui no input
-
-    // 2. Lista de Feriados Nacionais Fixos e Móveis (2025)
-    // Formato: "Mês-Dia" (Sem ano, para facilitar comparação)
+    // Lista de Feriados Nacionais (Mês-Dia)
     const feriados = [
-        "1-1",   // Ano Novo
-        "3-3",   // Carnaval (Segunda)
-        "3-4",   // Carnaval (Terça)
-        "4-18",  // Paixão de Cristo
-        "4-21",  // Tiradentes
-        "5-1",   // Dia do Trabalho
-        "6-19",  // Corpus Christi
-        "9-7",   // Independência
-        "10-12", // N. Sra. Aparecida
-        "11-2",  // Finados
-        "11-15", // Proclamação da República
-        "11-20", // Dia da Consciência Negra
-        "12-25"  // Natal
+        "1-1", "3-3", "3-4", "4-18", "4-21", "5-1", "6-19", 
+        "9-7", "10-12", "11-2", "11-15", "11-20", "12-25"
     ];
 
-    // Cria a data do último dia usando números (ano, mês, dia 0)
-    // Mês no JS começa em 0 (Jan=0, Dez=11), por isso não subtraímos 1 do mês aqui para pegar o dia 0 do próximo
+    // Pega o último dia do mês para saber se tem 30, 31 ou 28 dias
+    // No JS: new Date(ano, mes, 0) retorna o último dia do mês anterior. 
+    // Como nosso 'mes' vai de 1 a 12, funciona perfeito. Ex: mes=1 (Jan), new Date(2025, 1, 0) pega último de Jan.
     const ultimoDia = new Date(ano, mes, 0).getDate(); 
     
     let diasUteis = 0;
@@ -1022,15 +1001,12 @@ function calcularDiasUteis() {
     let totalFimDeSemana = 0;
 
     for (let d = 1; d <= ultimoDia; d++) {
-        // CORREÇÃO CRÍTICA AQUI:
-        // Usamos new Date(ano, mês - 1, dia)
-        // Isso garante que seja 00:00 no horário do Brasil, não UTC.
+        // Criamos a data: Ano, Mês (0-11), Dia
         const dataAtual = new Date(ano, mes - 1, d);
-        
         const diaSemana = dataAtual.getDay(); // 0=Dom, 6=Sab
-        const chaveData = `${mes}-${d}`; // Ex: "5-1"
+        const chaveData = `${mes}-${d}`;
 
-        // Verifica se é feriado
+        // Verifica Feriado
         if (feriados.includes(chaveData)) {
             totalFeriados++;
             continue; 
