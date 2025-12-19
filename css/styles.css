@@ -465,4 +465,98 @@ details[open] summary::after {
         margin-top: 30px; /* Um pouco menos de espaço no celular */
         border-radius: 8px; /* Cantos um pouco menores */
     }
+
+}
+
+/* =========================================
+   ESTILOS DO NOVO PORTAL (HUB)
+   ========================================= */
+
+/* Área dos Cards */
+.tools-section {
+    padding: 20px 0 60px;
+}
+
+/* O Grid Mágico: Cria colunas automáticas */
+.tools-grid {
+    display: grid;
+    /* Ajusta automaticamente: Mínimo 280px de largura, máximo o que der */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* O Cartão Individual */
+.tool-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-decoration: none; /* Tira o sublinhado do link */
+    color: #333;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    border: 1px solid #eee;
+    
+    /* Layout interno do cartão */
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+/* Efeito ao passar o mouse (Hover) */
+.tool-card:hover {
+    transform: translateY(-5px); /* Sobe um pouquinho */
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    border-color: #a5d6a7;
+}
+
+/* Ícone (Emoji) */
+.tool-card .icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    background: #f5f5f5;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0; /* Impede o ícone de amassar */
+}
+
+/* Textos dentro do cartão */
+.tool-card h3 {
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+    color: #2e7d32;
+    font-weight: 700;
+}
+
+.tool-card p {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Destaque para o Card de Rescisão (Borda Verde) */
+.tool-card.destaque {
+    border: 2px solid #2e7d32;
+    background: #f1f8e9;
+}
+.tool-card.destaque .icon {
+    background: #fff;
+}
+
+/* Ajuste Mobile: Hero mais compacto */
+@media (max-width: 600px) {
+    .hero {
+        padding: 40px 0 20px;
+    }
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    .tools-grid {
+        /* No celular, garante 1 coluna cheia */
+        grid-template-columns: 1fr;
+    }
 }
