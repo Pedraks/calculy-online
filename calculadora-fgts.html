@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de FGTS Mensal 2025 | Valor do Depósito (8%)</title>
+    <meta name="description" content="Calcule quanto a empresa deve depositar de FGTS todo mês. O valor é 8% do seu salário bruto e não pode ser descontado de você.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="theme-color" content="#2e7d32">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav><a href="index.html">← Voltar ao Menu</a></nav>
+        </div>
+    </header>
+
+    <main class="calculator-section" style="flex-direction: column;">
+        <div class="calculator-card">
+            <h1>Calcular FGTS (8%)</h1>
+            <p class="form-description">Confira o valor do depósito mensal.</p>
+            <form id="fgtsForm">
+                <label>Salário Bruto + Extras (R$)</label>
+                <input type="number" id="baseFGTS" placeholder="Ex: 3000.00" inputmode="decimal" required>
+
+                <label>Tipo de Contrato</label>
+                <select id="tipoContratoFGTS">
+                    <option value="0.08">Trabalhador Normal (8%)</option>
+                    <option value="0.02">Jovem Aprendiz (2%)</option>
+                </select>
+
+                <button type="button" class="btn-calcular" onclick="calcularFGTS()">Ver Valor do Depósito</button>
+            </form>
+            <div id="resultadoFGTS" style="display:none; margin-top: 30px;"></div>
+            <div class="aviso-legal">*O FGTS não é descontado do salário, é pago à parte pela empresa.</div>
+        </div>
+
+        <div class="container" style="max-width: 600px; margin-top: 40px; color: #666; font-size: 0.9rem;">
+            <h2 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">Regras do FGTS</h2>
+            <p>A empresa deve depositar, até o dia 7 de cada mês, o equivalente a <strong>8% do salário bruto</strong> em uma conta na Caixa. Para Jovem Aprendiz, a alíquota é de 2%.</p>
+        </div>
+    </main>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
