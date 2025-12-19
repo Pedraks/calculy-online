@@ -2,12 +2,52 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
       <loc>https://calculy.online/</loc>
-      <lastmod>2025-12-16</lastmod>
-   </url>
-   <url>
-      <loc>https://calculy.online/calculadora-rescisao.html</loc>
+      <lastmod>2025-12-19</lastmod>
+      <priority>1.0</priority>
    </url>
    <url>
       <loc>https://calculy.online/faq.html</loc>
+      <priority>0.5</priority>
+   </url>
+
+   <url>
+      <loc>https://calculy.online/calculadora-rescisao.html</loc>
+      <priority>0.9</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/salario-liquido.html</loc>
+      <priority>0.9</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-ferias.html</loc>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-13-salario.html</loc>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-seguro-desemprego.html</loc>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-horas-extras.html</loc>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-adicional-noturno.html</loc>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-fgts.html</loc>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-salario-proporcional.html</loc>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://calculy.online/calculadora-dias-uteis.html</loc>
+      <priority>0.7</priority>
    </url>
 </urlset>
