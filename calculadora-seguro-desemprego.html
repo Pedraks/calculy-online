@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Seguro Desemprego 2025 | Valor e Parcelas</title>
+    <meta name="description"
+        content="Simule quantas parcelas do Seguro Desemprego você vai receber e qual o valor de cada uma. Regras atualizadas 2025.">
+    <meta name="keywords"
+        content="calculadora seguro desemprego, valor seguro desemprego 2025, quantas parcelas seguro, calcular seguro, teto seguro desemprego">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav>
+                <a href="index.html">← Voltar ao Menu</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="calculator-section" style="flex-direction: column;">
+        <div class="calculator-card">
+            <h1>Seguro Desemprego</h1>
+            <p class="form-description">Veja o valor e a quantidade de parcelas.</p>
+
+            <form id="seguroForm">
+                <label>Últimos 3 Salários (Brutos)</label>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="number" id="salario1" placeholder="Salário 1" inputmode="decimal" required>
+                    <input type="number" id="salario2" placeholder="Salário 2" inputmode="decimal">
+                    <input type="number" id="salario3" placeholder="Salário 3" inputmode="decimal">
+                </div>
+                <p style="font-size: 0.8rem; color: #666; margin-top: -10px; margin-bottom: 20px;">Se trabalhou menos de
+                    3 meses, preencha apenas os meses trabalhados.</p>
+
+                <label for="mesesTrabalhadosSeguro">Meses Trabalhados (Antes da demissão)</label>
+                <input type="number" id="mesesTrabalhadosSeguro" placeholder="Ex: 24 meses" inputmode="numeric"
+                    required>
+
+                <label for="vezesSolicitou">Quantas vezes já pediu o seguro?</label>
+                <select id="vezesSolicitou">
+                    <option value="1">1ª vez (Primeira solicitação)</option>
+                    <option value="2">2ª vez</option>
+                    <option value="3">3ª vez ou mais</option>
+                </select>
+
+                <button type="button" class="btn-calcular" onclick="calcularSeguroDesemprego()">Calcular
+                    Benefício</button>
+            </form>
+
+            <div id="resultadoSeguro" style="display:none; margin-top: 30px;">
+            </div>
+
+            <div class="aviso-legal">
+                *O valor máximo da parcela em 2025 segue o teto oficial (aprox. R$ 2.313,74).
+            </div>
+        </div>
+
+        <div class="container" style="max-width: 600px; margin-top: 40px; color: #666; font-size: 0.9rem;">
+            <h2 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">Quem tem direito ao Seguro Desemprego?</h2>
+            <ul style="padding-left: 20px; line-height: 1.6;">
+                <li><strong>Demissão Sem Justa Causa:</strong> É obrigatório ter sido demitido pela empresa. Pedido de
+                    demissão não dá direito.</li>
+                <li><strong>Tempo de Trabalho:</strong>
+                    <br>- 1ª solicitação: Pelo menos 12 meses trabalhados.
+                    <br>- 2ª solicitação: Pelo menos 9 meses trabalhados.
+                    <br>- 3ª solicitação: Pelo menos 6 meses trabalhados.
+                </li>
+                <li><strong>Valor:</strong> É calculado pela média dos últimos 3 salários, mas nunca será menor que o
+                    Salário Mínimo nem maior que o Teto do Governo.</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="js/scripts.js"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Calculadora de Seguro Desemprego",
+      "url": "https://calculy.online/calculadora-seguro-desemprego.html",
+      "description": "Simulador de parcelas e valor do Seguro Desemprego 2025.",
+      "applicationCategory": "FinanceApplication"
+    }
+    </script>
+</body>
+
+</html>
