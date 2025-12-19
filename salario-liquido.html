@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Salário Líquido 2025 | Descontos INSS e IRRF</title>
+    <meta name="description"
+        content="Calcule seu salário líquido exato em 2025. Descubra os valores descontados de INSS e Imposto de Renda (IRRF) e veja quanto cai na conta.">
+    <meta name="keywords"
+        content="calculadora salario liquido, calcular salario 2025, descontos inss irrf, salario liquido clt, tabela inss 2025">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav>
+                <a href="index.html">← Voltar ao Menu</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="calculator-section" style="flex-direction: column;">
+        <div class="calculator-card">
+            <h1>Salário Líquido 2025</h1>
+            <p class="form-description">Descubra quanto sobra do seu salário.</p>
+
+            <form id="liquidoForm">
+                <label for="salarioBruto">Salário Bruto (R$)</label>
+                <input type="number" id="salarioBruto" placeholder="Ex: 3500.00" inputmode="decimal" required>
+
+                <label for="dependentes">Número de Dependentes</label>
+                <input type="number" id="dependentes" placeholder="Ex: 0" value="0" inputmode="numeric">
+
+                <label for="outrosDescontos">Outros Descontos (Vale transporte, plano, etc)</label>
+                <input type="number" id="outrosDescontos" placeholder="Ex: 150.00 (Opcional)" inputmode="decimal">
+
+                <button type="button" class="btn-calcular" onclick="calcularSalarioLiquido()">Calcular Agora</button>
+            </form>
+
+            <div id="resultadoLiquido" style="display:none; margin-top: 30px;">
+            </div>
+
+            <div class="aviso-legal">
+                *Cálculo base 2025 com tabela progressiva do INSS e IRRF.
+            </div>
+        </div>
+
+        <div class="container" style="max-width: 600px; margin-top: 40px; color: #666; font-size: 0.9rem;">
+            <h2 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">Entenda os Descontos no Holerite</h2>
+            <p>O salário que cai na conta é diferente do contratado devido aos descontos obrigatórios do governo:</p>
+            <ul style="padding-left: 20px; line-height: 1.6;">
+                <li><strong>INSS (Previdência):</strong> Garante sua aposentadoria e auxílios. A alíquota é progressiva
+                    (de 7,5% a 14%), ou seja, quem ganha mais paga uma porcentagem maior.</li>
+                <li><strong>IRRF (Imposto de Renda):</strong> É o "leão". Dependendo da faixa salarial, o governo retém
+                    uma parte na fonte. Ter dependentes (filhos) ajuda a diminuir esse imposto.</li>
+                <li><strong>Outros:</strong> Vale-transporte (até 6%), plano de saúde e coparticipações.</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="js/scripts.js"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Calculadora de Salário Líquido",
+      "url": "https://calculy.online/salario-liquido.html",
+      "description": "Simulador de salário líquido com cálculo de descontos de INSS e Imposto de Renda 2025.",
+      "applicationCategory": "FinanceApplication"
+    }
+    </script>
+</body>
+
+</html>
