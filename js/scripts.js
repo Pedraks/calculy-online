@@ -414,5 +414,100 @@ function calcularFerias() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ============================================================
+   CALCULADORA DE 13º SALÁRIO
+   ============================================================ */
+function calcularDecimoTerceiro() {
+    const salario = parseFloat(document.getElementById("salarioDecimo").value);
+    const meses = parseInt(document.getElementById("mesesTrabalhados").value);
+    const dependentes = parseInt(document.getElementById("dependentesDecimo").value) || 0;
+    const jaRecebeuPrimeira = document.getElementById("primeiraParcelaPaga").checked;
+
+    if (!salario) {
+        alert("Preencha o salário bruto.");
+        return;
+    }
+
+    // 1. Valor Total Proporcional (Bruto Cheio)
+    const valorTotalBruto = (salario / 12) * meses;
+
+    // 2. Cálculo da 1ª Parcela (50% do bruto, sem descontos)
+    const primeiraParcela = valorTotalBruto / 2;
+
+    // 3. Cálculo de Descontos (Sobre o Total Bruto)
+    
+    // INSS Progressivo 2025
+    let inss = 0;
+    let saldo = valorTotalBruto;
+    if (saldo > 7786.02) saldo = 7786.02; // Teto
+    
+    if (saldo > 4000.03) { inss += (saldo - 4000.03) * 0.14; saldo = 4000.03; }
+    if (saldo > 2666.68) { inss += (saldo - 2666.68) * 0.12; saldo = 2666.68; }
+    if (saldo > 1412.00) { inss += (saldo - 1412.00) * 0.09; saldo = 1412.00; }
+    inss += saldo * 0.075;
+
+    // IRRF
+    const deducaoDep = dependentes * 189.59;
+    const baseIR = valorTotalBruto - inss - deducaoDep;
+    let irrf = 0;
+    
+    if (baseIR > 4664.68) { irrf = (baseIR * 0.275) - 896.00; }
+    else if (baseIR > 3751.05) { irrf = (baseIR * 0.225) - 662.77; }
+    else if (baseIR > 2826.65) { irrf = (baseIR * 0.15) - 381.44; }
+    else if (baseIR > 2259.20) { irrf = (baseIR * 0.075) - 169.44; }
+    
+    if (irrf < 0) irrf = 0;
+
+    // 4. Cálculo da 2ª Parcela
+    // Total Bruto - INSS - IRRF - O que já foi pago na 1ª
+    const totalDescontos = inss + irrf;
+    const segundaParcela = valorTotalBruto - totalDescontos - primeiraParcela;
+
+    // --- Renderização ---
+    const divResult = document.getElementById("resultadoDecimo");
+    divResult.style.display = "block";
+    
+    let html = `<div class="result-box"><h2>Resultado Estimado</h2>`;
+
+    if (!jaRecebeuPrimeira) {
+        html += `
+            <div class="result-row" style="color: #1976d2; font-weight:bold;">
+                <span>1ª Parcela (até 30/11):</span>
+                <span>${formatarMoeda(primeiraParcela)}</span>
+            </div>
+            <div style="font-size:0.8em; color:#666; margin-bottom:10px;">(Sem descontos)</div>`;
+    } else {
+        html += `
+            <div class="result-row" style="color: #999; text-decoration: line-through;">
+                <span>1ª Parcela (Já recebida):</span>
+                <span>${formatarMoeda(primeiraParcela)}</span>
+            </div>`;
+    }
+
+    html += `
+            <div class="result-row" style="color: #2e7d32; font-weight:bold; margin-top:15px; border-top: 1px dashed #ccc; padding-top:10px;">
+                <span>2ª Parcela (até 20/12):</span>
+                <span>${formatarMoeda(segundaParcela)}</span>
+            </div>
+            
+            <div style="background:#fff; padding:10px; border-radius:5px; margin-top:10px; border:1px solid #eee;">
+                <div class="result-row" style="color: #d32f2f; font-size:0.9em;">
+                    <span>Desconto INSS:</span> <strong>- ${formatarMoeda(inss)}</strong>
+                </div>
+                <div class="result-row" style="color: #d32f2f; font-size:0.9em;">
+                    <span>Desconto IRRF:</span> <strong>- ${formatarMoeda(irrf)}</strong>
+                </div>
+            </div>
+            
+            <div class="result-row total" style="margin-top:15px;">
+                <span>Total Líquido (1ª + 2ª):</span>
+                <span>${formatarMoeda(primeiraParcela + segundaParcela)}</span>
+            </div>
+        </div>
+    `;
+
+    divResult.innerHTML = html;
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 
