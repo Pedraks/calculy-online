@@ -1,5 +1,5 @@
 /* ============================================================
-   FUNÇÕES UTILITÁRIAS (CORREÇÃO DE FUSO E FORMATAÇÃO)
+   CORREÇÃO DE FUSO E FORMATAÇÃO
 ============================================================ */
 
 // Corrige o bug do dia anterior (fuso horário)
@@ -250,10 +250,7 @@ function calcularRescisaoAvancada() {
 
 /* ============================================================
    CALCULADORA DE FÉRIAS
-   ============================================================ */
-/* ============================================================
-   CONFIGURAÇÕES INICIAIS (Ao carregar a página)
-   ============================================================ */
+   ============================================================ */
 document.addEventListener("DOMContentLoaded", function() {
     
     // 1. Lógica para mostrar/esconder input de dias customizados (Já existia)
@@ -908,22 +905,7 @@ function calcularProporcional() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ============================================================
-   CALCULADORA DE DIAS ÚTEIS (Com Feriados 2025)
-   ============================================================ */
-function calcularDiasUteis() {
-    const mesAnoInput = document.getElementById("mesAnoUteis").value; // ex: "2025-05"
-    const contaSabado = document.getElementById("contarSabado").checked;
-
-    if (!mesAnoInput) { alert("Selecione o mês e ano."); return; }
-
-    const [ano, mes] = mesAnoInput.split('-').map(Number);
-    
-    // Lista de Feriados Nacionais Fixos e Móveis (2025)
-    // Formato: "Mês-Dia"
-    const feriados = [
-        "1-1",   // Ano Novo
-        "3-3",   // Carnaval (Segunda) - Ponto Facultativo comum
+ (Segunda) - Ponto Facultativo comum
         "3-4",   // Carnaval (Terça)
         "4-18",  // Paixão de Cristo (Sexta) - Móvel
         "4-21",  // Tiradentes
@@ -994,3 +976,105 @@ function calcularDiasUteis() {
         </div>`;
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+/* ============================================================
+   CALCULADORA DE DIAS ÚTEIS 
+   ============================================================ */
+function calcularDiasUteis() {
+    const mesAnoInput = document.getElementById("mesAnoUteis").value; // ex: "2025-05"
+    const contaSabado = document.getElementById("contarSabado").checked;
+
+    if (!mesAnoInput) { 
+        alert("Selecione o mês e ano."); 
+        return; 
+    }
+
+    // 1. FORÇAR A DATA COMO LOCAL (Solução do Bug do Safari)
+    // Em vez de deixar o navegador ler a string, nós dividimos ela manualmente.
+    const partes = mesAnoInput.split('-'); 
+    const ano = parseInt(partes[0]);
+    const mes = parseInt(partes[1]); // Janeiro é 1 aqui no input
+
+    // 2. Lista de Feriados Nacionais Fixos e Móveis (2025)
+    // Formato: "Mês-Dia" (Sem ano, para facilitar comparação)
+    const feriados = [
+        "1-1",   // Ano Novo
+        "3-3",   // Carnaval (Segunda)
+        "3-4",   // Carnaval (Terça)
+        "4-18",  // Paixão de Cristo
+        "4-21",  // Tiradentes
+        "5-1",   // Dia do Trabalho
+        "6-19",  // Corpus Christi
+        "9-7",   // Independência
+        "10-12", // N. Sra. Aparecida
+        "11-2",  // Finados
+        "11-15", // Proclamação da República
+        "11-20", // Dia da Consciência Negra
+        "12-25"  // Natal
+    ];
+
+    // Cria a data do último dia usando números (ano, mês, dia 0)
+    // Mês no JS começa em 0 (Jan=0, Dez=11), por isso não subtraímos 1 do mês aqui para pegar o dia 0 do próximo
+    const ultimoDia = new Date(ano, mes, 0).getDate(); 
+    
+    let diasUteis = 0;
+    let totalFeriados = 0;
+    let totalFimDeSemana = 0;
+
+    for (let d = 1; d <= ultimoDia; d++) {
+        // CORREÇÃO CRÍTICA AQUI:
+        // Usamos new Date(ano, mês - 1, dia)
+        // Isso garante que seja 00:00 no horário do Brasil, não UTC.
+        const dataAtual = new Date(ano, mes - 1, d);
+        
+        const diaSemana = dataAtual.getDay(); // 0=Dom, 6=Sab
+        const chaveData = `${mes}-${d}`; // Ex: "5-1"
+
+        // Verifica se é feriado
+        if (feriados.includes(chaveData)) {
+            totalFeriados++;
+            continue; 
+        }
+
+        // Verifica Fim de Semana
+        if (diaSemana === 0) { // Domingo
+            totalFimDeSemana++;
+            continue;
+        }
+        if (diaSemana === 6) { // Sábado
+            if (!contaSabado) { 
+                totalFimDeSemana++;
+                continue;
+            }
+        }
+
+        diasUteis++;
+    }
+
+    const divResult = document.getElementById("resultadoUteis");
+    divResult.style.display = "block";
+    divResult.innerHTML = `
+        <div class="result-box">
+            <h2>${mes}/${ano}</h2>
+            <div class="result-row total" style="font-size: 1.5rem; color: #2e7d32;">
+                <span>Dias Úteis:</span>
+                <span>${diasUteis}</span>
+            </div>
+            <hr style="margin:10px 0; border:0; border-top:1px dashed #ccc;">
+            <div class="result-row">
+                <span>Fins de Semana:</span>
+                <strong>${totalFimDeSemana} dias</strong>
+            </div>
+            <div class="result-row">
+                <span>Feriados (Dias úteis):</span>
+                <strong>${totalFeriados} dias</strong>
+            </div>
+            <div class="result-row">
+                <span>Total de Dias:</span>
+                <strong>${ultimoDia} dias</strong>
+            </div>
+        </div>`;
+    
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
