@@ -852,3 +852,28 @@ function calcularAdicionalNoturno() {
         </div>`;
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+/* ============================================================
+   CALCULADORA DE FGTS
+   ============================================================ */
+function calcularFGTS() {
+    const base = parseFloat(document.getElementById("baseFGTS").value);
+    const aliquota = parseFloat(document.getElementById("tipoContratoFGTS").value);
+
+    if (!base) { alert("Digite o valor bruto."); return; }
+
+    const valorDeposito = base * aliquota;
+
+    const divResult = document.getElementById("resultadoFGTS");
+    divResult.style.display = "block";
+    divResult.innerHTML = `
+        <div class="result-box">
+            <h2>Depósito Mensal</h2>
+            <div class="result-row total" style="color: #1976d2;">
+                <span>A empresa deve depositar:</span>
+                <span>${formatarMoeda(valorDeposito)}</span>
+            </div>
+             <p style="text-align:center; font-size:0.8rem; margin-top:10px; color:#666;">Este valor vai para sua conta FGTS na Caixa.</p>
+        </div>`;
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
