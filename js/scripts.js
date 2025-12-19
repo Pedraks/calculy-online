@@ -1,4 +1,4 @@
-/* ============================================================
+4/* ============================================================
    CORREÇÃO DE FUSO E FORMATAÇÃO
 ============================================================ */
 
@@ -905,78 +905,6 @@ function calcularProporcional() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
- (Segunda) - Ponto Facultativo comum
-        "3-4",   // Carnaval (Terça)
-        "4-18",  // Paixão de Cristo (Sexta) - Móvel
-        "4-21",  // Tiradentes
-        "5-1",   // Dia do Trabalho
-        "6-19",  // Corpus Christi (Quinta) - Móvel
-        "9-7",   // Independência
-        "10-12", // N. Sra. Aparecida
-        "11-2",  // Finados
-        "11-15", // Proclamação da República
-        "11-20", // Dia da Consciência Negra (Novo Feriado Nacional)
-        "12-25"  // Natal
-    ];
-
-    const ultimoDia = new Date(ano, mes, 0).getDate(); // Pega último dia do mês
-    let diasUteis = 0;
-    let totalFeriados = 0;
-    let totalFimDeSemana = 0;
-
-    for (let d = 1; d <= ultimoDia; d++) {
-        const dataAtual = new Date(ano, mes - 1, d);
-        const diaSemana = dataAtual.getDay(); // 0=Dom, 6=Sab
-        const chaveData = `${mes}-${d}`;
-
-        // Verifica se é feriado
-        if (feriados.includes(chaveData)) {
-            totalFeriados++;
-            continue; // Pula para o próximo dia
-        }
-
-        // Verifica Fim de Semana
-        if (diaSemana === 0) { // Domingo
-            totalFimDeSemana++;
-            continue;
-        }
-        if (diaSemana === 6) { // Sábado
-            if (!contaSabado) { // Se não conta sábado como útil
-                totalFimDeSemana++;
-                continue;
-            }
-        }
-
-        // Se passou por tudo, é dia útil
-        diasUteis++;
-    }
-
-    const divResult = document.getElementById("resultadoUteis");
-    divResult.style.display = "block";
-    divResult.innerHTML = `
-        <div class="result-box">
-            <h2>${mes}/${ano}</h2>
-            <div class="result-row total" style="font-size: 1.5rem; color: #2e7d32;">
-                <span>Dias Úteis:</span>
-                <span>${diasUteis}</span>
-            </div>
-            <hr style="margin:10px 0; border:0; border-top:1px dashed #ccc;">
-            <div class="result-row">
-                <span>Fins de Semana:</span>
-                <strong>${totalFimDeSemana} dias</strong>
-            </div>
-            <div class="result-row">
-                <span>Feriados (Dias úteis):</span>
-                <strong>${totalFeriados} dias</strong>
-            </div>
-            <div class="result-row">
-                <span>Total de Dias:</span>
-                <strong>${ultimoDia} dias</strong>
-            </div>
-        </div>`;
-    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
 /* ============================================================
    CALCULADORA DE DIAS ÚTEIS
    ============================================================ */
@@ -988,7 +916,7 @@ function calcularDiasUteis() {
     const elAno = document.getElementById("anoSelecionado");
     const elCheck = document.getElementById("contarSabado");
 
-    // 2. Trava de segurança: Se os campos novos não existirem, avisa.
+    // 2. Trava de segurança
     if (!elMes || !elAno) {
         alert("Erro: O arquivo HTML parece estar desatualizado. Por favor, limpe o cache (CTRL+F5).");
         return;
