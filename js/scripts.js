@@ -510,4 +510,112 @@ function calcularDecimoTerceiro() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ============================================================
+   CALCULADORA DE SALÁRIO LÍQUIDO
+   ============================================================ */
+function calcularSalarioLiquido() {
+    const salarioBruto = parseFloat(document.getElementById("salarioBruto").value);
+    const dependentes = parseInt(document.getElementById("dependentes").value) || 0;
+    const outrosDescontos = parseFloat(document.getElementById("outrosDescontos").value) || 0;
+    
+    if (!salarioBruto) {
+        alert("Digite o salário bruto.");
+        return;
+    }
+
+    // 1. Cálculo do INSS (Tabela Progressiva 2024/2025)
+    // Teto INSS atualizado base ~R$ 7.786,02
+    let inss = 0;
+    let salarioParaInss = salarioBruto;
+    
+    // Faixa 1: até 1.412,00 (7.5%)
+    if (salarioParaInss > 1412.00) {
+        inss += 1412.00 * 0.075;
+    } else {
+        inss += salarioParaInss * 0.075;
+    }
+
+    // Faixa 2: de 1.412,01 até 2.666,68 (9%)
+    if (salarioParaInss > 2666.68) {
+        inss += (2666.68 - 1412.00) * 0.09;
+    } else if (salarioParaInss > 1412.00) {
+        inss += (salarioParaInss - 1412.00) * 0.09;
+    }
+
+    // Faixa 3: de 2.666,69 até 4.000,03 (12%)
+    if (salarioParaInss > 4000.03) {
+        inss += (4000.03 - 2666.68) * 0.12;
+    } else if (salarioParaInss > 2666.68) {
+        inss += (salarioParaInss - 2666.68) * 0.12;
+    }
+
+    // Faixa 4: de 4.000,04 até Teto 7.786,02 (14%)
+    if (salarioParaInss > 7786.02) {
+        inss += (7786.02 - 4000.03) * 0.14;
+    } else if (salarioParaInss > 4000.03) {
+        inss += (salarioParaInss - 4000.03) * 0.14;
+    }
+    
+    // Trava do teto (caso a soma passe do teto oficial)
+    const tetoInss = 908.85; // Aproximado 2024, ajusta-se conforme virada do ano
+    if (inss > tetoInss) inss = tetoInss;
+
+    // 2. Cálculo do IRRF
+    const deducaoDependentes = dependentes * 189.59;
+    const baseIRRF = salarioBruto - inss - deducaoDependentes;
+    let irrf = 0;
+
+    if (baseIRRF <= 2259.20) {
+        irrf = 0; // Isento
+    } else if (baseIRRF <= 2826.65) {
+        irrf = (baseIRRF * 0.075) - 169.44;
+    } else if (baseIRRF <= 3751.05) {
+        irrf = (baseIRRF * 0.15) - 381.44;
+    } else if (baseIRRF <= 4664.68) {
+        irrf = (baseIRRF * 0.225) - 662.77;
+    } else {
+        irrf = (baseIRRF * 0.275) - 896.00;
+    }
+    
+    if (irrf < 0) irrf = 0;
+
+    const salarioLiquido = salarioBruto - inss - irrf - outrosDescontos;
+
+    // 3. Renderizar Resultado
+    const divResult = document.getElementById("resultadoLiquido");
+    divResult.style.display = "block";
+    divResult.innerHTML = `
+        <div class="result-box">
+            <h2>Seu Salário Líquido</h2>
+            
+            <div class="result-row">
+                <span>Salário Bruto:</span>
+                <strong>${formatarMoeda(salarioBruto)}</strong>
+            </div>
+            <div class="result-row" style="color: #d32f2f;">
+                <span>INSS (Previdência):</span>
+                <strong>- ${formatarMoeda(inss)}</strong>
+            </div>
+            <div class="result-row" style="color: #d32f2f;">
+                <span>IRRF (Imposto de Renda):</span>
+                <strong>- ${formatarMoeda(irrf)}</strong>
+            </div>
+             <div class="result-row" style="color: #d32f2f;">
+                <span>Outros Descontos:</span>
+                <strong>- ${formatarMoeda(outrosDescontos)}</strong>
+            </div>
+            
+            <div class="result-row total">
+                <span>Líquido a Receber:</span>
+                <span>${formatarMoeda(salarioLiquido)}</span>
+            </div>
+        </div>
+    `;
+    
+    divResult.classList.remove('fade-in');
+    void divResult.offsetWidth; 
+    divResult.classList.add('fade-in');
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 
