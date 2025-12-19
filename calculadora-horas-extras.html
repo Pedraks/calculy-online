@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Horas Extras 2025 | 50% e 100%</title>
+    <meta name="description" content="Simule o valor das suas horas extras. Calcule quanto você vai receber por horas normais (50%) e domingos/feriados (100%).">
+    <meta name="keywords" content="calculadora horas extras, calcular hora extra, valor hora extra 50, hora extra 100, calculo trabalhista horas">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav>
+                <a href="index.html">← Voltar ao Menu</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="calculator-section" style="flex-direction: column;">
+        <div class="calculator-card">
+            <h1>Horas Extras</h1>
+            <p class="form-description">Calcule o valor do seu tempo extra.</p>
+
+            <form id="extrasForm">
+                <label for="salarioBaseExtras">Salário Bruto (R$)</label>
+                <input type="number" id="salarioBaseExtras" placeholder="Ex: 2500.00" inputmode="decimal" required>
+
+                <label for="jornadaMensal">Jornada Mensal</label>
+                <select id="jornadaMensal">
+                    <option value="220">220 horas (Padrão 44h semanais)</option>
+                    <option value="200">200 horas</option>
+                    <option value="180">180 horas (12x36 ou parcial)</option>
+                    <option value="150">150 horas</option>
+                </select>
+
+                <div class="row-dates">
+                    <div class="input-group">
+                        <label>Horas a 50% <br><small>(Dia útil)</small></label>
+                        <input type="number" id="qtdHoras50" placeholder="Qtd" inputmode="numeric">
+                    </div>
+                    <div class="input-group">
+                        <label>Horas a 100% <br><small>(Domingo/Feriado)</small></label>
+                        <input type="number" id="qtdHoras100" placeholder="Qtd" inputmode="numeric">
+                    </div>
+                </div>
+
+                <button type="button" class="btn-calcular" onclick="calcularHorasExtras()">Calcular Valor</button>
+            </form>
+
+            <div id="resultadoExtras" style="display:none; margin-top: 30px;">
+                </div>
+            
+            <div class="aviso-legal">
+                *O cálculo não inclui o DSR (Descanso Semanal Remunerado), que varia conforme os dias úteis do mês.
+            </div>
+        </div>
+
+        <div class="container" style="max-width: 600px; margin-top: 40px; color: #666; font-size: 0.9rem;">
+            <h2 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">Quanto vale a Hora Extra?</h2>
+            <p>Pela Constituição e CLT, a hora extra vale mais que a hora normal de trabalho:</p>
+            <ul style="padding-left: 20px; line-height: 1.6;">
+                <li><strong>50% (Mínimo):</strong> Para horas trabalhadas além da jornada em dias úteis (segunda a sábado).</li>
+                <li><strong>100% (Dobro):</strong> Para horas trabalhadas em Domingos e Feriados não compensados.</li>
+                <li><strong>Divisor:</strong> Para saber o valor da sua hora, divide-se o salário por 220 (quem trabalha 44h/semana) ou 180 (quem trabalha 36h/semana).</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="js/scripts.js"></script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Calculadora de Horas Extras",
+      "url": "https://calculy.online/calculadora-horas-extras.html",
+      "description": "Simulador de valor de horas extras 50% e 100%.",
+      "applicationCategory": "FinanceApplication"
+    }
+    </script>
+</body>
+</html>
