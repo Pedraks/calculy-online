@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Dias Úteis 2025 | Com Feriados Nacionais</title>
+    <meta name="description" content="Descubra quantos dias úteis tem o mês. Desconta automaticamente sábados, domingos e feriados nacionais de 2025.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="theme-color" content="#2e7d32">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav><a href="index.html">← Voltar ao Menu</a></nav>
+        </div>
+    </header>
+
+    <main class="calculator-section" style="flex-direction: column;">
+        <div class="calculator-card">
+            <h1>Dias Úteis no Mês</h1>
+            <p class="form-description">Desconta fins de semana e feriados.</p>
+            <form id="uteisForm">
+                <label>Escolha o Mês e Ano</label>
+                <input type="month" id="mesAnoUteis" required>
+
+                <div style="margin: 15px 0; display: flex; gap: 10px; align-items: center;">
+                    <input type="checkbox" id="contarSabado" style="width: 20px; height: 20px;">
+                    <label for="contarSabado" style="margin:0; font-size:0.9rem;">Considerar Sábado como dia útil</label>
+                </div>
+
+                <button type="button" class="btn-calcular" onclick="calcularDiasUteis()">Ver Dias Úteis</button>
+            </form>
+            <div id="resultadoUteis" style="display:none; margin-top: 30px;"></div>
+        </div>
+
+        <div class="container" style="max-width: 600px; margin: 40px auto; padding: 0 20px; color: #666; font-size: 0.9rem;">
+            <h2 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">Feriados Considerados</h2>
+            <p>O cálculo desconta automaticamente os Feriados Nacionais de 2025 (Confraternização Universal, Carnaval, Paixão de Cristo, Tiradentes, Dia do Trabalho, Corpus Christi, Independência, Aparecida, Finados, Proclamação da República e Natal).</p>
+        </div>
+    </main>
+    <script src="js/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Salário Proporcional | Início no meio do mês</title>
+    <meta name="description" content="Começou a trabalhar agora? Calcule seu salário proporcional aos dias trabalhados no mês. Simulação exata.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="theme-color" content="#2e7d32">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav><a href="index.html">← Voltar ao Menu</a></nav>
+        </div>
+    </header>
+
+    <main class="calculator-section" style="flex-direction: column;">
+        <div class="calculator-card">
+            <h1>Salário Proporcional</h1>
+            <p class="form-description">Cálculo por dias trabalhados.</p>
+            <form id="propForm">
+                <label>Salário Mensal Bruto (R$)</label>
+                <input type="number" id="salarioProp" placeholder="Ex: 2500.00" inputmode="decimal" required>
+
+                <label>Quantos dias você trabalhou?</label>
+                <input type="number" id="diasTrabalhadosProp" placeholder="Ex: 12 dias" inputmode="numeric" max="31" required>
+
+                <button type="button" class="btn-calcular" onclick="calcularProporcional()">Calcular Valor</button>
+            </form>
+            <div id="resultadoProp" style="display:none; margin-top: 30px;"></div>
+            <div class="aviso-legal">*Base de cálculo: Mês comercial de 30 dias (padrão CLT).</div>
+        </div>
+
+        <div class="container" style="max-width: 600px; margin: 40px auto; padding: 0 20px; color: #666; font-size: 0.9rem;">
+            <h2 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">Como funciona?</h2>
+            <p>Se você foi contratado ou demitido no meio do mês, você recebe apenas pelos dias ativos. A conta divide seu salário por 30 e multiplica pelos dias trabalhados.</p>
+        </div>
+    </main>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
