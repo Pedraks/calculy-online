@@ -744,3 +744,75 @@ function calcularSeguroDesemprego() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ============================================================
+   CALCULADORA DE HORAS EXTRAS
+   ============================================================ */
+function calcularHorasExtras() {
+    const salario = parseFloat(document.getElementById("salarioBaseExtras").value);
+    const jornada = parseInt(document.getElementById("jornadaMensal").value);
+    const qtd50 = parseFloat(document.getElementById("qtdHoras50").value) || 0;
+    const qtd100 = parseFloat(document.getElementById("qtdHoras100").value) || 0;
+
+    if (!salario) {
+        alert("Digite o salário bruto.");
+        return;
+    }
+
+    // 1. Valor da Hora Normal
+    const valorHoraNormal = salario / jornada;
+
+    // 2. Valor da Hora Extra 50% (Normal * 1.5)
+    const valorHora50 = valorHoraNormal * 1.5;
+    const total50 = valorHora50 * qtd50;
+
+    // 3. Valor da Hora Extra 100% (Normal * 2)
+    const valorHora100 = valorHoraNormal * 2;
+    const total100 = valorHora100 * qtd100;
+
+    // 4. Total Geral
+    const totalExtras = total50 + total100;
+
+    // Renderizar
+    const divResult = document.getElementById("resultadoExtras");
+    divResult.style.display = "block";
+    
+    let html = `
+        <div class="result-box">
+            <h2>Resultado Estimado</h2>
+            <div class="result-row">
+                <span>Valor da sua hora normal:</span>
+                <strong>${formatarMoeda(valorHoraNormal)}</strong>
+            </div>
+            <hr style="border:0; border-top:1px dashed #ccc; margin:10px 0;">`;
+            
+    if (qtd50 > 0) {
+        html += `
+            <div class="result-row">
+                <span>${qtd50}h extras (50%):</span>
+                <span style="color:#1976d2;">+ ${formatarMoeda(total50)}</span>
+            </div>`;
+    }
+
+    if (qtd100 > 0) {
+        html += `
+            <div class="result-row">
+                <span>${qtd100}h extras (100%):</span>
+                <span style="color:#2e7d32;">+ ${formatarMoeda(total100)}</span>
+            </div>`;
+    }
+
+    html += `
+            <div class="result-row total" style="margin-top:15px;">
+                <span>Total a Receber:</span>
+                <span>${formatarMoeda(totalExtras)}</span>
+            </div>
+             <p style="font-size:0.75rem; text-align:center; margin-top:10px; color:#777;">
+                (Sem considerar reflexos no DSR)
+            </p>
+        </div>
+    `;
+
+    divResult.innerHTML = html;
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
