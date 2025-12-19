@@ -976,14 +976,27 @@ function calcularProporcional() {
         </div>`;
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
 /* ============================================================
-   CALCULADORA DE DIAS ÚTEIS (COMPATÍVEL COM SAFARI/MAC)
+   CALCULADORA DE DIAS ÚTEIS
    ============================================================ */
 function calcularDiasUteis() {
-    // Pegamos os valores direto dos seletores (já vêm como número/string limpa)
-    const mes = parseInt(document.getElementById("mesSelecionado").value);
-    const ano = parseInt(document.getElementById("anoSelecionado").value);
-    const contaSabado = document.getElementById("contarSabado").checked;
+    console.log("Iniciando cálculo..."); // Para debug
+
+    // 1. Tenta pegar os elementos
+    const elMes = document.getElementById("mesSelecionado");
+    const elAno = document.getElementById("anoSelecionado");
+    const elCheck = document.getElementById("contarSabado");
+
+    // 2. Trava de segurança: Se os campos novos não existirem, avisa.
+    if (!elMes || !elAno) {
+        alert("Erro: O arquivo HTML parece estar desatualizado. Por favor, limpe o cache (CTRL+F5).");
+        return;
+    }
+
+    const mes = parseInt(elMes.value);
+    const ano = parseInt(elAno.value);
+    const contaSabado = elCheck.checked;
 
     // Lista de Feriados Nacionais (Mês-Dia)
     const feriados = [
@@ -991,9 +1004,7 @@ function calcularDiasUteis() {
         "9-7", "10-12", "11-2", "11-15", "11-20", "12-25"
     ];
 
-    // Pega o último dia do mês para saber se tem 30, 31 ou 28 dias
-    // No JS: new Date(ano, mes, 0) retorna o último dia do mês anterior. 
-    // Como nosso 'mes' vai de 1 a 12, funciona perfeito. Ex: mes=1 (Jan), new Date(2025, 1, 0) pega último de Jan.
+    // Pega o último dia do mês (Truque do dia 0)
     const ultimoDia = new Date(ano, mes, 0).getDate(); 
     
     let diasUteis = 0;
@@ -1001,7 +1012,7 @@ function calcularDiasUteis() {
     let totalFimDeSemana = 0;
 
     for (let d = 1; d <= ultimoDia; d++) {
-        // Criamos a data: Ano, Mês (0-11), Dia
+        // Cria a data forçando horário local (ano, mês-1, dia)
         const dataAtual = new Date(ano, mes - 1, d);
         const diaSemana = dataAtual.getDay(); // 0=Dom, 6=Sab
         const chaveData = `${mes}-${d}`;
@@ -1027,30 +1038,32 @@ function calcularDiasUteis() {
         diasUteis++;
     }
 
+    // Exibe o resultado
     const divResult = document.getElementById("resultadoUteis");
-    divResult.style.display = "block";
-    divResult.innerHTML = `
-        <div class="result-box">
-            <h2>${mes}/${ano}</h2>
-            <div class="result-row total" style="font-size: 1.5rem; color: #2e7d32;">
-                <span>Dias Úteis:</span>
-                <span>${diasUteis}</span>
-            </div>
-            <hr style="margin:10px 0; border:0; border-top:1px dashed #ccc;">
-            <div class="result-row">
-                <span>Fins de Semana:</span>
-                <strong>${totalFimDeSemana} dias</strong>
-            </div>
-            <div class="result-row">
-                <span>Feriados (Dias úteis):</span>
-                <strong>${totalFeriados} dias</strong>
-            </div>
-            <div class="result-row">
-                <span>Total de Dias:</span>
-                <strong>${ultimoDia} dias</strong>
-            </div>
-        </div>`;
-    
-    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (divResult) {
+        divResult.style.display = "block";
+        divResult.innerHTML = `
+            <div class="result-box">
+                <h2>${mes}/${ano}</h2>
+                <div class="result-row total" style="font-size: 1.5rem; color: #2e7d32;">
+                    <span>Dias Úteis:</span>
+                    <span>${diasUteis}</span>
+                </div>
+                <hr style="margin:10px 0; border:0; border-top:1px dashed #ccc;">
+                <div class="result-row">
+                    <span>Fins de Semana:</span>
+                    <strong>${totalFimDeSemana} dias</strong>
+                </div>
+                <div class="result-row">
+                    <span>Feriados (Dias úteis):</span>
+                    <strong>${totalFeriados} dias</strong>
+                </div>
+                <div class="result-row">
+                    <span>Total de Dias:</span>
+                    <strong>${ultimoDia} dias</strong>
+                </div>
+            </div>`;
+        
+        divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
-
