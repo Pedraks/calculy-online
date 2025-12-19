@@ -816,3 +816,39 @@ function calcularHorasExtras() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ============================================================
+   CALCULADORA DE ADICIONAL NOTURNO
+   ============================================================ */
+function calcularAdicionalNoturno() {
+    const salario = parseFloat(document.getElementById("salarioNoturno").value);
+    const jornada = parseInt(document.getElementById("jornadaNoturna").value);
+    const horasNoturnas = parseFloat(document.getElementById("qtdHorasNoturnas").value);
+
+    if (!salario || !horasNoturnas) { alert("Preencha os valores."); return; }
+
+    // 1. Valor da Hora Normal
+    const valorHora = salario / jornada;
+    
+    // 2. Adicional (20% sobre a hora normal)
+    const adicionalPorHora = valorHora * 0.20;
+    
+    // 3. Total
+    const totalReceber = adicionalPorHora * horasNoturnas;
+
+    const divResult = document.getElementById("resultadoNoturno");
+    divResult.style.display = "block";
+    divResult.innerHTML = `
+        <div class="result-box">
+            <h2>Valor a Receber</h2>
+            <div class="result-row">
+                <span>Valor da Hora Normal:</span>
+                <strong>${formatarMoeda(valorHora)}</strong>
+            </div>
+            <div class="result-row total">
+                <span>Adicional Noturno Total:</span>
+                <span>${formatarMoeda(totalReceber)}</span>
+            </div>
+            <p style="text-align:center; font-size:0.8rem; margin-top:10px; color:#666;">Referente a ${horasNoturnas} horas noturnas.</p>
+        </div>`;
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
