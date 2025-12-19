@@ -245,4 +245,174 @@ function calcularRescisaoAvancada() {
     void resultadoDiv.offsetWidth; 
     resultadoDiv.classList.add('fade-in');
     resultadoDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
 }
+
+/* ============================================================
+   CALCULADORA DE FÉRIAS
+   ============================================================ */
+/* ============================================================
+   CONFIGURAÇÕES INICIAIS (Ao carregar a página)
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // 1. Lógica para mostrar/esconder input de dias customizados (Já existia)
+    const selectDias = document.getElementById("diasFerias");
+    const inputCustom = document.getElementById("diasCustom");
+    
+    if(selectDias && inputCustom) {
+        selectDias.addEventListener("change", function() {
+            if (this.value === "custom") {
+                inputCustom.style.display = "block";
+                inputCustom.required = true;
+            } else {
+                inputCustom.style.display = "none";
+                inputCustom.required = false;
+            }
+        });
+    }
+
+    // 2. NOVA LÓGICA: Vender Férias ajusta os dias automaticamente
+    const checkboxVender = document.getElementById("venderFerias");
+    
+    if (checkboxVender && selectDias) {
+        checkboxVender.addEventListener("change", function() {
+            if (this.checked) {
+                // Se marcou "Vender 10 dias", o descanso muda para 20 dias automaticamente
+                selectDias.value = "20";
+            } else {
+                // Se desmarcou, volta para o padrão de 30 dias
+                selectDias.value = "30";
+            }
+            // Força a atualização visual (caso estivesse no modo 'custom')
+            selectDias.dispatchEvent(new Event('change'));
+        });
+    }
+});
+
+function calcularFerias() {
+    const salario = parseFloat(document.getElementById("salarioBase").value);
+    const dependentes = parseInt(document.getElementById("dependentesFerias").value) || 0;
+    
+    let diasGozo = document.getElementById("diasFerias").value;
+    if (diasGozo === "custom") {
+        diasGozo = parseInt(document.getElementById("diasCustom").value);
+    } else {
+        diasGozo = parseInt(diasGozo);
+    }
+
+    const vender10 = document.getElementById("venderFerias").checked;
+    const adiantar13 = document.getElementById("adiantar13").checked;
+
+    if (!salario || !diasGozo) {
+        alert("Preencha o salário e os dias de férias.");
+        return;
+    }
+
+    // --- 1. Proventos (Ganhos) ---
+    
+    // A. Valor dos dias de férias (Descanso)
+    const valorDiasFerias = (salario / 30) * diasGozo;
+    const umTercoFerias = valorDiasFerias / 3;
+    const baseTributavel = valorDiasFerias + umTercoFerias;
+
+    // B. Abono Pecuniário (Venda de 10 dias) - ISENTO DE IMPOSTOS
+    let valorAbono = 0;
+    let umTercoAbono = 0;
+    if (vender10) {
+        // O abono é calculado sobre 10 dias do salário
+        valorAbono = (salario / 30) * 10;
+        umTercoAbono = valorAbono / 3;
+    }
+
+    // C. Adiantamento 13º (Metade do salário)
+    let valor13 = 0;
+    if (adiantar13) {
+        valor13 = salario / 2;
+    }
+
+    // --- 2. Descontos (Sobre Base Tributável) ---
+    // A base tributável é SÓ o valor das férias gozadas + 1/3. O abono é livre.
+    
+    // INSS Progressivo 2025 (Recalculando para garantir precisão)
+    let inss = 0;
+    let saldo = baseTributavel;
+    // Faixas
+    if (saldo > 7786.02) saldo = 7786.02; // Teto
+    
+    if (saldo > 4000.03) { inss += (saldo - 4000.03) * 0.14; saldo = 4000.03; }
+    if (saldo > 2666.68) { inss += (saldo - 2666.68) * 0.12; saldo = 2666.68; }
+    if (saldo > 1412.00) { inss += (saldo - 1412.00) * 0.09; saldo = 1412.00; }
+    inss += saldo * 0.075;
+
+    // IRRF
+    const deducaoDep = dependentes * 189.59;
+    const baseIR = baseTributavel - inss - deducaoDep;
+    let irrf = 0;
+    
+    if (baseIR > 4664.68) { irrf = (baseIR * 0.275) - 896.00; }
+    else if (baseIR > 3751.05) { irrf = (baseIR * 0.225) - 662.77; }
+    else if (baseIR > 2826.65) { irrf = (baseIR * 0.15) - 381.44; }
+    else if (baseIR > 2259.20) { irrf = (baseIR * 0.075) - 169.44; }
+    
+    if (irrf < 0) irrf = 0;
+
+    // --- 3. Totais ---
+    const totalBruto = baseTributavel + valorAbono + umTercoAbono + valor13;
+    const totalDescontos = inss + irrf;
+    const totalLiquido = totalBruto - totalDescontos;
+
+    // --- 4. Renderizar ---
+    const divResult = document.getElementById("resultadoFerias");
+    divResult.style.display = "block";
+    
+    let html = `
+        <div class="result-box">
+            <h2>Recibo de Férias Estimado</h2>
+            
+            <div class="result-row">
+                <span>Férias (${diasGozo} dias) + 1/3:</span>
+                <strong>${formatarMoeda(baseTributavel)}</strong>
+            </div>`;
+            
+    if (vender10) {
+        html += `
+            <div class="result-row" style="color: #2e7d32;">
+                <span>Abono Pecuniário (Isento):</span>
+                <strong>+ ${formatarMoeda(valorAbono + umTercoAbono)}</strong>
+            </div>`;
+    }
+
+    if (adiantar13) {
+        html += `
+            <div class="result-row" style="color: #1976d2;">
+                <span>Adiantamento 13º:</span>
+                <strong>+ ${formatarMoeda(valor13)}</strong>
+            </div>`;
+    }
+
+    html += `
+            <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
+            
+            <div class="result-row" style="color: #d32f2f;">
+                <span>INSS:</span>
+                <strong>- ${formatarMoeda(inss)}</strong>
+            </div>
+            <div class="result-row" style="color: #d32f2f;">
+                <span>IRRF:</span>
+                <strong>- ${formatarMoeda(irrf)}</strong>
+            </div>
+            
+            <div class="result-row total">
+                <span>Líquido a Receber:</span>
+                <span>${formatarMoeda(totalLiquido)}</span>
+            </div>
+        </div>
+    `;
+
+    divResult.innerHTML = html;
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+
+
