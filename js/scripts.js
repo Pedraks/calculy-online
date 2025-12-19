@@ -977,7 +977,7 @@ function calcularProporcional() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 /* ============================================================
-   CALCULADORA DE DIAS ÚTEIS
+   CALCULADORA DE DIAS ÚTEIS (COMPATÍVEL COM SAFARI/MAC)
    ============================================================ */
 function calcularDiasUteis() {
     // Pegamos os valores direto dos seletores (já vêm como número/string limpa)
