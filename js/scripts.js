@@ -618,4 +618,129 @@ function calcularSalarioLiquido() {
     divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ============================================================
+   CALCULADORA DE SEGURO DESEMPREGO
+   ============================================================ */
+function calcularSeguroDesemprego() {
+    // 1. Coleta dos Salários para Média
+    let s1 = parseFloat(document.getElementById("salario1").value) || 0;
+    let s2 = parseFloat(document.getElementById("salario2").value) || 0;
+    let s3 = parseFloat(document.getElementById("salario3").value) || 0;
+    
+    const mesesTrabalhados = parseInt(document.getElementById("mesesTrabalhadosSeguro").value);
+    const vez = parseInt(document.getElementById("vezesSolicitou").value);
+
+    if (s1 === 0 && s2 === 0 && s3 === 0) {
+        alert("Preencha pelo menos um salário.");
+        return;
+    }
+
+    if (!mesesTrabalhados) {
+        alert("Informe os meses trabalhados.");
+        return;
+    }
+
+    // Calcular Média (Considera apenas os campos preenchidos)
+    let soma = s1 + s2 + s3;
+    let divisor = 0;
+    if (s1 > 0) divisor++;
+    if (s2 > 0) divisor++;
+    if (s3 > 0) divisor++;
+    
+    let mediaSalarial = soma / divisor;
+
+    // 2. Cálculo do Valor da Parcela (Regra 2024/2025)
+    // Faixa 1: Até 2.041,39 -> Multiplica por 0.8 (80%)
+    // Faixa 2: De 2.041,40 até 3.402,65 -> 1.633,10 + 0.5 * (media - 2.041,39)
+    // Faixa 3: Acima de 3.402,65 -> Teto fixo de 2.313,74
+    
+    let valorParcela = 0;
+    
+    if (mediaSalarial <= 2041.39) {
+        valorParcela = mediaSalarial * 0.8;
+    } else if (mediaSalarial <= 3402.65) {
+        valorParcela = 1633.10 + ((mediaSalarial - 2041.39) * 0.5);
+    } else {
+        valorParcela = 2313.74; // Teto
+    }
+
+    // O valor nunca pode ser menor que o salário mínimo (R$ 1.412,00 em 2024, ajustar 2025 se houver)
+    if (valorParcela < 1412.00) valorParcela = 1412.00;
+
+    // 3. Cálculo da Quantidade de Parcelas
+    let parcelas = 0;
+    let temDireito = true;
+    let motivoNegativa = "";
+
+    if (vez === 1) {
+        if (mesesTrabalhados < 12) {
+            temDireito = false;
+            motivoNegativa = "Para a 1ª solicitação, é necessário ter trabalhado pelo menos 12 meses nos últimos 18 meses.";
+        } else if (mesesTrabalhados <= 23) {
+            parcelas = 4;
+        } else {
+            parcelas = 5;
+        }
+    } else if (vez === 2) {
+        if (mesesTrabalhados < 9) {
+            temDireito = false;
+            motivoNegativa = "Para a 2ª solicitação, é necessário ter trabalhado pelo menos 9 meses.";
+        } else if (mesesTrabalhados <= 11) {
+            parcelas = 3;
+        } else if (mesesTrabalhados <= 23) {
+            parcelas = 4;
+        } else {
+            parcelas = 5;
+        }
+    } else { // 3ª vez ou mais
+        if (mesesTrabalhados < 6) {
+            temDireito = false;
+            motivoNegativa = "Para a 3ª solicitação, é necessário ter trabalhado pelo menos 6 meses.";
+        } else if (mesesTrabalhados <= 11) {
+            parcelas = 3;
+        } else if (mesesTrabalhados <= 23) {
+            parcelas = 4;
+        } else {
+            parcelas = 5;
+        }
+    }
+
+    // --- Renderização ---
+    const divResult = document.getElementById("resultadoSeguro");
+    divResult.style.display = "block";
+    
+    if (temDireito) {
+        divResult.innerHTML = `
+            <div class="result-box">
+                <h2>Resultado Estimado</h2>
+                <div class="result-row">
+                    <span>Média Salarial:</span>
+                    <strong>${formatarMoeda(mediaSalarial)}</strong>
+                </div>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #ccc;">
+                <div class="result-row" style="color: #2e7d32; font-size: 1.2rem;">
+                    <span>Valor da Parcela:</span>
+                    <strong>${formatarMoeda(valorParcela)}</strong>
+                </div>
+                <div class="result-row" style="color: #1565c0; font-size: 1.2rem;">
+                    <span>Quantidade:</span>
+                    <strong>${parcelas} parcelas</strong>
+                </div>
+                <div class="result-row total" style="margin-top: 20px;">
+                    <span>Total do Benefício:</span>
+                    <span>${formatarMoeda(valorParcela * parcelas)}</span>
+                </div>
+            </div>
+        `;
+    } else {
+        divResult.innerHTML = `
+            <div class="result-box" style="background: #ffebee; border-color: #ef9a9a;">
+                <h2 style="color: #c62828;">Sem direito ao benefício</h2>
+                <p style="color: #c62828;">${motivoNegativa}</p>
+            </div>
+        `;
+    }
+
+    divResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
