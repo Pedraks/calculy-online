@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Adicional Noturno 2025 | Cálculo 20%</title>
+    <meta name="description" content="Descubra o valor do seu Adicional Noturno. Simule quanto você deve receber a mais por trabalhar entre 22h e 5h.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="theme-color" content="#2e7d32">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav><a href="index.html">← Voltar ao Menu</a></nav>
+        </div>
+    </header>
+
+    <main class="calculator-section" style="flex-direction: column;">
+        <div class="calculator-card">
+            <h1>Adicional Noturno</h1>
+            <p class="form-description">Cálculo do acréscimo de 20%.</p>
+            <form id="noturnoForm">
+                <label>Salário Base (R$)</label>
+                <input type="number" id="salarioNoturno" placeholder="Ex: 2000.00" inputmode="decimal" required>
+
+                <label>Jornada Mensal</label>
+                <select id="jornadaNoturna">
+                    <option value="220">220h (Padrão)</option>
+                    <option value="180">180h (12x36)</option>
+                </select>
+
+                <label>Horas Noturnas Trabalhadas (no mês)</label>
+                <input type="number" id="qtdHorasNoturnas" placeholder="Ex: 80" inputmode="numeric" required>
+
+                <button type="button" class="btn-calcular" onclick="calcularAdicionalNoturno()">Calcular Adicional</button>
+            </form>
+            <div id="resultadoNoturno" style="display:none; margin-top: 30px;"></div>
+            <div class="aviso-legal">*Considera a hora noturna urbana (20% sobre a hora normal).</div>
+        </div>
+
+        <div class="container" style="max-width: 600px; margin-top: 40px; color: #666; font-size: 0.9rem;">
+            <h2 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">O que é Adicional Noturno?</h2>
+            <p>Todo trabalho realizado entre as <strong>22h de um dia e as 5h do dia seguinte</strong> deve ser remunerado com um acréscimo de, no mínimo, 20% sobre o valor da hora diurna.</p>
+        </div>
+    </main>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
