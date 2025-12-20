@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juliana Pereira | Saboaria Artesanal & Autocuidado</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIÁVEIS & RESET --- */
+        :root {
+            --color-primary: #7A9E7E; /* Verde Suave */
+            --color-secondary: #D4A59A; /* Rosa Nude */
+            --color-bg: #F9F7F2; /* Bege/Creme claro */
+            --color-white: #FFFFFF;
+            --color-text-dark: #2C2C2C;
+            --color-text-light: #666666;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- TIPOGRAFIA --- */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            color: var(--color-text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background-color: var(--color-secondary);
+            margin: 10px auto 0;
+        }
+
+        /* --- COMPONENTES UI --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover {
+            background-color: #638567;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(122, 158, 126, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--color-secondary);
+            color: var(--color-secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+        }
+
+        /* Placeholder de Imagem */
+        .img-placeholder {
+            background-color: #EFEFEF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-weight: bold;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-placeholder svg {
+            width: 50px;
+            height: 50px;
+            fill: #CCC;
+            margin-bottom: 10px;
+        }
+
+        .img-placeholder-content {
+            text-align: center;
+        }
+
+        /* --- ANIMAÇÕES --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px; /* Espaço para navbar fixa se houver */
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--color-text-light);
+            margin-bottom: 30px;
+            max-width: 450px;
+        }
+
+        .hero-img {
+            height: 500px;
+            width: 100%;
+        }
+
+        /* --- NAV --- */
+        nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 10;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* --- SOBRE --- */
+        .about {
+            padding: 100px 0;
+            background-color: var(--color-white);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-img {
+            height: 400px;
+            order: 1; /* Imagem primeiro no mobile se quiser, aqui default */
+        }
+
+        .about-text {
+            order: 2;
+        }
+
+        /* --- PRODUTOS --- */
+        .products {
+            padding: 100px 0;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .product-card {
+            background: var(--color-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-img {
+            height: 250px;
+            width: 100%;
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-info h3 {
+            margin-bottom: 8px;
+            font-size: 1.4rem;
+        }
+
+        .product-info span {
+            color: var(--color-secondary);
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .view-btn {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            text-decoration: underline;
+        }
+
+        /* --- BENEFÍCIOS --- */
+        .benefits {
+            padding: 80px 0;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            text-align: center;
+        }
+
+        .benefits h2 {
+            color: var(--color-white);
+        }
+
+        .benefits h2::after {
+            background-color: var(--color-white);
+        }
+
+        .benefits-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 50px;
+            gap: 30px;
+        }
+
+        .benefit-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* --- DEPOIMENTOS --- */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--color-bg);
+        }
+
+        .testimonial-card {
+            background: var(--color-white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            margin-top: 20px;
+            font-weight: bold;
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            font-style: normal;
+        }
+
+        /* --- CTA FINAL --- */
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                        url('data:image/svg+xml;base64,...'); /* Fundo sutil */
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #EAE6DF;
+            padding: 40px 0;
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+        }
+
+        .social-icons {
+            margin: 20px 0;
+        }
+
+        .social-icons span {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-text-dark);
+            color: #fff;
+            line-height: 40px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 90%;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-img {
+            height: 300px;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .modal-details h3 {
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin-bottom: 15px;
+        }
+
+        .modal-details p {
+            margin-bottom: 15px;
+            color: var(--color-text-light);
+        }
+
+        .modal-meta {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--color-bg);
+            border-radius: 8px;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 768px) {
+            .hero-content, .about-content, .modal-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content {
+                gap: 20px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-img, .about-img {
+                height: 300px;
+            }
+
+            .hero-text p {
+                margin: 0 auto 30px auto;
+            }
+
+            .modal-img {
+                height: 200px;
+            }
+
+            .benefits-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">Juliana Pereira</div>
+            <a href="#products" class="btn btn-secondary" style="padding: 8px 20px; font-size: 0.8rem;">Loja</a>
+        </div>
+    </nav>
+
+    <header id="hero">
+        <div class="container hero-content">
+            <div class="hero-text fade-in">
+                <h1>Autocuidado natural que perfuma sua rotina</h1>
+                <p>Descubra a delicadeza dos sabonetes artesanais e body splashs feitos à mão com ingredientes que amam sua pele.</p>
+                <a href="#products" class="btn btn-primary">Conheça nossos produtos</a>
+            </div>
+            <div class="hero-img img-placeholder fade-in">
+                <div class="img-placeholder-content">
+                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    <span>FOTO HERO (Produtos Ambientados)</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="about">
+        <div class="container about-content">
+            <div class="about-img img-placeholder fade-in">
+                <div class="img-placeholder-content">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <span>FOTO JULIANA / PRODUÇÃO</span>
+                </div>
+            </div>
+            <div class="about-text fade-in">
+                <h2 class="section-title" style="margin-bottom: 30px; display:inline-block; left:0; transform:none;">A Essência Natural</h2>
+                <p>Olá, sou a Juliana. Acredito que o banho não é apenas higiene, é um ritual.</p>
+                <br>
+                <p>Nossa produção é 100% artesanal, feita em pequenos lotes para garantir a qualidade e o aroma inconfundível. Utilizamos óleos essenciais, manteigas vegetais e extratos que cuidam da sua pele sem agredi-la.</p>
+                <br>
+                <p>Cada produto leva um pouco de amor, calma e natureza até você.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="container">
+            <h2 class="section-title fade-in">Nossas Criações</h2>
+            
+            <div class="products-grid">
+                <div class="product-card fade-in" onclick="openModal('sabonete-lavanda')">
+                    <div class="product-img img-placeholder">
+                        <div class="img-placeholder-content">
+                            <span>FOTO SABONETE LAVANDA</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span>Relaxante</span>
+                        <h3>Sabonete de Lavanda</h3>
+                        <p class="view-btn">Ver detalhes</p>
+                    </div>
+                </div>
+
+                <div class="product-card fade-in" onclick="openModal('body-splash')">
+                    <div class="product-img img-placeholder">
+                        <div class="img-placeholder-content">
+                            <span>FOTO BODY SPLASH</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span>Perfumaria</span>
+                        <h3>Body Splash Cerejeira</h3>
+                        <p class="view-btn">Ver detalhes</p>
+                    </div>
+                </div>
+
+                <div class="product-card fade-in" onclick="openModal('kit-spa')">
+                    <div class="product-img img-placeholder">
+                        <div class="img-placeholder-content">
+                            <span>FOTO KIT SPA</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span>Presente</span>
+                        <h3>Kit Spa em Casa</h3>
+                        <p class="view-btn">Ver detalhes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits fade-in">
+        <div class="container">
+            <h2>Por que escolher artesanal?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <span class="benefit-icon">🌿</span>
+                    <h3>Ingredientes Naturais</h3>
+                    <p>Livres de parabenos e sulfatos agressivos.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">🧼</span>
+                    <h3>Feito à Mão</h3>
+                    <p>Produzido com calma e atenção aos detalhes.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">🐇</span>
+                    <h3>Cruelty Free</h3>
+                    <p>Não testamos em animais, apenas em amigas!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container fade-in">
+            <h2 class="section-title">O que dizem</h2>
+            <div class="testimonial-card">
+                <p>“Nunca senti minha pele tão hidratada. O cheiro do Body Splash de Cerejeira dura o dia todo, mas é super suave, nada enjoativo. Virei fã!”</p>
+                <p class="testimonial-author">— Ana Clara, Cliente</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section fade-in">
+        <div class="container">
+            <h2 style="font-size: 2rem; margin-bottom: 20px;">Leve o bem-estar para sua casa</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1rem;">Tem dúvidas ou quer montar um kit personalizado?</p>
+            <a href="https://wa.me/5500000000000" target="_blank" class="btn btn-primary">Fale com a Juliana no WhatsApp</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h3>Juliana Pereira</h3>
+            <p>Saboaria Artesanal</p>
+            <div class="social-icons">
+                <span>IG</span>
+                <span>FB</span>
+                <span>TT</span>
+            </div>
+            <p>&copy; 2024 Juliana Pereira. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-img img-placeholder" id="modalImg">
+                <span>FOTO PRODUTO GRANDE</span>
+            </div>
+            <div class="modal-details">
+                <h3 id="modalTitle">Nome do Produto</h3>
+                <p id="modalDesc">Descrição detalhada do produto vai aqui.</p>
+                
+                <div class="modal-meta">
+                    <p><strong>Aroma:</strong> <span id="modalScent">...</span></p>
+                    <p><strong>Peso:</strong> <span id="modalWeight">...</span></p>
+                </div>
+
+                <a href="https://wa.me/5500000000000" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center;">Encomendar pelo WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos Produtos (Simulando um banco de dados)
+        const productsData = {
+            'sabonete-lavanda': {
+                title: 'Sabonete de Lavanda',
+                desc: 'Um clássico da aromaterapia. Feito com óleo essencial puro de lavanda francesa, este sabonete acalma a mente e relaxa o corpo após um dia cansativo. Possui manteiga de karité para hidratação profunda.',
+                scent: 'Floral, Herbáceo, Relaxante',
+                weight: '100g aprox.'
+            },
+            'body-splash': {
+                title: 'Body Splash Flor de Cerejeira',
+                desc: 'Uma bruma perfumada leve e refrescante. Ideal para usar logo após o banho para prolongar a sensação de frescor. Notas florais adocicadas que trazem feminilidade e alegria.',
+                scent: 'Floral Frutado, Doce',
+                weight: '200ml'
+            },
+            'kit-spa': {
+                title: 'Kit Spa em Casa',
+                desc: 'A caixa perfeita para presentear. Contém 2 sabonetes artesanais, 1 vela aromática e 1 óleo corporal. Tudo embalado em uma caixa de madeira sustentável.',
+                scent: 'Sortido (Personalizável)',
+                weight: '500g total'
+            }
+        };
+
+        // Lógica do Modal
+        const modal = document.getElementById('productModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalScent = document.getElementById('modalScent');
+        const modalWeight = document.getElementById('modalWeight');
+
+        function openModal(productId) {
+            const product = productsData[productId];
+            if (product) {
+                modalTitle.textContent = product.title;
+                modalDesc.textContent = product.desc;
+                modalScent.textContent = product.scent;
+                modalWeight.textContent = product.weight;
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Impede scroll no fundo
+            }
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Animação de Scroll (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
