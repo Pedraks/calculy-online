@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora de Rescisão para Salário de R$ 1.500,00 | CLT 2025</title>
-    <meta name="description" content="Simule sua rescisão trabalhista exata para quem ganha R$ 1.500,00. Cálculo grátis com multa de 40% do FGTS, Férias e 13º.">
+    <meta name="description" content="Simule sua rescisão trabalhista exata para quem ganha R$ 1.500,00. Veja o cálculo de Férias, 13º e Multa do FGTS para essa faixa salarial.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" type="image/png" href="assets/logo.png">
@@ -32,7 +32,8 @@
 
             <form id="rescisaoForm">
                 <label>Salário Bruto (R$)</label>
-                <input type="number" id="salario" value="1500" readonly style="background:#f5f5f5; color:#555;">
+                <input type="text" id="salario_visual" value="R$ 1.500,00" readonly style="background:#f5f5f5; color:#555; font-weight:bold;">
+                <input type="hidden" id="salario" value="1500">
                 
                 <label>Data de Admissão</label>
                 <input type="date" id="admissao" required>
@@ -58,9 +59,9 @@
                 <label>Saldo atual do FGTS (Opcional)</label>
                 <input type="number" id="saldoFgts" placeholder="Ex: 5000.00">
 
-                <div style="margin: 15px 0;">
-                    <input type="checkbox" id="feriasVencidas">
-                    <label for="feriasVencidas" style="display:inline;">Tenho 1 férias inteira vencida</label>
+                <div style="margin: 15px 0; display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="feriasVencidas" style="margin: 0; width: 20px; height: 20px;">
+                    <label for="feriasVencidas" style="margin: 0; font-size: 0.95rem; cursor: pointer;">Tenho 1 férias inteira vencida</label>
                 </div>
 
                 <button type="button" class="btn-calcular" onclick="calcularRescisaoAvancada()">Ver Resultado</button>
@@ -69,10 +70,31 @@
             <div id="resultado" style="display:none; margin-top: 30px;"></div>
         </div>
         
-        <div class="container" style="max-width:600px; margin:40px auto; padding: 0 20px; color:#666;">
-            <h2>Direitos para quem ganha R$ 1.500,00</h2>
-            <p>Se o seu salário base registrado em carteira é de <strong>R$ 1.500,00</strong>, o cálculo da sua rescisão deve considerar este valor como base para o Aviso Prévio, 13º Salário e Férias.</p>
-            <p>Use o simulador acima para descobrir os descontos de INSS e IRRF específicos para sua faixa salarial. O cálculo já inclui a multa de 40% do FGTS caso a demissão seja sem justa causa.</p>
+        <div class="container" style="max-width:800px; margin:50px auto; padding: 0 20px; color:#444; line-height: 1.6;">
+            
+            <h2 style="color: #2e7d32; margin-bottom: 20px;">Entenda a rescisão de quem ganha R$ 1.500,00</h2>
+            <p>Se o seu salário base registrado em carteira é de <strong>R$ 1.500,00</strong>, o cálculo das suas verbas rescisórias deve partir desse valor exato. Muitas calculadoras genéricas pedem para você digitar, mas aqui já configuramos a base correta para evitar erros.</p>
+            
+            <h3 style="color: #333; font-size: 1.2rem; margin-top: 25px;">O que está incluído no cálculo para R$ 1.500,00?</h3>
+            <ul style="padding-left: 20px; margin-top: 10px;">
+                <li><strong>Aviso Prévio:</strong> O valor de um mês de aviso será exatamente R$ 1.500,00 (se for indenizado), mais 3 dias por ano trabalhado.</li>
+                <li><strong>13º Salário:</strong> Cada mês trabalhado no ano dá direito a 1/12 de R$ 1.500,00.</li>
+                <li><strong>Férias:</strong> O valor base das suas férias será R$ 1.500,00 acrescido de um terço.</li>
+            </ul>
+
+            <h3 style="color: #333; font-size: 1.2rem; margin-top: 25px;">Dúvidas Comuns para essa faixa salarial</h3>
+            
+            <details style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <summary style="cursor: pointer; font-weight: bold;">O INSS muda para quem ganha R$ 1.500,00?</summary>
+                <p style="margin-top: 5px;">Sim. O desconto do INSS segue a Tabela Progressiva 2025. O simulador acima já aplica a alíquota correta automaticamente sobre o valor de R$ 1.500,00.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <summary style="cursor: pointer; font-weight: bold;">Tenho direito a Seguro Desemprego ganhando R$ 1.500,00?</summary>
+                <p style="margin-top: 5px;">Provavelmente sim, se foi demitido sem justa causa. O valor das parcelas será calculado com base na média dos últimos salários (próximo a R$ 1.500,00). Use nossa <a href="calculadora-seguro-desemprego.html" style="color: #2e7d32;">Calculadora de Seguro Desemprego</a> para confirmar.</p>
+            </details>
+
+            <p style="margin-top: 30px; font-size: 0.9rem; color: #777;">*Nota: Este cálculo considera R$ 1.500,00 como salário bruto base. Adicionais como horas extras e comissões devem ser somados à média para o cálculo final exato.</p>
         </div>
     </main>
 
