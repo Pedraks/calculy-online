@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Rescisão para Salário de R$ 1.700,00 | CLT 2025</title>
+    <meta name="description" content="Simule sua rescisão trabalhista exata para quem ganha R$ 1.700,00. Cálculo grátis com multa de 40% do FGTS, Férias e 13º.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NMGQ5ZF9LQ');
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Calculy.online</div>
+            <nav><a href="index.html">← Voltar ao Início</a></nav>
+        </div>
+    </header>
+
+    <main class="calculator-section">
+        <div class="calculator-card">
+            <h1>Rescisão: Salário R$ 1.700,00</h1>
+            <p class="form-description">Cálculo específico para salário base de R$ 1.700,00.</p>
+
+            <form id="rescisaoForm">
+                <label>Salário Bruto (R$)</label>
+                <input type="number" id="salario" value="1700" readonly style="background:#f5f5f5; color:#555;">
+                
+                <label>Data de Admissão</label>
+                <input type="date" id="admissao" required>
+
+                <label>Data de Demissão (Saída)</label>
+                <input type="date" id="demissao" required>
+
+                <label>Motivo da Rescisão</label>
+                <select id="motivo" onchange="alternarCampos()">
+                    <option value="semJusta">Demissão sem Justa Causa (Padrão)</option>
+                    <option value="pedido">Pedido de Demissão</option>
+                    <option value="comJusta">Demissão por Justa Causa</option>
+                </select>
+
+                <div id="boxAviso">
+                    <label>Tipo de Aviso Prévio</label>
+                    <select id="aviso">
+                        <option value="indenizado">Indenizado (Saiu na hora + recebe 1 mês)</option>
+                        <option value="trabalhado">Trabalhado (Cumpriu os 30 dias)</option>
+                    </select>
+                </div>
+
+                <label>Saldo atual do FGTS (Opcional)</label>
+                <input type="number" id="saldoFgts" placeholder="Ex: 5000.00">
+
+                <div style="margin: 15px 0;">
+                    <input type="checkbox" id="feriasVencidas">
+                    <label for="feriasVencidas" style="display:inline;">Tenho 1 férias inteira vencida</label>
+                </div>
+
+                <button type="button" class="btn-calcular" onclick="calcularRescisaoAvancada()">Ver Resultado</button>
+            </form>
+
+            <div id="resultado" style="display:none; margin-top: 30px;"></div>
+        </div>
+        
+        <div class="container" style="max-width:600px; margin:40px auto; color:#666;">
+            <h2>Direitos para quem ganha R$ 1.700,00</h2>
+            <p>Se o seu salário base registrado em carteira é de <strong>R$ 1.700,00</strong>, o cálculo da sua rescisão deve considerar este valor como base para o Aviso Prévio, 13º Salário e Férias.</p>
+            <p>Use o simulador acima para descobrir os descontos de INSS e IRRF específicos para sua faixa salarial.</p>
+        </div>
+    </main>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
