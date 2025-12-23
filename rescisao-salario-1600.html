@@ -3,11 +3,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Calculadora de Rescisão para Salário de R$ 1.600,00 | CLT 2025</title>
-    <meta name="description" content="Simule sua rescisão trabalhista exata para quem ganha R$ 1.600,00. Veja o cálculo de Férias, 13º e Multa do FGTS para essa faixa salarial.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Rescisão para Salário de R$ 1.600,00 | Cálculo 2025</title>
+    <meta name="description" content="Simulação exata de rescisão trabalhista para quem ganha R$ 1.600,00. Veja o cálculo de Férias, 13º e Multa do FGTS para este salário.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="theme-color" content="#2e7d32">
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
     <script>
@@ -21,20 +22,19 @@
     <header>
         <div class="container">
             <div class="logo">Calculy.online</div>
-            <nav><a href="index.html">← Voltar ao Início</a></nav>
+            <nav><a href="index.html">← Voltar ao Menu</a></nav>
         </div>
     </header>
 
     <main class="calculator-section" style="flex-direction: column; align-items: center;">
         <div class="calculator-card">
             <h1>Rescisão: Salário R$ 1.600,00</h1>
-            <p class="form-description">Cálculo específico para salário base de R$ 1.600,00.</p>
+            <p class="form-description">Cálculo base para quem recebe R$ 1.600,00.</p>
 
             <form id="rescisaoForm">
                 <label>Salário Bruto (R$)</label>
-                <input type="text" id="salario_visual" value="R$ 1.600,00" readonly style="background:#f5f5f5; color:#555; font-weight:bold;">
-                <input type="hidden" id="salario" value="1600">
-                
+                <input type="number" id="salario" value="1600" step="0.01" placeholder="Digite o salário" required>
+
                 <label>Data de Admissão</label>
                 <input type="date" id="admissao" required>
 
@@ -60,8 +60,8 @@
                 <input type="number" id="saldoFgts" placeholder="Ex: 5000.00">
 
                 <div style="margin: 15px 0; display: flex; align-items: center; gap: 10px;">
-                    <input type="checkbox" id="feriasVencidas" style="margin: 0; width: 20px; height: 20px;">
-                    <label for="feriasVencidas" style="margin: 0; font-size: 0.95rem; cursor: pointer;">Tenho 1 férias inteira vencida</label>
+                    <input type="checkbox" id="feriasVencidas" style="width: 20px; height: 20px; margin: 0;">
+                    <label for="feriasVencidas" style="margin: 0; cursor: pointer;">Tenho 1 férias inteira vencida</label>
                 </div>
 
                 <button type="button" class="btn-calcular" onclick="calcularRescisaoAvancada()">Ver Resultado</button>
@@ -69,33 +69,34 @@
 
             <div id="resultado" style="display:none; margin-top: 30px;"></div>
         </div>
-        
-        <div class="container" style="max-width:800px; margin:50px auto; padding: 0 20px; color:#444; line-height: 1.6;">
-            
-            <h2 style="color: #2e7d32; margin-bottom: 20px;">Entenda a rescisão de quem ganha R$ 1.600,00</h2>
-            <p>Se o seu salário base registrado em carteira é de <strong>R$ 1.600,00</strong>, o cálculo das suas verbas rescisórias deve partir desse valor exato. Muitas calculadoras genéricas pedem para você digitar, mas aqui já configuramos a base correta para evitar erros.</p>
-            
-            <h3 style="color: #333; font-size: 1.2rem; margin-top: 25px;">O que está incluído no cálculo para R$ 1.600,00?</h3>
-            <ul style="padding-left: 20px; margin-top: 10px;">
-                <li><strong>Aviso Prévio:</strong> O valor de um mês de aviso será exatamente R$ 1.600,00 (se for indenizado), mais 3 dias por ano trabalhado.</li>
-                <li><strong>13º Salário:</strong> Cada mês trabalhado no ano dá direito a 1/12 de R$ 1.600,00.</li>
-                <li><strong>Férias:</strong> O valor base das suas férias será R$ 1.600,00 acrescido de um terço.</li>
-            </ul>
 
-            <h3 style="color: #333; font-size: 1.2rem; margin-top: 25px;">Dúvidas Comuns para essa faixa salarial</h3>
-            
-            <details style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <summary style="cursor: pointer; font-weight: bold;">O INSS muda para quem ganha R$ 1.600,00?</summary>
-                <p style="margin-top: 5px;">Sim. O desconto do INSS segue a Tabela Progressiva 2025. O simulador acima já aplica a alíquota correta automaticamente sobre o valor de R$ 1.600,00.</p>
-            </details>
+        <section class="seo-guide" style="width: 100%; max-width: 800px; margin: 40px auto 60px;">
+            <div style="background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: #444; line-height: 1.6;">
+                
+                <h2 style="color: #2e7d32; margin-bottom: 25px;">Entenda seus direitos ganhando R$ 1.600,00</h2>
+                <p>Se o seu salário base na carteira é de <strong>R$ 1.600,00</strong>, este é o valor usado para calcular suas médias. Você pode ajustar o valor no campo acima caso tenha recebido aumento recente.</p>
+                
+                <h3 style="font-size: 1.1rem; color: #333; margin-top: 30px;">1. Valor das Férias para R$ 1.600,00</h3>
+                <p>Suas férias integrais equivalem ao próprio salário (R$ 1.600,00) somado a um terço constitucional. O simulador acima faz a conta exata dos dias proporcionais se você não completou um ano.</p>
 
-            <details style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <summary style="cursor: pointer; font-weight: bold;">Tenho direito a Seguro Desemprego ganhando R$ 1.600,00?</summary>
-                <p style="margin-top: 5px;">Provavelmente sim, se foi demitido sem justa causa. O valor das parcelas será calculado com base na média dos últimos salários (próximo a R$ 1.600,00). Use nossa <a href="calculadora-seguro-desemprego.html" style="color: #2e7d32;">Calculadora de Seguro Desemprego</a> para confirmar.</p>
-            </details>
+                <h3 style="font-size: 1.1rem; color: #333; margin-top: 20px;">2. Descontos de INSS sobre R$ 1.600,00</h3>
+                <p>Para a faixa de R$ 1.600,00, a alíquota de INSS segue a tabela progressiva de 2025. O cálculo acima já deduz o valor correto antes de mostrar o líquido.</p>
+                
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #1976d2;">
+                    <strong>Dica:</strong> Após calcular sua rescisão, verifique se você tem direito ao <a href="calculadora-seguro-desemprego.html" style="color: #1565c0; text-decoration: underline; font-weight: bold;">Seguro Desemprego</a> com base nessa média salarial.
+                </div>
 
-            <p style="margin-top: 30px; font-size: 0.9rem; color: #777;">*Nota: Este cálculo considera R$ 1.600,00 como salário bruto base. Adicionais como horas extras e comissões devem ser somados à média para o cálculo final exato.</p>
-        </div>
+                <h3 style="font-size: 1.2rem; color: #333; margin-top: 30px;">Dúvidas Frequentes</h3>
+                <details style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    <summary style="cursor: pointer; font-weight: bold; color: #2e7d32;">O que é a multa de 40%?</summary>
+                    <p style="margin-top: 10px;">É uma indenização calculada sobre todo o FGTS depositado durante o contrato. Quem pede demissão não recebe.</p>
+                </details>
+                 <details style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    <summary style="cursor: pointer; font-weight: bold; color: #2e7d32;">Quando devo receber?</summary>
+                    <p style="margin-top: 10px;">A empresa tem até 10 dias corridos após o fim do contrato para pagar.</p>
+                </details>
+            </div>
+        </section>
     </main>
 
     <script src="js/scripts.js"></script>
