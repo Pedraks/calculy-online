@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Builder Simulator ULTIMATE</title>
+    <style>
+        :root {
+            --bg-color: #0f172a; --panel-bg: #1e293b; --primary: #10b981; 
+            --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
+            --text-main: #f8fafc; --text-muted: #94a3b8;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: var(--primary); text-shadow: 0 0 15px rgba(16, 185, 129, 0.5); margin-bottom: 20px;}
+
+        .game-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; max-width: 1400px; width: 100%; align-items: start; }
+        .panel { background-color: var(--panel-bg); border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); }
+        #shop-panel { max-height: 85vh; overflow-y: auto; position: relative; }
+        .right-column { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 20px; }
+
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg-color); } ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+        /* Abas da Loja */
+        .shop-tabs { display: flex; gap: 10px; margin-bottom: 20px; position: sticky; top: 0; background: var(--panel-bg); padding-bottom: 10px; z-index: 100; border-bottom: 1px solid #334155; }
+        .shop-tab { flex: 1; padding: 10px; background: #334155; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .shop-tab.active { background: var(--primary); }
+        .shop-tab.used.active { background: #d97706; } /* Cor do Klebão */
+
+        .category-title { border-bottom: 2px solid #475569; padding-bottom: 5px; margin-bottom: 15px; font-size: 1.2rem; color: #e2e8f0; }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+
+        .item-card { background-color: #334155; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; display: flex; flex-direction: column; justify-content: space-between; position: relative;}
+        .item-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .item-card h3 { margin: 0 0 10px 0; font-size: 0.95rem; }
+        .item-card p { margin: 5px 0; font-size: 0.75rem; color: var(--text-muted); }
+        .item-price { color: #4ade80; font-weight: bold; margin-top: 10px !important; font-size: 1.1rem; }
+        
+        .badge-rgb { position: absolute; top: -5px; right: -5px; background: linear-gradient(45deg, #ef4444, #3b82f6, #10b981); padding: 3px 6px; border-radius: 10px; font-size: 0.6rem; font-weight: bold; }
+        .badge-used { position: absolute; top: -5px; left: -5px; background: #d97706; padding: 3px 6px; border-radius: 10px; font-size: 0.6rem; font-weight: bold; }
+
+        .build-slot { background-color: #334155; padding: 10px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; border-left: 4px solid #475569;}
+        .build-slot.has-rgb { border-left-color: #8b5cf6; }
+        .remove-btn { background-color: var(--danger); color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer; font-weight: bold; }
+        .qty-btn { background-color: #475569; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-weight: bold; margin: 0 3px; }
+
+        .challenge-box { background-color: #0f172a; border: 2px solid #334155; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .challenge-box select { width: 100%; padding: 10px; margin-top: 10px; background: #1e293b; color: white; border: 1px solid #475569; border-radius: 5px; }
+
+        .power-btn { width: 100%; padding: 15px; font-size: 1.2rem; font-weight: bold; color: white; background-color: var(--primary); border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .power-btn:hover { background-color: #059669; }
+        
+        .oc-btn { background-color: #ef4444; width: 100%; padding: 10px; margin-top: 10px; color: white; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; display: none; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+
+        #status-screen { margin-top: 15px; padding: 15px; border-radius: 5px; background-color: #000; font-family: 'Courier New', monospace; font-size: 0.85rem; min-height: 120px; line-height: 1.4; }
+        .sys-ok { color: var(--success); } .sys-err { color: var(--danger); } .sys-warn { color: var(--warning); } .sys-info { color: #38bdf8; } .sys-score { color: #facc15; font-size: 1.1rem; font-weight: bold; }
+
+        /* GABINETE VISUAL */
+        .case-wrapper { display: flex; justify-content: center; margin-bottom: 10px; }
+        .case-container { background-color: #050505; border: 4px solid #334155; border-radius: 8px; width: 260px; height: 340px; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.9); overflow: hidden; }
+        .case-glass { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 60%); pointer-events: none; z-index: 10; }
+        .fans { position: absolute; right: 10px; top: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .fan { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #222; background: repeating-conic-gradient(from 0deg, #111 0deg 30deg, #2a2a2a 30deg 60deg); animation: spin 1s linear infinite; }
+        .fan.rgb-active { animation: spin 1s linear infinite, rgb-glow 3s linear infinite; border-color: #444; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes rgb-glow { 0% { box-shadow: 0 0 15px #ef4444; } 33% { box-shadow: 0 0 15px #22c55e; } 66% { box-shadow: 0 0 15px #3b82f6; } 100% { box-shadow: 0 0 15px #ef4444; } }
+
+        .vis-part { background-color: #1e293b; border: 2px dashed #475569; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 0.65rem; font-weight: bold; opacity: 0.2; transition: all 0.3s; position: absolute; text-align: center; padding: 3px; box-sizing: border-box; }
+        .vis-part.active { opacity: 1; border: 2px solid var(--primary); color: white; background-color: #273449; }
+        .vis-part.active.rgb { border-color: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.5); }
+
+        #vis-motherboard { top: 20px; left: 15px; width: 140px; height: 180px; flex-direction: column; align-items: flex-start; justify-content: flex-start; padding-top: 5px;}
+        #vis-cpu { top: 25px; left: 45px; width: 45px; height: 45px; background: #000; z-index: 1;}
+        #vis-cooler { top: 20px; left: 40px; width: 55px; height: 55px; z-index: 2; background: rgba(0,0,0,0.8); border-radius: 50%; display: none; }
+        #vis-cooler.active { display: flex; animation: spin 2s linear infinite; }
+        #vis-ram-container { position: absolute; top: 20px; left: 105px; display: flex; gap: 2px; height: 60px; width: 30px; }
+        .vis-ram-stick { width: 6px; height: 100%; background: #22c55e; border-radius: 1px; }
+        .vis-ram-stick.rgb { background: #8b5cf6; box-shadow: 0 0 5px #8b5cf6; }
+
+        #vis-storage { top: 150px; left: 160px; width: 60px; height: 40px; }
+        #vis-gpu { top: 215px; left: 15px; width: 180px; height: 35px; }
+        #vis-psu { bottom: 15px; left: 15px; width: 110px; height: 50px; }
+        .part-label { pointer-events: none; word-wrap: break-word; overflow: hidden; max-height: 100%;}
+
+        /* Modal Minigame Pasta Térmica */
+        #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+        .minigame-box { background: var(--panel-bg); padding: 30px; border-radius: 10px; text-align: center; border: 2px solid var(--primary); width: 400px; }
+        .cpu-surface { width: 150px; height: 150px; background: #94a3b8; margin: 20px auto; border: 4px solid #334155; position: relative; border-radius: 5px; display: flex; justify-content: center; align-items: center; }
+        .paste-drop { width: 0px; height: 0px; background: #e2e8f0; border-radius: 50%; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2); transition: 0.1s; }
+        .paste-zone { width: 60px; height: 60px; border: 2px dashed #22c55e; position: absolute; border-radius: 50%; }
+        #btn-apply-paste { background: var(--primary); color: white; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; user-select: none; }
+        #btn-apply-paste:active { background: #059669; }
+        .bar-container { width: 100%; height: 20px; background: #334155; border-radius: 10px; margin-top: 15px; overflow: hidden; position: relative;}
+        .bar-fill { height: 100%; width: 0%; background: var(--primary); }
+        .bar-markers { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; pointer-events: none;}
+        .marker { height: 100%; border-right: 2px solid #000; }
+    </style>
+</head>
+<body>
+
+    <div id="modal-overlay">
+        <div class="minigame-box">
+            <h2 style="margin-top: 0;">💉 Aplicar Pasta Térmica</h2>
+            <p>Segure o botão para aplicar. Acerte a zona verde!</p>
+            <div class="cpu-surface">
+                <div class="paste-zone"></div>
+                <div class="paste-drop" id="paste-drop"></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-fill" id="paste-bar"></div>
+                <div class="bar-markers">
+                    <div class="marker" style="width: 30%; border-right-color: #ef4444;"></div>
+                    <div class="marker" style="width: 40%; border-right-color: #22c55e;"></div>
+                    <div class="marker" style="width: 30%;"></div>
+                </div>
+            </div>
+            <br>
+            <button id="btn-apply-paste">SEGURE AQUI</button>
+        </div>
+    </div>
+
+    <h1>🎮 PC Builder Simulator ULTIMATE</h1>
+
+    <div class="game-container">
+        <div class="panel" id="shop-container" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+            <div class="shop-tabs">
+                <button class="shop-tab active" onclick="setShopMode('new')">📦 Loja Oficial</button>
+                <button class="shop-tab used" onclick="setShopMode('used')">🕵️‍♂️ Klebão dos Usados</button>
+            </div>
+            <div id="shop-panel" style="padding: 20px; padding-top: 0;">
+                <div id="shop-content"></div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="panel">
+                <div class="case-wrapper">
+                    <div class="case-container">
+                        <div class="case-glass"></div>
+                        <div class="fans">
+                            <div class="fan" id="fan1"></div><div class="fan" id="fan2"></div><div class="fan" id="fan3"></div>
+                        </div>
+                        <div id="vis-motherboard" class="vis-part"><span id="label-motherboard" class="part-label">Placa-Mãe</span><div id="vis-cpu" class="vis-part"><span id="label-cpu" class="part-label">CPU</span></div><div id="vis-cooler" class="vis-part">🌀</div><div id="vis-ram-container"></div></div>
+                        <div id="vis-storage" class="vis-part"><span id="label-storage" class="part-label">Armaz.</span></div>
+                        <div id="vis-gpu" class="vis-part"><span id="label-gpu" class="part-label">Placa de Vídeo</span></div>
+                        <div id="vis-psu" class="vis-part"><span id="label-psu" class="part-label">Fonte</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="challenge-box">
+                    <strong style="color: #fda4af;">📋 Selecione uma Missão:</strong>
+                    <select id="mission-select">
+                        <option value="none">Montagem Livre (Foco em Score Máximo)</option>
+                        <option value="lol">PC de entrada p/ LoL (Orçamento: R$ 1500)</option>
+                        <option value="streamer">PC de Streamer (RGB Alto, Orçamento: R$ 4500)</option>
+                        <option value="cyberpunk">Rode Cyberpunk 2077 (Orçamento: R$ 4000)</option>
+                    </select>
+                </div>
+
+                <h2>Sua Montagem</h2>
+                <div id="build-content"></div>
+                
+                <div style="margin-top: 15px; border-top: 1px solid #475569; padding-top: 10px;">
+                    <p style="margin: 5px 0; display: flex; justify-content: space-between;">
+                        <span>Custo Total: <strong style="color: #4ade80; font-size: 1.2rem;">R$ <span id="total-cost">0</span></strong></span>
+                        <span style="color: #a78bfa; font-weight: bold;">Estilo RGB: <span id="total-rgb">0</span> pts</span>
+                    </p>
+                    <p style="margin: 5px 0;">Consumo (TDP): <strong><span id="total-tdp">0</span>W</strong></p>
+                </div>
+
+                <button class="power-btn" onclick="preTurnOnPC()">LIGAR O PC</button>
+                <button class="oc-btn" id="btn-overclock" onclick="activateOverclock()">⚡ ATIVAR OVERCLOCK ⚡</button>
+                <div id="status-screen">> Aguardando peças...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // BANCO DE DADOS ULTIMATE
+        const partsDatabase = {
+            cpu: [
+                { id: 'c0', name: 'Intel Core i3 4130 (Com Vídeo)', price: 100, socket: 'LGA1150', tdp: 54, ramType: 'DDR3', tier: 1, hasIGPU: true, gpuTier: 1, type: 'cpu' },
+                { id: 'c2', name: 'AMD Ryzen 5 4600G (Com Vídeo)', price: 600, socket: 'AM4', tdp: 65, ramType: 'DDR4', tier: 4, hasIGPU: true, gpuTier: 3, type: 'cpu' },
+                { id: 'c4', name: 'AMD Ryzen 5 5600X (S/ Vídeo)', price: 950, socket: 'AM4', tdp: 65, ramType: 'DDR4', tier: 6, hasIGPU: false, type: 'cpu' },
+                { id: 'c5', name: 'Intel Core i9 13900K (S/ Vídeo)', price: 3500, socket: 'LGA1700', tdp: 250, ramType: 'DDR5', tier: 10, hasIGPU: false, type: 'cpu' }
+            ],
+            cooler: [
+                { id: 'cl0', name: 'Cooler Box Padrão', price: 30, maxTdp: 65, type: 'cooler', rgb: 0 },
+                { id: 'cl1', name: 'Air Cooler Torre', price: 120, maxTdp: 130, type: 'cooler', rgb: 0 },
+                { id: 'cl2', name: 'Air Cooler Torre RGB', price: 180, maxTdp: 130, type: 'cooler', rgb: 5 },
+                { id: 'cl3', name: 'Water Cooler 360mm RGB', price: 600, maxTdp: 300, type: 'cooler', rgb: 15 }
+            ],
+            motherboard: [
+                { id: 'm0', name: 'H61M Genérica', price: 200, socket: 'LGA1150', ramType: 'DDR3', ramSlots: 2, type: 'motherboard', rgb: 0 },
+                { id: 'm1', name: 'A320M Basic', price: 350, socket: 'AM4', ramType: 'DDR4', ramSlots: 2, type: 'motherboard', rgb: 0 },
+                { id: 'm2', name: 'B550M Aorus Elite RGB', price: 850, socket: 'AM4', ramType: 'DDR4', ramSlots: 4, type: 'motherboard', rgb: 10 },
+                { id: 'm4', name: 'Z790 ROG MAXIMUS RGB', price: 3200, socket: 'LGA1700', ramType: 'DDR5', ramSlots: 4, type: 'motherboard', rgb: 20 }
+            ],
+            ram: [
+                { id: 'r0', name: '4GB DDR3 1333MHz', price: 50, type: 'ram', tdp: 3, ramType: 'DDR3', capacity: 4, rgb: 0 },
+                { id: 'r2', name: '16GB DDR4 3200MHz', price: 250, type: 'ram', tdp: 10, ramType: 'DDR4', capacity: 16, rgb: 0 },
+                { id: 'r2b', name: '16GB DDR4 3200MHz RGB', price: 320, type: 'ram', tdp: 12, ramType: 'DDR4', capacity: 16, rgb: 5 },
+                { id: 'r3', name: '16GB DDR5 5600MHz RGB', price: 450, type: 'ram', tdp: 15, ramType: 'DDR5', capacity: 16, rgb: 8 }
+            ],
+            storage: [
+                { id: 's1', name: 'HD 500GB Sata', price: 50, tdp: 10, speed: 'HDD', type: 'storage', speedMod: 0 },
+                { id: 's2', name: 'SSD 240GB Sata', price: 120, tdp: 3, speed: 'SSD', type: 'storage', speedMod: 500 },
+                { id: 's3', name: 'SSD 1TB M.2 NVMe', price: 450, tdp: 5, speed: 'NVMe', type: 'storage', speedMod: 1500 }
+            ],
+            gpu: [
+                { id: 'g1', name: 'NVIDIA GTX 750 Ti', price: 300, tdp: 60, tier: 2, type: 'gpu', rgb: 0 },
+                { id: 'g3', name: 'NVIDIA RTX 3060 12GB', price: 1700, tdp: 170, tier: 6, type: 'gpu', rgb: 0 },
+                { id: 'g3b', name: 'NVIDIA RTX 3060 ROG RGB', price: 1950, tdp: 180, tier: 6, type: 'gpu', rgb: 10 },
+                { id: 'g4', name: 'NVIDIA RTX 4090 24GB', price: 12000, tdp: 450, tier: 10, type: 'gpu', rgb: 15 }
+            ],
+            psu: [
+                { id: 'p0', name: 'Fonte Genérica 200W', price: 50, power: 200, type: 'psu' },
+                { id: 'p1', name: 'Fonte 500W 80 Plus', price: 250, power: 500, type: 'psu' },
+                { id: 'p2', name: 'Fonte 750W Gold', price: 500, power: 750, type: 'psu' },
+                { id: 'p3', name: 'Fonte 1000W Platinum', price: 1200, power: 1000, type: 'psu' }
+            ]
+        };
+
+        // Gerar Banco de Usados do Klebão
+        const usedDatabase = {};
+        for (const cat in partsDatabase) {
+            usedDatabase[cat] = partsDatabase[cat]
+                .filter(p => p.tier <= 6 || !p.tier) // Klebão não tem peça high-end nova
+                .map(p => ({ ...p, id: p.id+'_used', name: p.name + ' (Usado)', price: Math.floor(p.price * 0.4), isUsed: true }));
+        }
+
+        const categoryNames = { cpu: 'Processador', cooler: 'Refrigeração', motherboard: 'Placa-Mãe', ram: 'Memória RAM', storage: 'Armazenamento', gpu: 'Placa de Vídeo', psu: 'Fonte' };
+        
+        const missions = {
+            'lol': { name: 'League of Legends', minRam: 8, minGpuTier: 1, minCpuTier: 1, minRgb: 0, maxBudget: 1500 },
+            'streamer': { name: 'PC de Streamer', minRam: 16, minGpuTier: 6, minCpuTier: 6, minRgb: 25, maxBudget: 4500 },
+            'cyberpunk': { name: 'Cyberpunk 2077', minRam: 16, minGpuTier: 6, minCpuTier: 5, minRgb: 0, maxBudget: 4000 }
+        };
+
+        let currentBuild = { cpu: null, cooler: null, motherboard: null, ram: { item: null, qty: 0 }, storage: null, gpu: null, psu: null };
+        let shopMode = 'new'; // 'new' or 'used'
+        
+        // Estados do Jogo
+        let isOverclocked = false;
+        let pasteApplied = false;
+        let pasteQuality = 0; // 0: unapplied, 1: poor (too little), 2: perfect, 3: spilled (too much)
+
+        function setShopMode(mode) {
+            shopMode = mode;
+            document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.shop-tab.${mode === 'used' ? 'used' : 'active'}`).classList.add('active'); // Trick for selector
+            if(mode === 'used') document.querySelector(`.shop-tab.used`).classList.add('active');
+            else document.querySelector(`.shop-tab:not(.used)`).classList.add('active');
+            renderShop();
+        }
+
+        function renderShop() {
+            const shopContent = document.getElementById('shop-content');
+            shopContent.innerHTML = '';
+            const db = shopMode === 'new' ? partsDatabase : usedDatabase;
+
+            for (const category in db) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.innerHTML = `<h3 class="category-title">${categoryNames[category]}</h3>`;
+                const gridDiv = document.createElement('div');
+                gridDiv.className = 'items-grid';
+
+                db[category].forEach(part => {
+                    let extraInfo = '';
+                    if (part.socket) extraInfo += `Soquete: ${part.socket}<br>`;
+                    if (part.ramType) extraInfo += `Memória: ${part.ramType}<br>`;
+                    if (part.maxTdp) extraInfo += `Resfria até: ${part.maxTdp}W<br>`;
+                    if (part.power !== undefined) extraInfo += `Potência: ${part.power}W`;
+                    else if (part.tdp !== undefined && part.tdp > 0) extraInfo += `TDP: ${part.tdp}W`;
+                    
+                    const badges = [];
+                    if (part.rgb > 0) badges.push(`<span class="badge-rgb">RGB +${part.rgb}</span>`);
+                    if (part.isUsed) badges.push(`<span class="badge-used">RISCO 20%</span>`);
+
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    card.onclick = () => equipPart(part);
+                    card.innerHTML = `
+                        ${badges.join('')}
+                        <div><h3 style="${part.isUsed ? 'color:#fbbf24' : ''}">${part.name}</h3><p>${extraInfo}</p></div>
+                        <p class="item-price">R$ ${part.price}</p>
+                    `;
+                    gridDiv.appendChild(card);
+                });
+                categoryDiv.appendChild(gridDiv);
+                shopContent.appendChild(categoryDiv);
+            }
+        }
+
+        function renderBuild() {
+            const buildContent = document.getElementById('build-content');
+            buildContent.innerHTML = '';
+            let totalCost = 0, totalTdp = 0, totalRgb = 0;
+
+            // Reset Overclock on part change
+            isOverclocked = false;
+            document.getElementById('btn-overclock').style.display = 'none';
+
+            for (const category in currentBuild) {
+                const part = category === 'ram' ? currentBuild.ram.item : currentBuild[category];
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'build-slot';
+                
+                const visElement = document.getElementById(`vis-${category}`);
+                const labelElement = document.getElementById(`label-${category}`);
+                
+                if (part) {
+                    let partRgb = part.rgb || 0;
+                    if (category === 'ram') {
+                        const qty = currentBuild.ram.qty;
+                        totalCost += (part.price * qty);
+                        totalTdp += ((part.tdp || 0) * qty);
+                        totalRgb += (partRgb * qty);
+                        if(partRgb > 0) slotDiv.classList.add('has-rgb');
+                        slotDiv.innerHTML = `
+                            <div><strong>${categoryNames[category]}:</strong><br>${part.name} (x${qty})</div>
+                            <div>
+                                <button class="qty-btn" onclick="changeRam(-1)">-</button>
+                                <button class="qty-btn" onclick="changeRam(1)">+</button>
+                                <button class="remove-btn" style="margin-left: 10px;" onclick="removePart('ram')">X</button>
+                            </div>
+                        `;
+                        renderVisualRAM(qty, partRgb > 0);
+                    } else {
+                        totalCost += part.price;
+                        totalTdp += (part.tdp || 0);
+                        totalRgb += partRgb;
+                        if(partRgb > 0) slotDiv.classList.add('has-rgb');
+                        slotDiv.innerHTML = `<div><strong>${categoryNames[category]}:</strong><br>${part.name}</div><button class="remove-btn" onclick="removePart('${category}')">X</button>`;
+                        
+                        if(visElement) {
+                            visElement.classList.add('active');
+                            if(partRgb > 0) visElement.classList.add('rgb');
+                            else visElement.classList.remove('rgb');
+                        }
+                        if(labelElement) labelElement.innerText = part.name;
+                    }
+                } else {
+                    let displayName = categoryNames[category];
+                    if (category === 'gpu' && currentBuild.cpu && currentBuild.cpu.hasIGPU) displayName = "Placa de Vídeo (Opcional)";
+                    slotDiv.innerHTML = `<span style="color: var(--text-muted)">[ ${displayName} Vazio ]</span>`;
+                    
+                    if(visElement) { visElement.classList.remove('active'); visElement.classList.remove('rgb'); }
+                    if(labelElement) labelElement.innerText = categoryNames[category];
+                    if(category === 'ram') renderVisualRAM(0, false);
+                }
+                buildContent.appendChild(slotDiv);
+            }
+
+            // Fans RGB check
+            const fans = [document.getElementById('fan1'), document.getElementById('fan2'), document.getElementById('fan3')];
+            if(totalRgb >= 15) fans.forEach(f => f.classList.add('rgb-active'));
+            else fans.forEach(f => f.classList.remove('rgb-active'));
+
+            document.getElementById('total-cost').innerText = totalCost;
+            document.getElementById('total-tdp').innerText = totalTdp;
+            document.getElementById('total-rgb').innerText = totalRgb;
+        }
+
+        function renderVisualRAM(qty, hasRgb) {
+            const container = document.getElementById('vis-ram-container');
+            container.innerHTML = '';
+            for(let i=0; i<qty; i++) container.innerHTML += `<div class="vis-ram-stick ${hasRgb ? 'rgb':''}"></div>`;
+        }
+
+        function equipPart(part) { 
+            if (part.type === 'ram') {
+                if (!currentBuild.motherboard) { alert("Selecione a Placa-Mãe primeiro!"); return; }
+                currentBuild.ram = { item: part, qty: 1 };
+            } else {
+                currentBuild[part.type] = part; 
+                // Reset paste if CPU or Cooler changes
+                if(part.type === 'cpu' || part.type === 'cooler') { pasteApplied = false; pasteQuality = 0; }
+            }
+            renderBuild(); 
+        }
+
+        function changeRam(amount) {
+            if (!currentBuild.ram.item) return;
+            const newQty = currentBuild.ram.qty + amount;
+            const maxSlots = currentBuild.motherboard ? currentBuild.motherboard.ramSlots : 4;
+            if (newQty > 0 && newQty <= maxSlots) { currentBuild.ram.qty = newQty; renderBuild(); }
+        }
+
+        function removePart(category) { 
+            if (category === 'ram') currentBuild.ram = { item: null, qty: 0 };
+            else currentBuild[category] = null; 
+            if(category === 'cpu' || category === 'cooler') { pasteApplied = false; pasteQuality = 0; }
+            renderBuild(); 
+        }
+
+        // --- SISTEMA DE PASTA TÉRMICA ---
+        let pasteInterval; let pasteValue = 0;
+        const btnPaste = document.getElementById('btn-apply-paste');
+        
+        btnPaste.addEventListener('mousedown', () => {
+            pasteValue = 0;
+            document.getElementById('paste-drop').style.width = '0px';
+            document.getElementById('paste-drop').style.height = '0px';
+            document.getElementById('paste-bar').style.width = '0%';
+            document.getElementById('paste-bar').style.backgroundColor = 'var(--primary)';
+            pasteInterval = setInterval(() => {
+                pasteValue += 1.5;
+                if(pasteValue > 100) pasteValue = 100;
+                document.getElementById('paste-bar').style.width = pasteValue + '%';
+                document.getElementById('paste-drop').style.width = (pasteValue * 1.2) + 'px';
+                document.getElementById('paste-drop').style.height = (pasteValue * 1.2) + 'px';
+                
+                if(pasteValue > 70) document.getElementById('paste-bar').style.backgroundColor = '#ef4444'; // Spilled danger
+            }, 30);
+        });
+
+        btnPaste.addEventListener('mouseup', endPaste);
+        btnPaste.addEventListener('mouseleave', () => { if(pasteValue > 0 && !pasteApplied) endPaste(); });
+
+        function endPaste() {
+            clearInterval(pasteInterval);
+            pasteApplied = true;
+            if (pasteValue < 30) pasteQuality = 1; // poor
+            else if (pasteValue <= 70) pasteQuality = 2; // perfect
+            else pasteQuality = 3; // spilled
+            
+            setTimeout(() => {
+                document.getElementById('modal-overlay').style.display = 'none';
+                turnOnPC(); // Continue booting
+            }, 800);
+        }
+
+        function preTurnOnPC() {
+            const { cpu, cooler } = currentBuild;
+            if (cpu && cooler && !pasteApplied) {
+                // Open Minigame
+                document.getElementById('modal-overlay').style.display = 'flex';
+            } else {
+                turnOnPC();
+            }
+        }
+
+        function activateOverclock() {
+            isOverclocked = true;
+            turnOnPC();
+        }
+
+        // --- LÓGICA DE BOOT PRINCIPAL ---
+        function turnOnPC() {
+            const status = document.getElementById('status-screen');
+            const totalCost = parseInt(document.getElementById('total-cost').innerText);
+            const totalRgb = parseInt(document.getElementById('total-rgb').innerText);
+            status.innerHTML = `> Iniciando POST... ${isOverclocked ? '<span style="color:#ef4444; font-weight:bold;">[OVERCLOCK ATIVO]</span>' : ''}<br>`;
+
+            const { cpu, cooler, motherboard, ram, storage, gpu, psu } = currentBuild;
+            const missingParts = [];
+            
+            if (!cpu) missingParts.push(categoryNames.cpu);
+            if (!cooler) missingParts.push(categoryNames.cooler);
+            if (!motherboard) missingParts.push(categoryNames.motherboard);
+            if (!ram.item) missingParts.push(categoryNames.ram);
+            if (!storage) missingParts.push(categoryNames.storage);
+            if (!psu) missingParts.push(categoryNames.psu);
+            if (!gpu && (!cpu || !cpu.hasIGPU)) missingParts.push("Placa de Vídeo");
+
+            if (missingParts.length > 0) {
+                status.innerHTML += `<span class="sys-err">ERRO: Faltam peças: ${missingParts.join(', ')}</span>`;
+                isOverclocked = false;
+                return;
+            }
+
+            let errors = []; let warnings = []; let missionPass = true;
+
+            // 1. Checagem Física
+            if (cpu.socket !== motherboard.socket) errors.push(`ERRO FÍSICO: Incompatibilidade de Soquete.`);
+            if (motherboard.ramType !== ram.item.ramType || cpu.ramType !== ram.item.ramType) errors.push(`ERRO FÍSICO: Incompatibilidade de RAM.`);
+            if (pasteQuality === 3) errors.push(`💥 CURTO CIRCUITO: Você vazou pasta térmica na Placa-Mãe! O PC pifou.`);
+
+            // 2. Mercado de Usados (RNG)
+            for (const cat in currentBuild) {
+                const p = cat === 'ram' ? currentBuild.ram.item : currentBuild[cat];
+                if (p && p.isUsed && Math.random() < 0.20) {
+                    errors.push(`💀 DEFEITO: A peça ${p.name} (Usada) falhou ao ligar. O Klebão te passou a perna!`);
+                }
+            }
+
+            // Modificadores de Overclock
+            const ocMod = isOverclocked ? 1.4 : 1.0; // Puxa 40% a mais de energia e esquenta mais
+            
+            // 3. Energia
+            const totalRamTdp = ram.item.tdp * ram.qty;
+            const activeGpuTdp = gpu ? (gpu.tdp * ocMod) : 0;
+            const activeCpuTdp = cpu.tdp * ocMod;
+            const totalSystemPower = activeCpuTdp + totalRamTdp + activeGpuTdp + storage.tdp + 40; 
+            
+            if (psu.power < totalSystemPower) errors.push(`FALTA DE ENERGIA: Sistema exige ${Math.floor(totalSystemPower)}W. Fonte de ${psu.power}W desarmou.`);
+            
+            // 4. Refrigeração (Termal)
+            let coolerCapacity = cooler.maxTdp;
+            if (pasteQuality === 1) coolerCapacity *= 0.8; // Perde 20% eficiencia com pouca pasta
+            if (pasteQuality === 2) coolerCapacity *= 1.1; // Ganha 10% com pasta perfeita
+
+            if (coolerCapacity < activeCpuTdp) {
+                if (activeCpuTdp - coolerCapacity >= 40) errors.push(`🔥 SUPER AQUECIMENTO: Cooler fraco. CPU derreteu e desligou.`);
+                else warnings.push(`⚠️ THERMAL THROTTLING: PC muito quente. Performance reduzida.`);
+            }
+
+            // Exibir Erros Fatais
+            if (errors.length > 0) {
+                errors.forEach(err => status.innerHTML += `<span class="sys-err">> ${err}</span><br>`);
+                status.innerHTML += `<span class="sys-err">> TELA AZUL. O Boot falhou.</span>`;
+                isOverclocked = false;
+                return;
+            }
+
+            // 5. Benchmark Score Calculation
+            let cpuEffectiveTier = cpu.tier * (isOverclocked ? 1.3 : 1.0) * (coolerCapacity < activeCpuTdp ? 0.7 : 1.0);
+            let gpuEffectiveTier = (gpu ? gpu.tier : cpu.gpuTier) * (isOverclocked ? 1.3 : 1.0);
+            let ramGb = ram.item.capacity * ram.qty;
+            
+            let baseScore = Math.floor((cpuEffectiveTier * 1000) + (gpuEffectiveTier * 1500) + (ramGb * 60) + storage.speedMod + (totalRgb * 10));
+
+            status.innerHTML += `<span class="sys-ok">> Hardware OK. Windows Iniciado.</span><br>`;
+            warnings.forEach(warn => status.innerHTML += `<span class="sys-warn">> ${warn}</span><br>`);
+            
+            status.innerHTML += `<br><span style="color: #cbd5e1;">Testando performance em 3D...</span><br>`;
+            status.innerHTML += `<span class="sys-score">🏆 BENCHMARK SCORE: ${baseScore.toLocaleString('pt-BR')} pts</span><br>`;
+
+            // Botão de Overclock
+            if(!isOverclocked) document.getElementById('btn-overclock').style.display = 'block';
+
+            // 6. Avaliação de Missões
+            const missionId = document.getElementById('mission-select').value;
+            if (missionId !== 'none') {
+                const mission = missions[missionId];
+                status.innerHTML += `<br><span class="sys-info">--- AVALIANDO: ${mission.name} ---</span><br>`;
+                
+                if (totalCost > mission.maxBudget) { status.innerHTML += `<span class="sys-err">[X] Estourou orçamento (Máx: R$ ${mission.maxBudget}).</span><br>`; missionPass = false; }
+                if (ramGb < mission.minRam) { status.innerHTML += `<span class="sys-err">[X] RAM insuficiente (Mín: ${mission.minRam}GB).</span><br>`; missionPass = false; }
+                if (gpuEffectiveTier < mission.minGpuTier) { status.innerHTML += `<span class="sys-err">[X] Gráfico muito fraco.</span><br>`; missionPass = false; }
+                if (cpuEffectiveTier < mission.minCpuTier) { status.innerHTML += `<span class="sys-err">[X] Processador fraco.</span><br>`; missionPass = false; }
+                if (totalRgb < mission.minRgb) { status.innerHTML += `<span class="sys-err">[X] Sem Estilo. Precisa de ${mission.minRgb} pts de RGB.</span><br>`; missionPass = false; }
+
+                if (missionPass) status.innerHTML += `<span class="sys-ok">🌟 DESAFIO CONCLUÍDO COM SUCESSO!</span>`;
+            }
+        }
+
+        // Init
+        setShopMode('new');
+    </script>
+</body>
+</html>
