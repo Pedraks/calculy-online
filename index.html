@@ -1,177 +1,265 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
-    <title>Calculy.online | Portal de Cálculos Trabalhistas e Financeiros (CLT 2026)</title>
-    
-    <meta name="description" 
-        content="Portal gratuito de calculadoras trabalhistas. Simule Rescisão, Salário Líquido, Férias, 13º Salário, Seguro Desemprego e muito mais. Atualizado CLT 2026.">
-    
-    <meta name="keywords" content="calculadora trabalhista, portal calculos, rescisão, salario liquido, ferias, decimo terceiro, seguro desemprego, horas extras, clt 2026">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Calculy.online - Todos os Cálculos Trabalhistas">
-    <meta property="og:description" content="Simuladores de Rescisão, Férias, Salário Líquido e muito mais.">
-    <meta property="og:image" content="https://calculy.online/assets/logo.png">
-    <meta property="og:url" content="https://calculy.online">
-    
-    <link rel="stylesheet" href="css/styles.css">
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NMGQ5ZF9LQ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-NMGQ5ZF9LQ');
-    </script>
-    
-    <link rel="icon" type="image/png" href="assets/logo.png">
-    <link rel="apple-touch-icon" href="assets/logo.png">
-    <meta name="theme-color" content="#2e7d32">
-</head>
+    <title>Retro Neon Football Live</title>
+    <style>
+        body {
+            background-color: #0d0f12;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
 
+        /* Painel do Placar */
+        .scoreboard {
+            background: rgba(20, 24, 33, 0.85);
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+            border-radius: 12px;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .team {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team.brazil { color: #00ffcc; text-shadow: 0 0 10px rgba(0,255,204,0.5); }
+        .team.japan { color: #ff0077; text-shadow: 0 0 10px rgba(255,0,119,0.5); }
+
+        .score {
+            font-size: 2.5rem;
+            background: #1a1f2c;
+            padding: 5px 15px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+        }
+
+        .time {
+            color: #ffcc00;
+            text-shadow: 0 0 8px rgba(255,204,0,0.5);
+            font-size: 1.2rem;
+        }
+
+        /* Feed de Lances */
+        .ticker {
+            height: 30px;
+            color: #a0aec0;
+            font-style: italic;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Container do Campo */
+        .field-container {
+            position: relative;
+            background: #121620;
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+        }
+
+        canvas {
+            border-radius: 8px;
+            display: block;
+            background-color: #0b0d13;
+        }
+    </style>
+</head>
 <body>
 
-<div style="background: #fff3cd; color: #856404; padding: 10px; text-align: center; font-size: 0.9rem;">⚠️ Calculadoras atualizadas com o novo Salário Mínimo de 2026!</div>
+    <!-- PLACAR NEON -->
+    <div class="scoreboard">
+        <div class="team brazil">BRA 🇧🇷</div>
+        <div class="score" id="score-brazil">0</div>
+        <div class="time" id="match-time">00:00</div>
+        <div class="score" id="score-japan">0</div>
+        <div class="team japan">🇯🇵 JAP</div>
+    </div>
 
-    <header>
-        <div class="container">
-            <div class="logo">Calculy.online</div>
-            <nav>
-                <a href="sobre.html">Sobre</a>
-                <a href="faq.html">FAQ</a>
-            </nav>
-        </div>
-    </header>
+    <!-- FEED DE TEXTO -->
+    <div class="ticker" id="game-ticker">Preparando o início da partida...</div>
 
-    <main>
-        <section class="hero" style="padding: 60px 0 40px;">
-            <div class="container">
-                <h1>Cálculos Trabalhistas Simplificados</h1>
-                <p>Todas as ferramentas que você precisa para conferir seus direitos. Rápido, exato e atualizado para 2026.</p>
-            </div>
-        </section>
+    <!-- CAMPO DE JOGO -->
+    <div class="field-container">
+        <canvas id="footballField" width="800" height="450"></canvas>
+    </div>
 
-        <section class="tools-section">
-            <div class="container">
-                <div class="tools-grid">
-                    
-                    <a href="calculadora-rescisao.html" class="tool-card destaque">
-                        <div class="icon">📄</div>
-                        <div class="content">
-                            <h3>Rescisão CLT</h3>
-                            <p>Simule seu acerto completo com multa do FGTS e aviso prévio.</p>
-                        </div>
-                    </a>
+    <script>
+        const canvas = document.getElementById('footballField');
+        const ctx = canvas.getContext('2d');
 
-                    <a href="salario-liquido.html" class="tool-card">
-                        <div class="icon">💸</div>
-                        <div class="content">
-                            <h3>Salário Líquido</h3>
-                            <p>Descubra os descontos de INSS e IRRF do seu holerite.</p>
-                        </div>
-                    </a>
+        // Configurações de cores Neon
+        const NEON_GREEN = '#39ff14';
+        const NEON_CYAN = '#00ffcc';
+        const NEON_PINK = '#ff0077';
+        const NEON_WHITE = '#ffffff';
 
-                    <a href="calculadora-ferias.html" class="tool-card">
-                        <div class="icon">🏖️</div>
-                        <div class="content">
-                            <h3>Calculadora de Férias</h3>
-                            <p>Vai vender 10 dias? Calcule o valor líquido do descanso.</p>
-                        </div>
-                    </a>
+        // Estado do Jogo (Posições Iniciais)
+        let ball = { x: 400, y: 225, targetX: 400, targetY: 225, size: 8 };
+        
+        let players = {
+            bra1: { x: 200, y: 225, targetX: 200, targetY: 225, color: NEON_CYAN, label: '10' },
+            bra2: { x: 300, y: 120, targetX: 300, targetY: 120, color: NEON_CYAN, label: '9' },
+            jap1: { x: 600, y: 225, targetX: 600, targetY: 225, color: NEON_PINK, label: '7' },
+            jap2: { x: 500, y: 330, targetX: 500, targetY: 330, color: NEON_PINK, label: '4' }
+        };
 
-                    <a href="calculadora-13-salario.html" class="tool-card">
-                        <div class="icon">🎁</div>
-                        <div class="content">
-                            <h3>13º Salário</h3>
-                            <p>Veja o valor da 1ª parcela e da 2ª com descontos.</p>
-                        </div>
-                    </a>
+        // ROTEIRO DO JOGO (Lances Programados)
+        // Cada passo define para onde os jogadores e a bola devem ir, o tempo e o texto descritivo.
+        const script = [
+            { time: "00:10", ticker: "Rola a bola! Começa o jogo!", ball: [400, 225], bra1: [380, 225], bra2: [300, 120], jap1: [450, 210], jap2: [500, 330] },
+            { time: "00:25", ticker: "Brasil troca passes no meio de campo.", ball: [310, 135], bra1: [350, 200], bra2: [320, 140], jap1: [400, 180], jap2: [480, 280] },
+            { time: "00:40", ticker: "Japão recupera e avança em velocidade!", ball: [520, 310], bra1: [380, 250], bra2: [360, 160], jap1: [510, 250], jap2: [530, 300] },
+            { time: "01:05", ticker: "Incrível! Japão arrisca de longe e carimba a trave!!", ball: [50, 200], bra1: [200, 225], bra2: [300, 150], jap1: [250, 210], jap2: [400, 280] },
+            { time: "01:20", ticker: "Contra-ataque rápido do Brasil com o camisa 10!", ball: [550, 200], bra1: [530, 210], bra2: [580, 120], jap1: [450, 225], jap2: [500, 250] },
+            { time: "01:35", ticker: "GOLAÇO DO BRASIL! No ângulo sem chances pro goleiro!!", ball: [785, 225], bra1: [650, 220], bra2: [620, 140], jap1: [700, 225], jap2: [680, 260], scoreBra: 1 },
+            { time: "01:50", ticker: "Fim do primeiro tempo simulado!", ball: [400, 225], bra1: [200, 225], bra2: [300, 120], jap1: [600, 225], jap2: [500, 330] }
+        ];
 
-                    <a href="calculadora-seguro-desemprego.html" class="tool-card">
-                        <div class="icon">🛡️</div>
-                        <div class="content">
-                            <h3>Seguro Desemprego</h3>
-                            <p>Quantas parcelas você tem direito e o valor exato.</p>
-                        </div>
-                    </a>
+        let currentStep = 0;
 
-                    <a href="calculadora-horas-extras.html" class="tool-card">
-                        <div class="icon">⏰</div>
-                        <div class="content">
-                            <h3>Horas Extras</h3>
-                            <p>Calcule horas 50% e 100% (domingos e feriados).</p>
-                        </div>
-                    </a>
-
-                    <a href="calculadora-adicional-noturno.html" class="tool-card">
-                        <div class="icon">🌙</div>
-                        <div class="content">
-                            <h3>Adicional Noturno</h3>
-                            <p>Veja o acréscimo de 20% para trabalho noturno.</p>
-                        </div>
-                    </a>
-
-                    <a href="calculadora-fgts.html" class="tool-card">
-                        <div class="icon">🏦</div>
-                        <div class="content">
-                            <h3>Calcular FGTS</h3>
-                            <p>Confira o depósito mensal de 8% da empresa.</p>
-                        </div>
-                    </a>
-
-                    <a href="calculadora-salario-proporcional.html" class="tool-card">
-                        <div class="icon">📅</div>
-                        <div class="content">
-                            <h3>Salário Proporcional</h3>
-                            <p>Entrou ou saiu no meio do mês? Calcule os dias.</p>
-                        </div>
-                    </a>
-
-                    <a href="calculadora-dias-uteis.html" class="tool-card">
-                        <div class="icon">📆</div>
-                        <div class="content">
-                            <h3>Dias Úteis 2026</h3>
-                            <p>Calendário com feriados nacionais e fins de semana.</p>
-                        </div>
-                    </a>
-
-                </div>
-            </div>
-        </section>
-
-        <section class="seo-content" style="background: #fff; padding: 60px 0; margin-top: 40px; border-top: 1px solid #eee;">
-            <div class="container" style="max-width: 800px;">
-                <h2 style="color: #2e7d32; margin-bottom: 25px;">Seu Hub de Ferramentas Trabalhistas</h2>
+        // Atualiza o roteiro a cada poucos segundos
+        function runScript() {
+            if (currentStep < script.length) {
+                const step = script[currentStep];
                 
-                <p>O <strong>Calculy.online</strong> evoluiu. Agora somos um portal completo de ferramentas open-source desenvolvido para ajudar trabalhadores brasileiros a entenderem seus direitos, desde a contratação até o desligamento.</p>
+                // Atualiza Placar e Textos
+                document.getElementById('match-time').innerText = step.time;
+                document.getElementById('game-ticker').innerText = step.ticker;
+                if(step.scoreBra) document.getElementById('score-brazil').innerText = step.scoreBra;
+                if(step.scoreJap) document.getElementById('score-japan').innerText = step.scoreJap;
 
-                <h3 style="margin-top: 30px; color: #333;">Principais Ferramentas:</h3>
-                <ul style="padding-left: 20px; line-height: 1.8; color: #555;">
-                    <li><strong>Planejamento Mensal:</strong> Use a calculadora de <em>Salário Líquido</em> e <em>Horas Extras</em> para saber exatamente quanto vai cair na conta no fim do mês.</li>
-                    <li><strong>Férias e 13º:</strong> Planeje seu descanso e suas compras de fim de ano com precisão de centavos.</li>
-                    <li><strong>Segurança na Demissão:</strong> Nossa calculadora de <em>Rescisão</em> continua sendo a mais completa do mercado, incluindo multa do FGTS e aviso prévio atualizado.</li>
-                </ul>
+                // Altera o destino (Target) para onde os elementos vão se mover
+                ball.targetX = step.ball[0];
+                ball.targetY = step.ball[1];
+                
+                players.bra1.targetX = step.bra1[0]; players.bra1.targetY = step.bra1[1];
+                players.bra2.targetX = step.bra2[0]; players.bra2.targetY = step.bra2[1];
+                players.jap1.targetX = step.jap1[0]; players.jap1.targetY = step.jap1[1];
+                players.jap2.targetX = step.jap2[0]; players.jap2.targetY = step.jap2[1];
 
-                <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 5px solid #2e7d32;">
-                    <strong>🔒 Privacidade Total</strong><br>
-                    Diferente de outros sites, o Calculy roda 100% no seu navegador. Seus dados salariais nunca são enviados para nossos servidores.
-                </div>
+                currentStep++;
+            } else {
+                currentStep = 0; // Reinicia o loop do jogo para demonstração
+            }
+        }
 
-            </div>
-        </section>
-    </main>
+        // Executa a troca de lances a cada 4 segundos
+        setInterval(runScript, 4000);
+        runScript();
 
-    <footer>
-        <p>© 2026 Calculy.online</p>
-        <a href="politica-de-privacidade.html">Privacidade</a> |
-        <a href="termos.html">Termos</a>
-    </footer>
+        // Função de Interpolação Linear (Suavizadora de movimento)
+        function lerp(start, end, amt) {
+            return (1 - amt) * start + amt * end;
+        }
 
+        // Atualiza a posição atual em direção ao destino (Rodando a 60 FPS)
+        function updatePositions() {
+            const ease = 0.05; // Velocidade da suavização. Menor = mais suave.
+            
+            ball.x = lerp(ball.x, ball.targetX, ease);
+            ball.y = lerp(ball.y, ball.targetY, ease);
+
+            for (let key in players) {
+                players[key].x = lerp(players[key].x, players[key].targetX, ease);
+                players[key].y = lerp(players[key].y, players[key].targetY, ease);
+            }
+        }
+
+        // Desenha o Layout e Elementos na Tela
+        function draw() {
+            // Limpa o canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. DESENHAR CAMPO COM EFEITO GLOW (NEON)
+            ctx.strokeStyle = NEON_GREEN;
+            ctx.lineWidth = 3;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = NEON_GREEN;
+
+            // Linhas externas
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+            // Linha de meio campo
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 20);
+            ctx.lineTo(canvas.width / 2, canvas.height - 20);
+            ctx.stroke();
+            // Círculo central
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Grandes Áreas
+            ctx.strokeRect(20, canvas.height / 2 - 100, 80, 200);
+            ctx.strokeRect(canvas.width - 100, canvas.height / 2 - 100, 80, 200);
+
+            // Reset do glow para os jogadores não borrarem o campo todo
+            ctx.shadowBlur = 0;
+
+            // 2. DESENHAR OS JOGADORES (DISCOS/TACHINHOS)
+            for (let key in players) {
+                let p = players[key];
+                
+                // Brilho do disco
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = p.color;
+
+                // Corpo do Botão
+                ctx.fillStyle = '#171923';
+                ctx.strokeStyle = p.color;
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 18, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Detalhe interno/Número do botão
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = p.color;
+                ctx.font = "bold 12px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(p.label, p.x, p.y);
+            }
+
+            // 3. DESENHAR A BOLA (DISCO MENOR)
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = NEON_WHITE;
+            ctx.fillStyle = NEON_WHITE;
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        // Loop de Renderização Principal
+        function gameLoop() {
+            updatePositions();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Inicializa o Loop gráfico
+        gameLoop();
+    </script>
 </body>
 </html>
-
-
+ 
