@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rincão Games</title>
+    <style>
+        /* =========================================
+           VARIÁVEIS DE TEMA (AS 3 VARIAÇÕES)
+           ========================================= */
+        
+        /* Tema 1: Soft (Harmonioso e leve) - PADRÃO */
+        :root {
+            --bg-color: #f4f6f8;
+            --text-color: #333333;
+            --header-bg: #ffffff;
+            --card-bg: #ffffff;
+            --primary-color: #5b7c99;
+            --accent-color: #ff9800;
+            --border-color: #e0e4e8;
+            --footer-bg: #e9ecef;
+            --wa-color: #25D366;
+        }
+
+        /* Tema 2: Xbox (Verde, escuro, neon) */
+        [data-theme="xbox"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --header-bg: #1a1a1a;
+            --card-bg: #242424;
+            --primary-color: #107C10; 
+            --accent-color: #9bf00b;  
+            --border-color: #333333;
+            --footer-bg: #0d0d0d;
+            --wa-color: #25D366;
+        }
+
+        /* Tema 3: Agressivo (Cores chamativas) */
+        [data-theme="agressivo"] {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --header-bg: #140000;
+            --card-bg: #1c1c1c;
+            --primary-color: #d90429;
+            --accent-color: #ffb703;
+            --border-color: #ef233c;
+            --footer-bg: #000000;
+            --wa-color: #25D366;
+        }
+
+        /* =========================================
+           ESTILOS GERAIS
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* CABEÇALHO */
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 2px solid var(--primary-color);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary-color);
+            user-select: none;
+            padding: 5px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        /* SELETOR DE TEMAS */
+        .theme-selector {
+            display: flex;
+            flex-wrap: wrap; /* Evita quebrar no mobile */
+            gap: 10px;
+            justify-content: center;
+            padding: 10px;
+            background: var(--footer-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .theme-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            flex: 1 1 auto;
+            text-align: center;
+            max-width: 200px;
+        }
+
+        /* MENUS LATERAIS */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 300px;
+            max-width: 80vw; /* Responsivo para celulares pequenos */
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 200;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+        .side-menu.right {
+            left: auto;
+            right: 0;
+            transform: translateX(100%);
+        }
+        .side-menu.open {
+            transform: translateX(0);
+        }
+        .side-menu h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 10px;
+        }
+        .side-menu ul {
+            list-style: none;
+        }
+        .side-menu li {
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* CONTEÚDO PRINCIPAL (GRID RESPONSIVO) */
+        main {
+            flex: 1;
+            padding: 30px 15px;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .grid-container {
+            display: grid;
+            /* Auto-fill adaptável baseando-se no tamanho da tela */
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            border-color: var(--accent-color);
+        }
+
+        .game-image {
+            background-color: #000000;
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .game-info {
+            padding: 15px 10px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .game-price {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        /* MODAL DE DETALHES */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            padding: 15px; /* Evita colar nas bordas do celular */
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh; /* Para rolar em telas pequenas */
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid var(--primary-color);
+        }
+        .modal-content .game-image {
+            height: 120px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .modal-details p {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .modal-details strong {
+            color: var(--primary-color);
+        }
+        .btn-wa-modal {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--wa-color);
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* BOTÃO FLUTUANTE WHATSAPP */
+        .fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--wa-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 150;
+            text-decoration: none;
+        }
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--footer-bg);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px 25px;
+            margin-bottom: 20px;
+        }
+        .footer-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        footer p {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        /* =========================================
+           MEDIA QUERIES (RESPONSIVIDADE FINA)
+           ========================================= */
+
+        /* Para Celulares muito pequenos (iPhone SE, etc) */
+        @media (max-width: 400px) {
+            .logo { font-size: 18px; }
+            .grid-container {
+                grid-template-columns: 1fr; /* 1 coluna em telas minúsculas */
+            }
+            .game-image { height: 180px; }
+            .fab { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
+        }
+
+        /* Para Tablets e Telas médias */
+        @media (min-width: 600px) {
+            .grid-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+            .game-image { height: 250px; }
+        }
+
+        /* Para Monitores Grandes e TVs */
+        @media (min-width: 1440px) {
+            main {
+                max-width: 1600px; /* Alarga o site para telas ultrawide ou TVs */
+            }
+            .grid-container {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 30px;
+            }
+            .game-image { height: 320px; font-size: 28px; }
+            .game-title { font-size: 18px; }
+            .game-price { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Seletor de Temas (Facilitador do Mockup) -->
+    <div class="theme-selector">
+        <button class="theme-btn" onclick="setTheme('soft')">1. Tema Soft</button>
+        <button class="theme-btn" onclick="setTheme('xbox')">2. Tema Xbox 360</button>
+        <button class="theme-btn" onclick="setTheme('agressivo')">3. Tema Agressivo</button>
+    </div>
+
+    <!-- Cabeçalho Principal -->
+    <header>
+        <div class="header-icon" onclick="toggleMenu('infoMenu')">☰</div>
+        <div class="logo">RNC GAMES <span>360</span></div>
+        <div class="header-icon" onclick="toggleMenu('profileMenu')">👤</div>
+    </header>
+
+    <!-- Menu Lateral Esquerdo (Informações) -->
+    <aside id="infoMenu" class="side-menu">
+        <span class="close-btn" onclick="toggleMenu('infoMenu')">×</span>
+        <h3>Institucional</h3>
+        <ul>
+            <li><strong>Sobre nós:</strong> Especialistas em preservar a era de ouro do Xbox 360.</li>
+            <li><strong>Serviços:</strong> Venda de jogos físicos/mídia digital e informações técnicas.</li>
+            <li><strong>Horários:</strong> Seg a Sex, 09h às 18h</li>
+            <li><strong>Regiões que atende:</strong> Criciúma, Balneário Rincão, Içara e envios para todo o Brasil.</li>
+        </ul>
+    </aside>
+
+    <!-- Menu Lateral Direito (Perfil/Login) -->
+    <aside id="profileMenu" class="side-menu right">
+        <span class="close-btn" onclick="toggleMenu('profileMenu')">×</span>
+        <h3>Perfil</h3>
+        <div id="loginState">
+            <!-- Estado deslogado -->
+            <ul id="loggedOutContent">
+                <li style="cursor:pointer; color: var(--accent-color);" onclick="simulateLogin()">Fazer Login</li>
+                <li style="cursor:pointer;">Cadastrar Nova Conta</li>
+            </ul>
+            <!-- Estado logado (oculto por padrão) -->
+            <ul id="loggedInContent" style="display: none;">
+                <li>Olá, Usuário!</li>
+                <li style="cursor:pointer; color: var(--primary-color);">Minhas Informações</li>
+                <li style="cursor:pointer; color: var(--primary-color);">Meus Pedidos</li>
+                <li style="cursor:pointer; color: red;" onclick="simulateLogout()">Sair</li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main>
+        <div class="grid-container" id="gamesGrid">
+            <!-- Os jogos serão injetados aqui pelo JS -->
+        </div>
+    </main>
+
+    <!-- Modal de Detalhes do Jogo -->
+    <div class="modal-overlay" id="gameModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="document.getElementById('gameModal').classList.remove('active')">×</span>
+            <div class="game-image">XBOX 360</div>
+            <h2 id="m-title" style="margin-bottom: 15px;">Nome do Jogo</h2>
+            <div class="modal-details">
+                <p><strong>Lançamento:</strong> <span id="m-date"></span></p>
+                <p><strong>Status:</strong> <span id="m-status"></span></p>
+                <p><strong>Patch Final:</strong> <span id="m-patch"></span></p>
+                <p><strong>Valor:</strong> <span id="m-price" style="font-size: 20px; color: var(--accent-color); font-weight: bold;"></span></p>
+                <p style="margin-top: 15px; font-size: 15px; line-height: 1.6;" id="m-desc"></p>
+            </div>
+            <button class="btn-wa-modal" onclick="alert('Iniciando atendimento WhatsApp para este jogo...')">
+                Dúvidas? Falar com Atendente (WhatsApp)
+            </button>
+        </div>
+    </div>
+
+    <!-- Botão Flutuante WhatsApp Principal -->
+    <a href="#" class="fab" onclick="alert('Abrindo chat geral no WhatsApp...')" title="Atendimento via WhatsApp">
+        💬
+    </a>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Início</a>
+            <a href="#">Catálogo</a>
+            <a href="#">Suporte</a>
+            <a href="#">Termos de Uso</a>
+        </div>
+        <p>&copy; 2026 Rincão Games (RNC GAMES 360). Todos os direitos reservados.</p>
+        <p>CNPJ: 00.000.000/0001-00</p>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT -->
+    <script>
+        // Troca de Temas
+        function setTheme(themeName) {
+            if(themeName === 'soft') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', themeName);
+            }
+        }
+
+        // Controle dos Menus Laterais
+        function toggleMenu(menuId) {
+            const menu = document.getElementById(menuId);
+            menu.classList.toggle('open');
+        }
+
+        // Simulação de Login
+        function simulateLogin() {
+            document.getElementById('loggedOutContent').style.display = 'none';
+            document.getElementById('loggedInContent').style.display = 'block';
+        }
+        function simulateLogout() {
+            document.getElementById('loggedOutContent').style.display = 'block';
+            document.getElementById('loggedInContent').style.display = 'none';
+        }
+
+        // Base de Dados dos Jogos (10 jogos Xbox 360)
+        const games = [
+            {
+                title: "Gears of War 3",
+                date: "20 de Setembro, 2011",
+                status: "Descontinuado (Físico), Ativo (Digital)",
+                patch: "Title Update 5",
+                price: "R$ 45,90",
+                desc: "A conclusão épica da trilogia original de Marcus Fenix. Um dos melhores sistemas de cobertura e multiplayer da geração."
+            },
+            {
+                title: "Halo 3",
+                date: "25 de Setembro, 2007",
+                status: "Servidores originais desligados",
+                patch: "Update 1.2",
+                price: "R$ 39,90",
+                desc: "O épico fim do combate. Acompanhe Master Chief na batalha final contra o Covenant e o Flood."
+            },
+            {
+                title: "Red Dead Redemption",
+                date: "18 de Maio, 2010",
+                status: "Descontinuado (Físico)",
+                patch: "Patch 1.08",
+                price: "R$ 89,90",
+                desc: "A jornada inesquecível de John Marston pelo velho oeste agonizante."
+            },
+            {
+                title: "Grand Theft Auto V",
+                date: "17 de Setembro, 2013",
+                status: "GTA Online Xbox 360 encerrado",
+                patch: "Title Update 1.27",
+                price: "R$ 69,90",
+                desc: "Explore Los Santos na versão clássica que quebrou todos os recordes da indústria."
+            },
+            {
+                title: "The Elder Scrolls V: Skyrim",
+                date: "11 de Novembro, 2011",
+                status: "Descontinuado",
+                patch: "Patch 1.9",
+                price: "R$ 55,00",
+                desc: "Um RPG de mundo aberto colossal onde você é o Dragonborn. Clássico absoluto da Bethesda."
+            },
+            {
+                title: "Forza Horizon",
+                date: "23 de Outubro, 2012",
+                status: "Deslistado da loja digital",
+                patch: "Final Update",
+                price: "R$ 120,00 (Raridade)",
+                desc: "Onde tudo começou. O festival Horizon original no Colorado com uma trilha sonora marcante."
+            },
+            {
+                title: "Mass Effect 2",
+                date: "26 de Janeiro, 2010",
+                status: "Descontinuado",
+                patch: "Patch 1.03",
+                price: "R$ 40,00",
+                desc: "Reúna a melhor equipe da galáxia para uma missão suicida. Obra-prima do RPG de ação."
+            },
+            {
+                title: "BioShock",
+                date: "21 de Agosto, 2007",
+                status: "Descontinuado",
+                patch: "Title Update 1.1",
+                price: "R$ 35,00",
+                desc: "Explore as ruínas submersas de Rapture neste FPS atmosférico incomparável."
+            },
+            {
+                title: "Alan Wake",
+                date: "14 de Maio, 2010",
+                status: "Descontinuado",
+                patch: "Update 1.04",
+                price: "R$ 49,90",
+                desc: "Um thriller de ação psicológica. A luz é sua única arma contra as trevas de Bright Falls."
+            },
+            {
+                title: "Fable II",
+                date: "21 de Outubro, 2008",
+                status: "Descontinuado",
+                patch: "Final Patch",
+                price: "R$ 45,00",
+                desc: "Viva uma vida inteira em Albion, compre propriedades, tenha uma família e um cachorro fiel."
+            }
+        ];
+
+        // Renderizar os Jogos no HTML
+        const grid = document.getElementById('gamesGrid');
+        
+        games.forEach((game, index) => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.onclick = () => openModal(index);
+            
+            card.innerHTML = `
+                <div class="game-image">XBOX 360</div>
+                <div class="game-info">
+                    <div class="game-title">${game.title}</div>
+                    <div class="game-price">${game.price}</div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Controle do Modal
+        function openModal(index) {
+            const game = games[index];
+            document.getElementById('m-title').innerText = game.title;
+            document.getElementById('m-date').innerText = game.date;
+            document.getElementById('m-status').innerText = game.status;
+            document.getElementById('m-patch').innerText = game.patch;
+            document.getElementById('m-price').innerText = game.price;
+            document.getElementById('m-desc').innerText = game.desc;
+            
+            document.getElementById('gameModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Evita rolagem do fundo no mobile
+        }
+
+        function closeModal(event) {
+            if(event.target.id === 'gameModal' || event.target.className === 'close-btn') {
+                document.getElementById('gameModal').classList.remove('active');
+                document.body.style.overflow = 'auto'; // Devolve a rolagem do fundo
+            }
+        }
+    </script>
+</body>
+</html>
