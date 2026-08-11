@@ -6,18 +6,49 @@
     <title>RNC GAMES 360 - Coleção Digital</title>
     <style>
         /* =========================================
-           VARIÁVEIS DO TEMA (Baseado nas imagens)
+           VARIÁVEIS DE TEMA (3 Variações)
            ========================================= */
+        
+        /* Tema Padrão (Xbox - Escuro e Verde Neon) */
         :root {
             --bg-dark: #0a0e12;
             --bg-card: #151a21;
             --bg-header: #0f1318;
-            --xbox-neon: #00ff00;
-            --xbox-dark-green: #004d00;
+            --primary-color: #00ff00;
+            --primary-dark: #004d00;
             --text-light: #ffffff;
             --text-muted: #8b949e;
             --border-color: #262c36;
             --tag-novo: #00ff00;
+            --text-yellow: #ffcc00;
+        }
+
+        /* Tema 1: Soft (Claro, Harmonioso) */
+        [data-theme="soft"] {
+            --bg-dark: #f4f6f8;
+            --bg-card: #ffffff;
+            --bg-header: #ffffff;
+            --primary-color: #5b7c99;
+            --primary-dark: #3a5368;
+            --text-light: #222222;
+            --text-muted: #666666;
+            --border-color: #d1d5db;
+            --tag-novo: #ff9800;
+            --text-yellow: #d97706; /* Amarelo mais escuro para leitura no fundo claro */
+        }
+
+        /* Tema 3: Agressivo (Vermelho e Escuro) */
+        [data-theme="agressivo"] {
+            --bg-dark: #050505;
+            --bg-card: #121212;
+            --bg-header: #0a0000;
+            --primary-color: #d90429;
+            --primary-dark: #8b0000;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+            --border-color: #ef233c;
+            --tag-novo: #ffb703;
+            --text-yellow: #ffb703;
         }
 
         /* =========================================
@@ -28,6 +59,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
@@ -38,40 +70,28 @@
             flex-direction: column;
         }
 
-        /* BARRA DE RECENTES (TICKER) */
-        .ticker-wrap {
-            width: 100%;
-            background-color: #000;
-            border-bottom: 1px solid var(--xbox-dark-green);
-            overflow: hidden;
-            height: 30px;
+        /* SELETOR DE TEMAS */
+        .theme-selector {
             display: flex;
-            align-items: center;
-            font-size: 11px;
-            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 10px;
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
         }
-        .ticker-title {
-            background-color: var(--xbox-dark-green);
-            color: var(--xbox-neon);
-            padding: 0 15px;
-            height: 100%;
-            display: flex;
-            align-items: center;
+        .theme-btn {
+            padding: 8px 15px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-light);
+            border-radius: 4px;
+            font-size: 12px;
             font-weight: bold;
-            z-index: 10;
         }
-        .ticker-content {
-            white-space: nowrap;
-            padding-left: 10px;
-            animation: ticker 25s linear infinite;
-        }
-        .ticker-content span {
-            margin-right: 30px;
-            color: var(--xbox-neon);
-        }
-        @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        .theme-btn:hover {
+            border-color: var(--primary-color);
         }
 
         /* CABEÇALHO */
@@ -85,16 +105,12 @@
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
         .header-icon {
             font-size: 24px;
             cursor: pointer;
             color: var(--text-light);
-        }
-        .logo-text {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 1px;
         }
         .auth-buttons {
             display: flex;
@@ -104,46 +120,59 @@
             background: transparent;
             color: var(--text-light);
             border: 1px solid var(--border-color);
-            padding: 5px 15px;
+            padding: 6px 15px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
         }
         .btn-solid {
-            background: var(--xbox-neon);
+            background: var(--primary-color);
             color: #000;
             border: none;
-            padding: 5px 15px;
+            padding: 6px 15px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        /* HERO SECTION */
+        /* HERO SECTION E LOGO */
         .hero {
             text-align: center;
             padding: 40px 20px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: radial-gradient(circle at center, rgba(0,255,0,0.05) 0%, var(--bg-dark) 60%);
+            background: radial-gradient(circle at center, rgba(0,255,0,0.03) 0%, var(--bg-dark) 60%);
         }
+        
+        /* Logo simulando a esfera do Xbox com o X branco */
         .hero-logo-img {
-            width: 150px;
-            height: 150px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%230f1318" stroke="%2300ff00" stroke-width="2"/><text x="50" y="55" font-size="20" fill="%2300ff00" text-anchor="middle" font-family="sans-serif" font-weight="bold">XBOX</text></svg>') no-repeat center;
+            width: 130px;
+            height: 130px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%23107C10"/><path d="M 28 25 Q 50 55 72 25 M 28 75 Q 50 45 72 75" stroke="%23ffffff" stroke-width="9" stroke-linecap="round" fill="none"/></svg>') no-repeat center;
             background-size: contain;
             margin-bottom: 15px;
             border-radius: 50%;
-            box-shadow: 0 0 30px rgba(0,255,0,0.2);
+            box-shadow: 0 0 25px rgba(0,255,0,0.2);
+            border: 3px solid var(--border-color);
+            transition: border-color 0.3s;
         }
+
+        [data-theme="soft"] .hero-logo-img { box-shadow: 0 0 25px rgba(91,124,153,0.3); border-color: var(--primary-color); }
+        [data-theme="agressivo"] .hero-logo-img { box-shadow: 0 0 25px rgba(217,4,41,0.3); }
+
         .hero h1 {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 900;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
         }
-        .hero h1 span { color: var(--xbox-neon); }
+        /* Estilização do Nome: RNC (Branco) GAMES (Amarelo) 360 (Cor do Tema) */
+        .title-rnc { color: var(--text-light); }
+        .title-games { color: var(--text-yellow); }
+        .title-360 { color: var(--primary-color); }
+
         .hero p {
             color: var(--text-muted);
             font-size: 14px;
@@ -151,35 +180,6 @@
             margin-top: 5px;
             text-transform: uppercase;
         }
-        .stats {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .stat-badge {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-        .stat-badge strong { color: var(--text-light); }
-        .btn-hero {
-            background-color: var(--xbox-neon);
-            color: #000;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(0,255,0,0.4);
-            transition: transform 0.2s;
-        }
-        .btn-hero:hover { transform: scale(1.05); }
 
         /* BUSCA E FILTROS */
         .filters-section {
@@ -192,72 +192,51 @@
             width: 100%;
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            padding: 12px 20px;
+            padding: 14px 20px;
             border-radius: 30px;
             color: var(--text-light);
-            font-size: 14px;
+            font-size: 15px;
             margin-bottom: 20px;
             outline: none;
         }
-        .search-bar:focus { border-color: var(--xbox-neon); }
+        .search-bar:focus { border-color: var(--primary-color); }
         
         .categories {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         .cat-btn {
             background-color: var(--bg-card);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 6px 15px;
+            padding: 8px 18px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             transition: 0.3s;
         }
         .cat-btn.active, .cat-btn:hover {
-            background-color: var(--xbox-neon);
+            background-color: var(--primary-color);
             color: #000;
-            border-color: var(--xbox-neon);
+            border-color: var(--primary-color);
             font-weight: bold;
         }
-
-        .section-title {
-            text-align: center;
-            font-size: 18px;
-            color: var(--text-light);
-            margin: 20px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .section-title::before, .section-title::after {
-            content: "";
-            height: 1px;
-            background-color: var(--border-color);
-            flex-grow: 0.1;
-        }
-        .section-title span { color: var(--xbox-neon); }
 
         /* GRID DE JOGOS */
         main {
             flex: 1;
-            padding: 0 15px 40px;
-            max-width: 1200px;
+            padding: 0 20px 40px;
+            max-width: 1300px;
             margin: 0 auto;
             width: 100%;
         }
         .grid-container {
             display: grid;
-            /* Grid super responsivo, mínimo de 110px para telas pequenas parecerem com a foto */
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
         }
         .game-card {
             background-color: var(--bg-card);
@@ -265,12 +244,13 @@
             overflow: hidden;
             cursor: pointer;
             position: relative;
-            border: 1px solid transparent;
-            transition: border-color 0.2s, transform 0.2s;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
         }
         .game-card:hover {
-            border-color: var(--xbox-neon);
-            transform: translateY(-3px);
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         .game-cover {
             background: linear-gradient(to bottom, #2a3441, #0f1318);
@@ -278,34 +258,34 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 2px solid var(--xbox-neon);
+            border-bottom: 3px solid var(--primary-color);
             position: relative;
         }
         .game-cover-text {
             writing-mode: vertical-rl;
             text-orientation: mixed;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 900;
-            color: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.2);
             letter-spacing: 5px;
         }
         .tag-novo {
             position: absolute;
-            top: 5px;
-            left: 5px;
+            top: 8px;
+            left: 8px;
             background-color: var(--tag-novo);
             color: #000;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
-            padding: 2px 5px;
-            border-radius: 3px;
+            padding: 3px 8px;
+            border-radius: 4px;
         }
         .game-info {
-            padding: 10px;
+            padding: 12px;
             text-align: center;
         }
         .game-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
             margin-bottom: 5px;
             color: var(--text-light);
@@ -314,97 +294,108 @@
             text-overflow: ellipsis;
         }
         .game-cat {
-            font-size: 11px;
-            color: var(--xbox-neon);
+            font-size: 12px;
+            color: var(--primary-color);
         }
 
-        /* MODAL (Mantido e adaptado pro tema dark) */
+        /* MODAL DE DETALHES (Agora bem mais largo) */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.85);
             display: none; justify-content: center; align-items: center;
-            z-index: 300; padding: 15px;
+            z-index: 300; padding: 20px;
         }
         .modal-overlay.active { display: flex; }
         .modal-content {
-            background: var(--bg-header); padding: 25px; border-radius: 10px;
-            max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
-            position: relative; border: 1px solid var(--xbox-neon);
+            background: var(--bg-header); 
+            padding: 40px; 
+            border-radius: 12px;
+            max-width: 800px; /* Aba bem maior */
+            width: 100%; 
+            max-height: 90vh; 
+            overflow-y: auto;
+            position: relative; 
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
         .close-btn {
-            position: absolute; top: 15px; right: 15px; font-size: 24px;
+            position: absolute; top: 15px; right: 20px; font-size: 30px;
             cursor: pointer; color: var(--text-muted);
+            transition: color 0.2s;
         }
-        .btn-wa-modal {
-            display: block; width: 100%; padding: 12px;
-            background-color: #25D366; color: #fff; text-align: center;
-            border-radius: 5px; font-weight: bold; margin-top: 20px;
-            border: none; cursor: pointer; font-size: 14px;
+        .close-btn:hover { color: var(--primary-color); }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        /* FOOTER & PAGINAÇÃO */
-        .pagination {
-            display: flex; justify-content: center; gap: 5px; margin-top: 30px;
-        }
-        .page-btn {
-            background: var(--bg-card); color: var(--text-muted);
-            border: 1px solid var(--border-color); padding: 5px 10px;
-            border-radius: 5px; cursor: pointer; font-size: 12px;
-        }
-        .page-btn.active { background: var(--xbox-neon); color: #000; border-color: var(--xbox-neon); font-weight: bold;}
+        .m-header h2 { color: var(--text-light); font-size: 28px; margin-bottom: 5px; }
+        .m-header .cat { color: var(--primary-color); font-weight: bold; font-size: 14px; text-transform: uppercase; }
         
-        footer {
-            background-color: var(--bg-header); padding: 30px 20px;
-            text-align: center; border-top: 1px solid var(--border-color);
-            margin-top: auto; font-size: 12px; color: var(--text-muted);
+        .m-details p { color: var(--text-muted); font-size: 16px; margin-bottom: 10px; }
+        .m-details strong { color: var(--text-light); }
+        
+        .m-desc {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1.6;
         }
+
+        .btn-wa-modal {
+            display: block; width: 100%; padding: 15px;
+            background-color: #25D366; color: #fff; text-align: center;
+            border-radius: 8px; font-weight: bold; margin-top: 30px;
+            border: none; cursor: pointer; font-size: 16px;
+            transition: transform 0.2s;
+        }
+        .btn-wa-modal:hover { transform: scale(1.02); }
 
         /* FAB WHATSAPP */
         .fab {
             position: fixed; bottom: 25px; right: 25px;
             background-color: #25D366; color: white;
-            width: 50px; height: 50px; border-radius: 50%;
+            width: 60px; height: 60px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            font-size: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             cursor: pointer; z-index: 150; text-decoration: none;
+            transition: transform 0.2s;
         }
+        .fab:hover { transform: scale(1.1); }
 
         /* MENUS LATERAIS */
         .side-menu {
-            position: fixed; top: 0; bottom: 0; width: 280px; max-width: 80vw;
+            position: fixed; top: 0; bottom: 0; width: 300px; max-width: 80vw;
             background-color: var(--bg-header); border-right: 1px solid var(--border-color);
-            padding: 20px; transform: translateX(-100%); transition: 0.3s ease;
-            z-index: 200; overflow-y: auto; box-shadow: 5px 0 15px rgba(0,0,0,0.8);
+            padding: 30px 20px; transform: translateX(-100%); transition: 0.3s ease;
+            z-index: 200; overflow-y: auto; box-shadow: 5px 0 20px rgba(0,0,0,0.7);
         }
         .side-menu.right { left: auto; right: 0; border-right: none; border-left: 1px solid var(--border-color); transform: translateX(100%); }
         .side-menu.open { transform: translateX(0); }
-        .side-menu h3 { color: var(--text-light); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; }
+        .side-menu h3 { color: var(--text-light); border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 20px; }
         .side-menu ul { list-style: none; }
-        .side-menu li { margin-bottom: 15px; font-size: 14px; color: var(--text-muted); }
+        .side-menu li { margin-bottom: 15px; font-size: 15px; color: var(--text-muted); cursor: pointer; }
+        .side-menu li:hover { color: var(--primary-color); }
 
-        /* RESPONSIVIDADE EXTRA */
-        @media (max-width: 480px) {
-            .grid-container { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
-            .game-title { font-size: 11px; }
-            .game-cat { font-size: 10px; }
-            .stats { flex-direction: column; gap: 5px; align-items: center; }
-        }
-        @media (min-width: 1024px) {
-            .grid-container { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        /* RESPONSIVIDADE */
+        @media (max-width: 600px) {
+            .grid-container { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+            .hero h1 { font-size: 26px; }
+            .modal-content { padding: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- TICKER -->
-    <div class="ticker-wrap">
-        <div class="ticker-title">⚡ RECENTES</div>
-        <div class="ticker-content">
-            <span>• PES 2026 (Atualização AGOSTO/2026)</span>
-            <span>• FIFA 26 (Endrick no Lyon)</span>
-            <span>• Red Dead Redemption (Complete Edition)</span>
-            <span>• 10k Jogos Emuladores SNES/PS1</span>
-        </div>
+    <!-- SELETOR DE TEMAS -->
+    <div class="theme-selector">
+        <button class="theme-btn" onclick="setTheme('xbox')">TEMA: XBOX (Padrão)</button>
+        <button class="theme-btn" onclick="setTheme('soft')">TEMA: SOFT (Claro)</button>
+        <button class="theme-btn" onclick="setTheme('agressivo')">TEMA: AGRESSIVO</button>
     </div>
 
     <!-- CABEÇALHO -->
@@ -416,49 +407,42 @@
         </div>
     </header>
 
-    <!-- MENUS -->
+    <!-- MENUS LATERAIS -->
     <aside id="infoMenu" class="side-menu">
-        <span class="close-btn" onclick="toggleMenu('infoMenu')">×</span>
-        <h3>Menu Institucional</h3>
+        <span class="close-btn" style="top: 10px; right: 15px;" onclick="toggleMenu('infoMenu')">×</span>
+        <h3>Institucional</h3>
         <ul>
             <li>Sobre a RNC GAMES</li>
             <li>Horários de Atendimento</li>
             <li>Regiões Atendidas</li>
             <li>Suporte Técnico</li>
+            <li>Política de Devolução</li>
         </ul>
     </aside>
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION (Logo e Nome) -->
     <section class="hero">
         <div class="hero-logo-img"></div>
-        <h1>XBOX <span>360</span></h1>
-        <p>COLEÇÃO DIGITAL</p>
-        
-        <div class="stats">
-            <div class="stat-badge">🎮 <strong>458</strong> jogos</div>
-            <div class="stat-badge">🔥 <strong>12</strong> gêneros</div>
-            <div class="stat-badge">🕹️ <strong>+15 mil</strong> jogos retro</div>
-        </div>
-
-        <button class="btn-hero">🔥 JOGOS MAIS BAIXADOS</button>
+        <h1>
+            <span class="title-rnc">RNC</span> 
+            <span class="title-games">GAMES</span> 
+            <span class="title-360">360</span>
+        </h1>
+        <p>A Maior Coleção Digital</p>
     </section>
 
     <!-- BUSCA E FILTROS -->
     <section class="filters-section">
-        <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Buscar jogo..." onkeyup="filterGames()">
+        <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Buscar por título do jogo..." onkeyup="filterGames()">
         
         <div class="categories" id="categoryFilters">
-            <button class="cat-btn active" onclick="setCategory('Todos')">All <span>458</span></button>
+            <button class="cat-btn active" onclick="setCategory('Todos')">Todos</button>
             <button class="cat-btn" onclick="setCategory('Ação')">Ação</button>
             <button class="cat-btn" onclick="setCategory('Aventura')">Aventura</button>
             <button class="cat-btn" onclick="setCategory('Esportes')">Esportes</button>
             <button class="cat-btn" onclick="setCategory('FPS')">FPS</button>
             <button class="cat-btn" onclick="setCategory('Luta')">Luta</button>
             <button class="cat-btn" onclick="setCategory('Terror')">Terror</button>
-        </div>
-
-        <div class="section-title">
-            <span>✦</span> JOGOS ADICIONADOS ESSA SEMANA <span>✦</span>
         </div>
     </section>
 
@@ -467,67 +451,139 @@
         <div class="grid-container" id="gamesGrid">
             <!-- Injetado pelo JS -->
         </div>
-
-        <!-- Paginação Simbólica -->
-        <div class="pagination">
-            <button class="page-btn">‹</button>
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-            <button class="page-btn">...</button>
-            <button class="page-btn">31</button>
-            <button class="page-btn">›</button>
-        </div>
     </main>
 
     <!-- MODAL DE DETALHES -->
     <div class="modal-overlay" id="gameModal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-btn" onclick="document.getElementById('gameModal').classList.remove('active')">×</span>
-            <h2 id="m-title" style="margin-bottom: 5px; color: var(--text-light);">Nome</h2>
-            <p id="m-cat" style="color: var(--xbox-neon); font-size: 12px; margin-bottom: 15px;"></p>
             
-            <div style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">
-                <p><strong>Lançamento:</strong> <span id="m-date"></span></p>
-                <p><strong>Status:</strong> <span id="m-status"></span></p>
-                <p><strong>Valor:</strong> <span id="m-price" style="font-size: 18px; color: var(--text-light); font-weight: bold;"></span></p>
-                <p style="margin-top: 15px;" id="m-desc"></p>
+            <div class="modal-body">
+                <div class="m-header">
+                    <h2 id="m-title">Nome do Jogo</h2>
+                    <span class="cat" id="m-cat">Categoria</span>
+                </div>
+                
+                <div class="m-details">
+                    <p><strong>Lançamento Original:</strong> <span id="m-date"></span></p>
+                    <p><strong>Formato:</strong> <span id="m-status"></span></p>
+                    <p><strong>Valor:</strong> <span id="m-price" style="font-size: 22px; color: var(--primary-color); font-weight: bold;"></span></p>
+                </div>
+
+                <div class="m-desc" id="m-desc">
+                    <!-- Descrição completa do jogo vai aqui -->
+                </div>
+
+                <button class="btn-wa-modal" onclick="alert('Redirecionando para o WhatsApp do vendedor...')">
+                    Dúvidas? Comprar via WhatsApp
+                </button>
             </div>
-            <button class="btn-wa-modal" onclick="alert('Iniciando atendimento WhatsApp...')">
-                Dúvidas? Falar com Atendente (WhatsApp)
-            </button>
         </div>
     </div>
 
     <!-- FAB WHATSAPP -->
     <a href="#" class="fab" title="Atendimento WhatsApp">
-        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        💬
     </a>
-
-    <footer>
-        <p>XBOX 360 - COLEÇÃO DIGITAL</p>
-        <p>© 2026 RNC GAMES. Todos os direitos reservados.</p>
-    </footer>
 
     <!-- LÓGICA JAVASCRIPT -->
     <script>
+        // Função de Troca de Tema
+        function setTheme(theme) {
+            if (theme === 'xbox') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+        }
+
         // Menu toggle
         function toggleMenu(id) {
             document.getElementById(id).classList.toggle('open');
         }
 
-        // Base de Dados (Expandida para o Filtro funcionar)
+        // Base de Dados Completa com Descrições Detalhadas
         const games = [
-            { title: "PES 2026 (Atualizado Agosto)", cat: "Esportes", price: "R$ 30,00", desc: "Patch super atualizado com transferências de agosto/2026.", tag: "Novo" },
-            { title: "Crysis 1 (PT-BR)", cat: "FPS", price: "R$ 25,00", desc: "O clássico que derreteu PCs, agora dublado.", tag: "Novo" },
-            { title: "Split/Second", cat: "Ação", price: "R$ 40,00", desc: "Corrida explosiva no estilo arcade.", tag: "" },
-            { title: "Devil May Cry 4 (PT-BR)", cat: "Luta", price: "R$ 35,00", desc: "Hack and Slash frenético com Nero e Dante.", tag: "Novo" },
-            { title: "Mortal Kombat 9 (Mods)", cat: "Luta", price: "R$ 45,00", desc: "Versão com todos os personagens liberados e chefes jogáveis.", tag: "" },
-            { title: "Red Dead Redemption", cat: "Aventura", price: "R$ 60,00", desc: "Complete Edition com Undead Nightmare.", tag: "" },
-            { title: "Alien Isolation (Dublado)", cat: "Terror", price: "R$ 50,00", desc: "Sobreviva ao Xenomorfo nesta obra-prima do terror.", tag: "Novo" },
-            { title: "Alan Wake (Legendado)", cat: "Terror", price: "R$ 30,00", desc: "A luz é sua principal arma neste thriller psicológico.", tag: "" },
-            { title: "007 GoldenEye Reloaded", cat: "Ação", price: "R$ 35,00", desc: "Remake do clássico de N64 com gráficos modernos.", tag: "Novo" },
-            { title: "Disney Pixar: UP", cat: "Aventura", price: "R$ 20,00", desc: "Jogo leve e divertido baseado na animação.", tag: "Novo" }
+            { 
+                title: "PES 2026 (Atualizado Agosto)", 
+                cat: "Esportes", 
+                price: "R$ 30,00", 
+                date: "2026",
+                desc: "Viva a emoção do futebol com o patch mais recente e atualizado do mercado! O PES 2026 traz todas as transferências do fechamento da janela europeia de agosto, novos uniformes, faces realistas em HD e estádios exclusivos. Ideal para jogar Master League ou campeonatos com os amigos. Compatível com consoles destravados.", 
+                tag: "Novo" 
+            },
+            { 
+                title: "Crysis 1 (PT-BR)", 
+                cat: "FPS", 
+                price: "R$ 25,00", 
+                date: "2007",
+                desc: "O jogo que redefiniu os gráficos de uma geração inteira está de volta. Vista a Nanosuit e utilize habilidades de força, velocidade, armadura e camuflagem para sobreviver a uma ilha dominada por alienígenas e mercenários. Esta versão conta com dublagem e legendas totalmente em Português do Brasil, proporcionando máxima imersão.", 
+                tag: "Novo" 
+            },
+            { 
+                title: "Split/Second", 
+                cat: "Ação", 
+                price: "R$ 40,00", 
+                date: "2010",
+                desc: "Esqueça as corridas tradicionais. Em Split/Second, você participa de um reality show de TV onde o objetivo é destruir o cenário para eliminar seus oponentes. Derrube aviões, exploda pontes e altere o traçado da pista em tempo real enquanto pilota em alta velocidade. Diversão garantida no modo tela dividida.", 
+                tag: "" 
+            },
+            { 
+                title: "Devil May Cry 4 (PT-BR)", 
+                cat: "Luta", 
+                price: "R$ 35,00", 
+                date: "2008",
+                desc: "Mergulhe no universo gótico e frenético de Devil May Cry controlando Nero, um jovem cavaleiro com um braço demoníaco, e o lendário caçador de demônios, Dante. Faça combos aéreos absurdos, colete orbs e destrua chefes gigantescos ao som de muito heavy metal. Versão legendada em PT-BR.", 
+                tag: "Novo" 
+            },
+            { 
+                title: "Mortal Kombat 9 (Mods)", 
+                cat: "Luta", 
+                price: "R$ 45,00", 
+                date: "2011",
+                desc: "A versão definitiva do clássico moderno que reiniciou a franquia. Este pacote especial (Modificado) inclui todos os personagens de DLC (Shao Kahn, Kintaro, Goro e Motaro jogáveis), skins clássicas e modo história completo. O combate 2D sangrento e os Fatalities clássicos nunca foram tão brutais.", 
+                tag: "" 
+            },
+            { 
+                title: "Red Dead Redemption", 
+                cat: "Aventura", 
+                price: "R$ 60,00", 
+                date: "2010",
+                desc: "A obra-prima da Rockstar Games que te coloca na pele de John Marston, um ex-fora da lei forçado a caçar seus antigos parceiros de gangue pelo governo federal. Explore um vasto mundo aberto no faroeste. Acompanha a expansão Undead Nightmare, transformando o velho oeste num apocalipse zumbi.", 
+                tag: "" 
+            },
+            { 
+                title: "Alien Isolation (Dublado)", 
+                cat: "Terror", 
+                price: "R$ 50,00", 
+                date: "2014",
+                desc: "Descubra o verdadeiro significado de medo. Quinze anos após os eventos do primeiro filme Alien, Amanda Ripley, filha de Ellen Ripley, entra em uma batalha desesperada por sobrevivência contra um Xenomorfo letal que aprende os seus movimentos. Jogo 100% dublado em Português.", 
+                tag: "Novo" 
+            },
+            { 
+                title: "Alan Wake (Legendado)", 
+                cat: "Terror", 
+                price: "R$ 30,00", 
+                date: "2010",
+                desc: "Um thriller de ação psicológica onde a luz é sua única arma. O escritor Alan Wake vai para a pacata cidade de Bright Falls procurar sua esposa desaparecida, mas logo percebe que as páginas de um livro de terror que ele não lembra de ter escrito estão ganhando vida durante a noite.", 
+                tag: "" 
+            },
+            { 
+                title: "007 GoldenEye Reloaded", 
+                cat: "Ação", 
+                price: "R$ 35,00", 
+                date: "2011",
+                desc: "A recriação moderna do maior clássico de tiro do Nintendo 64. Jogabilidade fluida, gráficos melhorados e a presença de Daniel Craig como James Bond. Uma campanha eletrizante de espionagem e um modo multiplayer local focado na nostalgia para jogar com até 4 amigos na mesma tela.", 
+                tag: "Novo" 
+            },
+            { 
+                title: "Disney Pixar: UP", 
+                cat: "Aventura", 
+                price: "R$ 20,00", 
+                date: "2009",
+                desc: "Junte-se ao ranzinza Carl Fredricksen e ao jovem explorador Russell em uma jornada maluca até o Paraíso das Cachoeiras. Um jogo leve de plataforma, com puzzles divertidos e cooperação, ideal para jogar com crianças ou para relaxar relembrando um dos filmes mais emocionantes da Pixar.", 
+                tag: "Novo" 
+            }
         ];
 
         let currentCategory = 'Todos';
@@ -535,10 +591,10 @@
         // Renderizar Grid
         function renderGames(lista) {
             const grid = document.getElementById('gamesGrid');
-            grid.innerHTML = ''; // Limpa antes de renderizar
+            grid.innerHTML = ''; 
             
             if(lista.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Nenhum jogo encontrado.</p>';
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 18px; margin-top: 20px;">Nenhum jogo encontrado para esta busca.</p>';
                 return;
             }
 
@@ -546,7 +602,8 @@
                 const tagHtml = game.tag ? `<div class="tag-novo">${game.tag}</div>` : '';
                 const card = document.createElement('div');
                 card.className = 'game-card';
-                // Usando o array original para abrir o modal correto independente do filtro
+                
+                // Mapear o index real no array principal para o modal sempre abrir o jogo certo
                 const originalIndex = games.indexOf(game); 
                 card.onclick = () => openModal(originalIndex);
                 
@@ -568,10 +625,9 @@
         function setCategory(cat) {
             currentCategory = cat;
             
-            // Atualiza botões visuais
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if(btn.innerText.includes(cat) || (cat === 'Todos' && btn.innerText.includes('All'))) {
+                if(btn.innerText.includes(cat) || (cat === 'Todos' && btn.innerText === 'Todos')) {
                     btn.classList.add('active');
                 }
             });
@@ -602,25 +658,24 @@
             const game = games[index];
             document.getElementById('m-title').innerText = game.title;
             document.getElementById('m-cat').innerText = game.cat;
-            document.getElementById('m-date').innerText = "2026"; // Genérico para o mockup
-            document.getElementById('m-status').innerText = "Mídia Digital";
+            document.getElementById('m-date').innerText = game.date;
+            document.getElementById('m-status').innerText = "Mídia Digital / Envio Imediato";
             document.getElementById('m-price').innerText = game.price;
             document.getElementById('m-desc').innerText = game.desc;
             
             document.getElementById('gameModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // Evita rolar a página por trás do modal
         }
 
         function closeModal(event) {
             if(event.target.id === 'gameModal' || event.target.className === 'close-btn') {
                 document.getElementById('gameModal').classList.remove('active');
-                document.body.style.overflow = 'auto';
+                document.body.style.overflow = 'auto'; // Restaura rolagem
             }
         }
 
-        // Iniciar com todos os jogos
+        // Iniciar com todos os jogos carregados
         renderGames(games);
     </script>
 </body>
 </html>
- 
