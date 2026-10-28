@@ -92,19 +92,22 @@ function updateRoleView() {
 // CONFIGURAÇÃO DOS GRÁFICOS (Chart.js)
 // ==========================================
 function initCharts() {
-    // Destrói gráficos antigos se existirem (ex: ao trocar de filial)
+    const canvasRev = document.getElementById('revenueChart');
+    const canvasStock = document.getElementById('stockChart');
+    
+    // Proteção: só avança se os gráficos existirem no HTML
+    if (!canvasRev || !canvasStock) return;
+
     if(revenueChartInstance) revenueChartInstance.destroy();
     if(stockChartInstance) stockChartInstance.destroy();
 
     // 1. Gráfico de Linha (Faturamento)
-    const ctxRev = document.getElementById('revenueChart').getContext('2d');
+    const ctxRev = canvasRev.getContext('2d');
     
-    // Cria um efeito de degradê azul abaixo da linha
     let gradient = ctxRev.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, 'rgba(2, 132, 199, 0.4)'); // Azul StockGuard
+    gradient.addColorStop(0, 'rgba(2, 132, 199, 0.4)'); 
     gradient.addColorStop(1, 'rgba(2, 132, 199, 0.0)');
 
-    // Gera números aleatórios baseados na filial para o dashboard parecer "vivo"
     const randomData = Array.from({length: 7}, () => Math.floor(Math.random() * (160000 - 90000) + 90000));
 
     revenueChartInstance = new Chart(ctxRev, {
@@ -122,7 +125,7 @@ function initCharts() {
                 pointBorderWidth: 2,
                 pointRadius: 4,
                 fill: true,
-                tension: 0.4 // Deixa a linha curvada/suave
+                tension: 0.4
             }]
         },
         options: {
@@ -146,9 +149,8 @@ function initCharts() {
     });
 
     // 2. Gráfico de Rosca (Saúde do Estoque)
-    const ctxStock = document.getElementById('stockChart').getContext('2d');
+    const ctxStock = canvasStock.getContext('2d');
     
-    // Randomiza pequenos defeitos no estoque só para teste
     const randomLow = Math.floor(Math.random() * 60) + 10;
     const randomNeg = Math.floor(Math.random() * 20) + 2;
     const randomGhost = Math.floor(Math.random() * 150) + 50;
@@ -156,15 +158,10 @@ function initCharts() {
     stockChartInstance = new Chart(ctxStock, {
         type: 'doughnut',
         data: {
-            labels: ['Estoque Saudável', 'Baixo', 'Negativo', 'Fantasma'],
+            labels: ['Saudável', 'Baixo', 'Negativo', 'Fantasma'],
             datasets: [{
                 data: [3452, randomLow, randomNeg, randomGhost],
-                backgroundColor: [
-                    '#10b981', // Verde Sucesso
-                    '#f59e0b', // Laranja Aviso
-                    '#ef4444', // Vermelho Perigo
-                    '#64748b'  // Cinza Fantasma
-                ],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#64748b'],
                 borderWidth: 0,
                 hoverOffset: 4
             }]
@@ -172,7 +169,7 @@ function initCharts() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '75%', // Espessura da rosca
+            cutout: '70%',
             plugins: {
                 legend: { 
                     position: 'bottom',
