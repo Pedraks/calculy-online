@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockGuard - Gestão de Estoque</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Adicionado: Biblioteca Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Tela de Login -->
+    <section id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="brand-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-box box-base"></i>
+                    <i class="fas fa-lock lock-overlay"></i>
+                </div>
+                <h1>StockGuard</h1>
+                <p>Plataforma de Gestão de Produtos</p>
+            </div>
+
+            <div class="login-actions">
+                <div class="qrcode-box">
+                    <p>Escaneie para acessar via Celular</p>
+                    <div id="qrcode-display"></div>
+                </div>
+
+                <div class="buttons-container">
+                    <button class="btn btn-primary" onclick="login('admin')">Acesso Administrador</button>
+                    <button class="btn btn-secondary" onclick="login('view')">Acesso Visualização (Lojas)</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tela do Dashboard -->
+    <section id="dashboard-screen" class="screen">
+        <div id="overlay" onclick="closeAllMenus()"></div>
+
+        <header class="topbar">
+            <button class="menu-btn" onclick="toggleMenu('left-sidebar')">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="branch-selector" onclick="toggleBranchMenu(event)">
+                <span id="current-branch-text">Loja: Filial MAX Centro</span> <i class="fas fa-chevron-down"></i>
+                <div id="branch-dropdown" class="branch-dropdown">
+                    <a href="#" onclick="selectBranch('Filial MAX Centro')">Filial MAX Centro</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Sul')">Filial MAX Sul</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Norte')">Filial MAX Norte</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Leste')">Filial MAX Leste</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Oeste')">Filial MAX Oeste</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Shopping')">Filial MAX Shopping</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Aeroporto')">Filial MAX Aeroporto</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Express')">Filial MAX Express</a>
+                </div>
+            </div>
+
+            <button class="profile-btn" onclick="toggleMenu('right-sidebar')">
+                <img src="https://ui-avatars.com/api/?name=Maximus+Ferrari+Scoutt&background=0D8ABC&color=fff" alt="Perfil" class="avatar">
+            </button>
+        </header>
+
+        <main class="dashboard-content">
+            <h2 class="page-title">Dashboard de Gestão</h2>
+            
+            <!-- Cards de Informação -->
+            <div class="cards-grid">
+                <div class="card info-card">
+                    <p class="card-label">Receita do Dia</p>
+                    <h3 class="card-value">R$ 145.890,50</h3>
+                    <span class="trend up"><i class="fas fa-arrow-trend-up"></i> +12% vs. Ontem</span>
+                </div>
+                <div class="card info-card">
+                    <p class="card-label">Vendas Totais</p>
+                    <h3 class="card-value">3.452 <i class="fas fa-shopping-cart card-icon-right"></i></h3>
+                </div>
+                <div class="card warning-card">
+                    <p class="card-label">Estoque Baixo</p>
+                    <h3 class="card-value">42 itens <i class="fas fa-triangle-exclamation text-warning"></i></h3>
+                </div>
+                <div class="card danger-card">
+                    <p class="card-label">Estoque Negativo (-1 ou menos)</p>
+                    <h3 class="card-value text-danger">15 itens <i class="fas fa-circle-xmark"></i></h3>
+                </div>
+                <div class="card ghost-card">
+                    <p class="card-label">Estoque Fantasma (> 90d)</p>
+                    <h3 class="card-value">118 itens <i class="fas fa-ghost"></i></h3>
+                </div>
+                <div class="card alert-card">
+                    <p class="card-label">Perto do Vencimento</p>
+                    <h3 class="card-value">27 itens <i class="fas fa-calendar-times text-warning"></i></h3>
+                </div>
+            </div>
+
+            <!-- NOVA SEÇÃO: Gráficos -->
+            <div class="charts-grid">
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h4>Receita: Últimos 7 Dias</h4>
+                        <span class="trend up"><i class="fas fa-arrow-trend-up"></i> Desempenho da Filial Atual</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h4>Saúde do Estoque</h4>
+                        <p style="font-size: 12px; color: var(--text-light); margin-top: 5px;">Distribuição total de itens</p>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="stockChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="floating-actions left-bottom">
+            <button class="float-btn help-btn" title="Ajuda FAQ"><i class="fas fa-question"></i></button>
+            <button class="float-btn exit-btn" title="Sair" onclick="logout()"><i class="fas fa-door-open"></i></button>
+        </div>
+
+        <aside id="left-sidebar" class="sidebar left">
+            <div class="sidebar-header">
+                <div class="logo-icon small">
+                    <i class="fas fa-box box-base"></i>
+                    <i class="fas fa-lock lock-overlay"></i>
+                </div>
+                <h2>StockGuard</h2>
+                <button class="close-btn" onclick="closeAllMenus()"><i class="fas fa-times"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="active"><i class="fas fa-chart-line icon-left"></i> <span class="link-text">Dashboard</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-cart-plus icon-left"></i> <span class="link-text">Lançar pedido</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-box-open icon-left"></i> <span class="link-text">Cadastrar/Excluir produtos</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-shield-alt icon-left"></i> <span class="link-text">Prevenção de perdas</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-file-invoice-dollar icon-left"></i> <span class="link-text">Notas fiscais</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-store icon-left"></i> <span class="link-text">Filiais</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-chart-pie icon-left"></i> <span class="link-text">Faturamento</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>Versão 1.3.0</p>
+            </div>
+        </aside>
+
+        <aside id="right-sidebar" class="sidebar right">
+            <div class="sidebar-header right-align">
+                <button class="close-btn" onclick="closeAllMenus()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="profile-header">
+                <img src="https://ui-avatars.com/api/?name=Maximus+Ferrari+Scoutt&background=0D8ABC&color=fff&size=80" alt="Maximus">
+                <h2>Maximus Ferrari Scoutt</h2>
+                <p class="email">scouttmaximus@stockguard.com</p>
+                <p class="role" id="profile-branch-text">Administrador • Filial MAX Centro</p>
+            </div>
+            <nav class="sidebar-nav profile-links">
+                <a href="#"><i class="fas fa-user-pen icon-left"></i> <span class="link-text">Alterar dados</span> <i class="fas fa-chevron-right arrow"></i></a>
+                <a href="#"><i class="fas fa-lock icon-left"></i> <span class="link-text">Privacidade/Segurança</span> <i class="fas fa-chevron-right arrow"></i></a>
+                <a href="#"><i class="fas fa-bell icon-left"></i> <span class="link-text">Notificações</span> <i class="fas fa-chevron-right arrow"></i></a>
+                <a href="#"><i class="fas fa-gear icon-left"></i> <span class="link-text">Config. do app</span> <i class="fas fa-chevron-right arrow"></i></a>
+            </nav>
+            <div class="sidebar-footer profile-footer">
+                <a href="#" class="logout-link" onclick="logout()"><i class="fas fa-sign-out-alt icon-left"></i> Sair da conta</a>
+                <p>Versão 1.3.0</p>
+            </div>
+        </aside>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
