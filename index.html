@@ -171,6 +171,100 @@
             </div>
         </aside>
     </section>
+    <!-- TELA DE LANÇAR PEDIDOS -->
+    <section id="order-screen" class="screen">
+        <header class="topbar">
+            <button class="menu-btn" onclick="toggleMenu('left-sidebar')"><i class="fas fa-bars"></i></button>
+            <div class="branch-selector"><span>Nova Ordem de Compra</span></div>
+            <button class="profile-btn" onclick="toggleMenu('right-sidebar')">
+                <img src="https://ui-avatars.com/api/?name=Maximus+Ferrari+Scoutt&background=0D8ABC&color=fff" alt="Perfil" class="avatar">
+            </button>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="order-header-actions">
+                <h2 class="page-title">Catálogo de Fornecedores</h2>
+                <button class="btn btn-warning" onclick="showLowStockAlert()">
+                    <i class="fas fa-exclamation-triangle"></i> Ver Alertas de Estoque Baixo
+                </button>
+            </div>
+
+            <!-- Lista de Fornecedores -->
+            <div class="suppliers-grid" id="suppliers-container">
+                <!-- Injetado via JavaScript -->
+            </div>
+            
+            <div class="order-footer">
+                <div class="order-total">Total Estimado: <span id="total-order-price">R$ 0,00</span></div>
+                <button class="btn btn-primary btn-large" onclick="generateInvoice()"><i class="fas fa-file-invoice"></i> Emitir Pedido / Nota Fiscal</button>
+            </div>
+        </main>
+
+        <!-- Modal Alerta Estoque Baixo -->
+        <div id="low-stock-modal" class="custom-modal">
+            <div class="modal-content">
+                <div class="modal-header warning-header">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Produtos com Estoque Crítico</h3>
+                    <button onclick="closeModal('low-stock-modal')"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="alert-list">
+                        <li><strong>Arroz Branco 5kg</strong> (AgroSul Alimentos) - <em>Restam: 2 un</em></li>
+                        <li><strong>Leite Integral 1L</strong> (Laticínios Vale) - <em>Restam: -1 un (Negativo)</em></li>
+                        <li><strong>Refrigerante Cola 2L</strong> (Bebidas Máxima) - <em>Restam: 5 un</em></li>
+                    </ul>
+                    <p class="mt-2 text-light">Dica: Priorize o pedido destes itens com seus respectivos fornecedores.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Nota Fiscal -->
+        <div id="invoice-modal" class="custom-modal">
+            <div class="modal-content invoice-paper">
+                <div class="invoice-header">
+                    <div class="invoice-title">DOCUMENTO AUXILIAR DE NOTA FISCAL DE COMPRA</div>
+                    <button class="hide-print" onclick="closeModal('invoice-modal')"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="invoice-body">
+                    <div class="invoice-section border-box">
+                        <strong>DESTINATÁRIO / COMPRADOR</strong><br>
+                        Razão Social: REDE MAX SUPERMERCADOS LTDA<br>
+                        CNPJ: 45.999.000/0001-99<br>
+                        Responsável pela Compra: Maximus Ferrari Scoutt (Admin)
+                    </div>
+                    
+                    <div class="invoice-section border-box mt-1">
+                        <strong>DADOS DA EMISSÃO</strong><br>
+                        Data: <span id="inv-date"></span><br>
+                        Natureza da Operação: Compra para Comercialização
+                    </div>
+
+                    <table class="invoice-table mt-2">
+                        <thead>
+                            <tr>
+                                <th>FORNECEDOR (CNPJ)</th>
+                                <th>PRODUTO</th>
+                                <th>QTD</th>
+                                <th>V. UNIT</th>
+                                <th>V. TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoice-items">
+                            <!-- Injetado via JS -->
+                        </tbody>
+                    </table>
+
+                    <div class="invoice-total border-box mt-2">
+                        <strong>VALOR TOTAL DA NOTA: </strong> <span id="inv-total-price"></span>
+                    </div>
+                </div>
+                <div class="invoice-footer hide-print mt-2">
+                    <button class="btn btn-secondary" onclick="window.print()"><i class="fas fa-print"></i> Imprimir NF</button>
+                    <button class="btn btn-primary" onclick="confirmOrder()"><i class="fas fa-check"></i> Confirmar e Fechar</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script src="script.js"></script>
 </body>
