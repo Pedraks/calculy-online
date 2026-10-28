@@ -46,9 +46,22 @@
             <button class="menu-btn" onclick="toggleMenu('left-sidebar')">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="branch-selector">
-                <span>Loja: Filial MAX Centro <i class="fas fa-chevron-down"></i></span>
+            
+            <!-- Seletor de Filiais Dropdown -->
+            <div class="branch-selector" onclick="toggleBranchMenu(event)">
+                <span id="current-branch-text">Loja: Filial MAX Centro</span> <i class="fas fa-chevron-down"></i>
+                <div id="branch-dropdown" class="branch-dropdown">
+                    <a href="#" onclick="selectBranch('Filial MAX Centro')">Filial MAX Centro</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Sul')">Filial MAX Sul</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Norte')">Filial MAX Norte</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Leste')">Filial MAX Leste</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Oeste')">Filial MAX Oeste</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Shopping')">Filial MAX Shopping</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Aeroporto')">Filial MAX Aeroporto</a>
+                    <a href="#" onclick="selectBranch('Filial MAX Express')">Filial MAX Express</a>
+                </div>
             </div>
+
             <button class="profile-btn" onclick="toggleMenu('right-sidebar')">
                 <img src="https://ui-avatars.com/api/?name=Maximus+Ferrari+Scoutt&background=0D8ABC&color=fff" alt="Perfil" class="avatar">
             </button>
@@ -87,13 +100,13 @@
             </div>
         </main>
 
-        <!-- Botões Flutuantes (Canto Inferior Esquerdo) -->
+        <!-- Botões Flutuantes -->
         <div class="floating-actions left-bottom">
             <button class="float-btn help-btn" title="Ajuda FAQ"><i class="fas fa-question"></i></button>
             <button class="float-btn exit-btn" title="Sair" onclick="logout()"><i class="fas fa-door-open"></i></button>
         </div>
 
-        <!-- Menu Lateral Esquerdo (Navegação) -->
+        <!-- Menu Lateral Esquerdo -->
         <aside id="left-sidebar" class="sidebar left">
             <div class="sidebar-header">
                 <div class="logo-icon small">
@@ -104,13 +117,13 @@
                 <button class="close-btn" onclick="closeAllMenus()"><i class="fas fa-times"></i></button>
             </div>
             <nav class="sidebar-nav">
-                <a href="#" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
-                <a href="#" class="admin-only"><i class="fas fa-cart-plus"></i> Lançar pedido</a>
-                <a href="#" class="admin-only"><i class="fas fa-boxes-packing"></i> Cadastrar/Excluir produtos</a>
-                <a href="#" class="admin-only"><i class="fas fa-shield-halved"></i> Prevenção de perdas</a>
-                <a href="#" class="admin-only"><i class="fas fa-file-invoice-dollar"></i> Notas fiscais</a>
-                <a href="#" class="admin-only"><i class="fas fa-store"></i> Filiais</a>
-                <a href="#" class="admin-only"><i class="fas fa-chart-pie"></i> Faturamento</a>
+                <a href="#" class="active"><i class="fas fa-chart-line icon-left"></i> <span class="link-text">Dashboard</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-cart-plus icon-left"></i> <span class="link-text">Lançar pedido</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-box-open icon-left"></i> <span class="link-text">Cadastrar/Excluir produtos</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-shield-alt icon-left"></i> <span class="link-text">Prevenção de perdas</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-file-invoice-dollar icon-left"></i> <span class="link-text">Notas fiscais</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-store icon-left"></i> <span class="link-text">Filiais</span></a>
+                <a href="#" class="admin-only"><i class="fas fa-chart-pie icon-left"></i> <span class="link-text">Faturamento</span></a>
             </nav>
             <div class="sidebar-footer">
                 <p>Versão 1.3.0</p>
@@ -126,16 +139,32 @@
                 <img src="https://ui-avatars.com/api/?name=Maximus+Ferrari+Scoutt&background=0D8ABC&color=fff&size=80" alt="Maximus">
                 <h2>Maximus Ferrari Scoutt</h2>
                 <p class="email">scouttmaximus@stockguard.com</p>
-                <p class="role">Administrador • Filial MAX Centro</p>
+                <p class="role" id="profile-branch-text">Administrador • Filial MAX Centro</p>
             </div>
             <nav class="sidebar-nav profile-links">
-                <a href="#"><i class="fas fa-user-pen"></i> Alterar dados cadastrais <i class="fas fa-chevron-right arrow"></i></a>
-                <a href="#"><i class="fas fa-lock"></i> Privacidade e segurança <i class="fas fa-chevron-right arrow"></i></a>
-                <a href="#"><i class="fas fa-bell"></i> Notificações <i class="fas fa-chevron-right arrow"></i></a>
-                <a href="#"><i class="fas fa-gear"></i> Configurações do app <i class="fas fa-chevron-right arrow"></i></a>
+                <a href="#">
+                    <i class="fas fa-user-pen icon-left"></i>
+                    <span class="link-text">Alterar dados cadastrais</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+                <a href="#">
+                    <i class="fas fa-lock icon-left"></i>
+                    <span class="link-text">Privacidade e segurança</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+                <a href="#">
+                    <i class="fas fa-bell icon-left"></i>
+                    <span class="link-text">Notificações</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+                <a href="#">
+                    <i class="fas fa-gear icon-left"></i>
+                    <span class="link-text">Configurações do app</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
             </nav>
             <div class="sidebar-footer profile-footer">
-                <a href="#" class="logout-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair da conta</a>
+                <a href="#" class="logout-link" onclick="logout()"><i class="fas fa-sign-out-alt icon-left"></i> Sair da conta</a>
                 <p>Versão 1.3.0</p>
             </div>
         </aside>
