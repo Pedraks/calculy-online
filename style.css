@@ -122,19 +122,19 @@ body { background: var(--bg-gradient); color: var(--text-main); min-height: 100v
     .cards-grid { grid-template-columns: 1fr; }
 }
 
-/* --- Estilos para os Gráficos --- */
+/* --- Estilos para os Gráficos (Corrigido para Mobile) --- */
 .charts-grid {
     display: grid;
-    /* O gráfico de linha fica maior (2 frações) e a pizza menor (1 fração) no PC */
     grid-template-columns: 2fr 1fr; 
     gap: 20px;
     margin-top: 25px;
-    padding-bottom: 80px; /* Espaço para não bater nos botões flutuantes */
+    padding-bottom: 80px; 
 }
 
 .chart-card {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 .chart-header {
@@ -147,17 +147,18 @@ body { background: var(--bg-gradient); color: var(--text-main); min-height: 100v
     font-weight: 700;
 }
 
+/* CORREÇÃO: Utilizar 'height' fixo em vez de 'min-height' */
 .canvas-container {
     position: relative;
-    flex-grow: 1;
-    min-height: 250px; /* Garante altura em todos os dispositivos */
+    height: 300px; 
     width: 100%;
 }
 
 @media (max-width: 992px) {
-    /* Em tablets e celulares, os gráficos ficam um debaixo do outro */
     .charts-grid {
         grid-template-columns: 1fr;
     }
+    .canvas-container {
+        height: 250px; /* Altura ajustada para ecrãs de telemóvel */
+    }
 }
-
