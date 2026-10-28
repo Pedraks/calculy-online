@@ -179,3 +179,179 @@ function initCharts() {
         }
     });
 }
+
+
+// ==========================================
+// MÓDULO DE PEDIDOS E FORNECEDORES
+// ==========================================
+
+const suppliersData = [
+    {
+        id: 1, name: "AgroSul Alimentos S.A", cnpj: "11.222.333/0001-44",
+        products: [
+            { id: 101, name: "Arroz Branco 5kg", price: 22.90 },
+            { id: 102, name: "Feijão Preto 1kg", price: 8.50 },
+            { id: 103, name: "Farinha de Trigo 1kg", price: 5.20 }
+        ]
+    },
+    {
+        id: 2, name: "Laticínios Vale Ltda", cnpj: "44.555.666/0001-77",
+        products: [
+            { id: 201, name: "Leite Integral 1L", price: 4.80 },
+            { id: 202, name: "Queijo Mussarela (Kg)", price: 45.00 }
+        ]
+    },
+    {
+        id: 3, name: "Bebidas Máxima", cnpj: "77.888.999/0001-11",
+        products: [
+            { id: 301, name: "Refrigerante Cola 2L", price: 9.50 },
+            { id: 302, name: "Água Mineral 500ml (Pct 12)", price: 15.00 }
+        ]
+    },
+    {
+        id: 4, name: "Distribuidora Carnes Sul", cnpj: "22.111.000/0001-22",
+        products: [
+            { id: 401, name: "Picanha Bovina (Kg)", price: 68.90 },
+            { id: 402, name: "Frango Inteiro (Kg)", price: 11.50 }
+        ]
+    },
+    {
+        id: 5, name: "Hortifruti Frescor", cnpj: "99.000.111/0001-33",
+        products: [
+            { id: 501, name: "Tomate Carmem (Kg)", price: 7.90 },
+            { id: 502, name: "Cebola Nacional (Kg)", price: 5.50 }
+        ]
+    }
+];
+
+// Estado do carrinho de pedidos
+let orderCart = {};
+
+// Função para alternar entre Telas (Dashboard <-> Pedidos)
+function switchScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    closeAllMenus();
+    if (screenId === 'order-screen') {
+        renderSuppliers();
+    }
+}
+
+// Renderiza a lista de fornecedores
+function renderSuppliers() {
+    const container = document.getElementById('suppliers-container');
+    container.innerHTML = '';
+
+    suppliersData.forEach(supp => {
+        let prodHTML = '';
+        supp.products.forEach(prod => {
+            const currentQty = orderCart[prod.id]?.qty || 0;
+            prodHTML += `
+                <div class="product-item">
+                    <div class="prod-info">
+                        <span class="prod-name">${prod.name}</span>
+                        <span class="prod-price">R$ ${prod.price.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateQty(${supp.id}, ${prod.id}, -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-${prod.id}" value="${currentQty}" readonly>
+                        <button class="qty-btn" onclick="updateQty(${supp.id}, ${prod.id}, 1)">+</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML += `
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <div>
+                        <h3>${supp.name}</h3>
+                        <span class="supplier-cnpj">CNPJ: ${supp.cnpj}</span>
+                    </div>
+                </div>
+                <div class="supplier-products">
+                    ${prodHTML}
+                </div>
+            </div>
+        `;
+    });
+    calculateTotal();
+}
+
+function updateQty(suppId, prodId, change) {
+    if (!orderCart[prodId]) {
+        // Encontra produto e fornecedor
+        const supp = suppliersData.find(s => s.id === suppId);
+        const prod = supp.products.find(p => p.id === prodId);
+        orderCart[prodId] = { suppName: supp.name, suppCnpj: supp.cnpj, prodName: prod.name, price: prod.price, qty: 0 };
+    }
+
+    let newQty = orderCart[prodId].qty + change;
+    if (newQty < 0) newQty = 0;
+    
+    orderCart[prodId].qty = newQty;
+    document.getElementById(`qty-${prodId}`).value = newQty;
+    
+    if (newQty === 0) delete orderCart[prodId]; // Remove do carrinho se for 0
+    calculateTotal();
+}
+
+function calculateTotal() {
+    let total = 0;
+    Object.values(orderCart).forEach(item => {
+        total += item.price * item.qty;
+    });
+    document.getElementById('total-order-price').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+}
+
+// Controle de Modais
+function showLowStockAlert() {
+    document.getElementById('low-stock-modal').classList.add('active');
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+}
+
+// Geração da Nota Fiscal
+function generateInvoice() {
+    const items = Object.values(orderCart);
+    if (items.length === 0) {
+        alert("Selecione pelo menos um produto para gerar o pedido.");
+        return;
+    }
+
+    const tbody = document.getElementById('invoice-items');
+    tbody.innerHTML = '';
+    let totalNF = 0;
+
+    items.forEach(item => {
+        const itemTotal = item.price * item.qty;
+        totalNF += itemTotal;
+        tbody.innerHTML += `
+            <tr>
+                <td>${item.suppName}<br><small>${item.suppCnpj}</small></td>
+                <td>${item.prodName}</td>
+                <td>${item.qty}</td>
+                <td>R$ ${item.price.toFixed(2).replace('.', ',')}</td>
+                <td>R$ ${itemTotal.toFixed(2).replace('.', ',')}</td>
+            </tr>
+        `;
+    });
+
+    document.getElementById('inv-total-price').innerText = `R$ ${totalNF.toFixed(2).replace('.', ',')}`;
+    
+    // Data atual
+    const today = new Date();
+    document.getElementById('inv-date').innerText = today.toLocaleDateString('pt-BR') + ' ' + today.toLocaleTimeString('pt-BR');
+
+    document.getElementById('invoice-modal').classList.add('active');
+}
+
+function confirmOrder() {
+    alert("Pedido enviado com sucesso para os fornecedores!");
+    orderCart = {}; // Limpa o carrinho
+    renderSuppliers();
+    closeModal('invoice-modal');
+    switchScreen('dashboard-screen'); // Volta pro dashboard
+}
