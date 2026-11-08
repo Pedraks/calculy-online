@@ -74,13 +74,22 @@
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
-        /* Hide cloak during Vue initialization to prevent curly braces from showing */
+        .fade-carousel-enter-active, .fade-carousel-leave-active {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-carousel-enter-from {
+            opacity: 0;
+            transform: scale(0.96) translateY(8px);
+        }
+        .fade-carousel-leave-to {
+            opacity: 0;
+            transform: scale(0.96) translateY(-8px);
+        }
         [v-cloak] { display: none; }
     </style>
 </head>
 <body class="text-slate-800 antialiased bg-slate-50 flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
 
-    <!-- ALL CONTENT MUST BE INSIDE THIS #app DIV -->
     <div id="app" v-cloak class="flex flex-col min-h-screen relative">
 
         <!-- 1. HEADER & NAVIGATION -->
@@ -492,87 +501,61 @@
                         </div>
 
                         <div class="lg:col-span-5 bg-slate-800/80 p-6 rounded-2xl border border-slate-700 text-center space-y-4">
-                        <h4 class="font-bold text-white text-base">Atendimento 24 Horas Todos os Dias</h4>
-                        <p class="text-xs text-slate-400">Atendemos emergências, finais de semana e feriados em Criciúma e cidades vizinhas em um raio de até 50km.</p>
-                        <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20atendimento%2024h." target="_blank" class="block w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-colors">
-                            Chamar no WhatsApp Agora
-                        </a>
-                    </div>
+                            <h4 class="font-bold text-white text-base">Atendimento 24 Horas Todos os Dias</h4>
+                            <p class="text-xs text-slate-400">Atendemos emergências, finais de semana e feriados em Criciúma e cidades vizinhas em um raio de até 50km.</p>
+                            <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20atendimento%2024h." target="_blank" class="block w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-colors">
+                                Chamar no WhatsApp Agora
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 6. AVALIAÇÕES -->
+        <!-- 6. AVALIAÇÕES (CARROSEL AUTOMÁTICO ROTATIVO DE 3.5s) -->
         <section id="avaliacoes" class="py-16 bg-slate-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <div class="text-center max-w-2xl mx-auto space-y-2 mb-12">
+                <div class="text-center max-w-2xl mx-auto space-y-2 mb-10">
                     <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Depoimentos</span>
                     <h2 class="text-3xl font-black text-slate-900">O que nossos clientes dizem</h2>
-                    <p class="text-slate-500 text-sm">Mais de 1.000 clientes atendidos e satisfeitos em Criciúma e região</p>
+                    <p class="text-slate-500 text-sm">Mais de 1.500 estofados limpos e famílias satisfeitas em Criciúma e região</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Carousel Container -->
+                <div class="max-w-2xl mx-auto relative px-2" @mouseenter="pauseReviewCarousel" @mouseleave="startReviewCarousel">
                     
-                    <!-- Review 1 -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex text-gold-500 text-sm">★★★★★</div>
-                            <span class="text-[10px] text-slate-400">Via Google Reviews</span>
-                        </div>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            "Meu sofá retrátil de 3 lugares estava com manchas velhas de café e pelo de cachorro. O pessoal do Mr. Clean deixou o sofá novo de novo! O cheirinho ficou maravilhoso. Recomendo muito!"
-                        </p>
-                        <div class="flex items-center space-x-3 pt-2 border-t border-slate-100">
-                            <div class="w-9 h-9 rounded-full bg-brand-100 font-bold text-brand-700 flex items-center justify-center text-xs">
-                                ML
+                    <div class="min-h-[220px] flex items-center justify-center">
+                        <transition name="fade-carousel" mode="out-in">
+                            <div :key="currentReviewIndex" class="w-full bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xl space-y-5 text-center relative">
+                                <div class="flex justify-center text-gold-500 text-lg">
+                                    <span v-for="star in reviews[currentReviewIndex].stars" :key="star">★</span>
+                                </div>
+                                <p class="text-sm md:text-base text-slate-700 leading-relaxed italic font-medium">
+                                    "{{ reviews[currentReviewIndex].text }}"
+                                </p>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full font-extrabold text-white flex items-center justify-center text-xs shadow-md"
+                                         :class="reviews[currentReviewIndex].colorClass">
+                                        {{ reviews[currentReviewIndex].initials }}
+                                    </div>
+                                    <div class="text-left">
+                                        <h4 class="font-bold text-slate-900 text-sm leading-tight">{{ reviews[currentReviewIndex].name }}</h4>
+                                        <p class="text-xs text-slate-400 font-medium">{{ reviews[currentReviewIndex].location }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 text-xs">Mariana Lima</h4>
-                                <p class="text-[11px] text-slate-400">Bairro Michel, Criciúma</p>
-                            </div>
-                        </div>
+                        </transition>
                     </div>
 
-                    <!-- Review 2 -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex text-gold-500 text-sm">★★★★★</div>
-                            <span class="text-[10px] text-slate-400">Via Google Reviews</span>
-                        </div>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            "Fiz a higienização do colchão queen e a impermeabilização do sofá de canto. Atendimento super rápido, pontuais no horário marcado e o resultado foi fantástico. Vale cada centavo."
-                        </p>
-                        <div class="flex items-center space-x-3 pt-2 border-t border-slate-100">
-                            <div class="w-9 h-9 rounded-full bg-emerald-100 font-bold text-emerald-700 flex items-center justify-center text-xs">
-                                RS
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 text-xs">Rodrigo Santos</h4>
-                                <p class="text-[11px] text-slate-400">Bairro Próspera, Criciúma</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Review 3 -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex text-gold-500 text-sm">★★★★★</div>
-                            <span class="text-[10px] text-slate-400">Via Google Reviews</span>
-                        </div>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            "Melhor serviço da região! Higienizaram minhas 6 cadeiras da mesa de jantar em Içara. Ficaram super limpinhas e secaram rápido. O simulador no site facilitou demais."
-                        </p>
-                        <div class="flex items-center space-x-3 pt-2 border-t border-slate-100">
-                            <div class="w-9 h-9 rounded-full bg-amber-100 font-bold text-amber-700 flex items-center justify-center text-xs">
-                                CB
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 text-xs">Camila Becker</h4>
-                                <p class="text-[11px] text-slate-400">Içara - SC</p>
-                            </div>
-                        </div>
+                    <!-- Navigation Dots -->
+                    <div class="flex justify-center items-center space-x-2 mt-6">
+                        <button v-for="(rev, idx) in reviews" :key="idx"
+                                @click="setReview(idx)"
+                                :class="['h-2.5 rounded-full transition-all duration-300', 
+                                currentReviewIndex === idx ? 'w-8 bg-brand-600' : 'w-2.5 bg-slate-300 hover:bg-slate-400']"
+                                :title="'Depoimento ' + (idx + 1)">
+                        </button>
                     </div>
 
                 </div>
@@ -901,7 +884,7 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-xs font-bold text-slate-700 mb-1">E-mail</label>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">E-mail (opcional para cadastro)</label>
                                         <input type="email" v-model="customer.email" placeholder="seuemail@exemplo.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
                                     </div>
 
@@ -1027,17 +1010,16 @@
         </footer>
 
     </div>
-    <!-- END OF #app DIV -->
 
     <!-- VUE 3 APPLICATION SCRIPT -->
     <script>
-        const { createApp, ref, computed } = Vue;
+        const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
 
         createApp({
             setup() {
                 // UI State
                 const mobileMenuOpen = ref(false);
-                const chatPopupOpen = ref(false); // Hidden by default as requested
+                const chatPopupOpen = ref(false);
                 const currentStep = ref(1);
                 
                 // Cities State
@@ -1049,6 +1031,81 @@
                     'Morro Grande', 'Balneário Arroio do Silva', 'Lauro Müller', 'Turvo', 
                     'Jaguaruna', 'Orleans'
                 ]);
+
+                // Carousel Reviews State (5 Reviews, 3.5s Rotation)
+                const currentReviewIndex = ref(0);
+                let reviewTimer = null;
+
+                const reviews = ref([
+                    {
+                        name: 'Mariana Lima',
+                        location: 'Bairro Michel, Criciúma',
+                        initials: 'ML',
+                        stars: 5,
+                        text: 'Meu sofá retrátil de 3 lugares estava com manchas velhas de café e pelo de cachorro. O pessoal do Mr. Clean deixou o sofá novo de novo! O cheirinho ficou maravilhoso. Recomendo muito!',
+                        colorClass: 'bg-brand-600'
+                    },
+                    {
+                        name: 'Rodrigo Santos',
+                        location: 'Bairro Próspera, Criciúma',
+                        initials: 'RS',
+                        stars: 5,
+                        text: 'Fiz a higienização do colchão queen e a impermeabilização do sofá de canto. Atendimento super rápido, pontuais no horário marcado e o resultado foi fantástico. Vale cada centavo.',
+                        colorClass: 'bg-emerald-600'
+                    },
+                    {
+                        name: 'Camila Becker',
+                        location: 'Içara - SC',
+                        initials: 'CB',
+                        stars: 5,
+                        text: 'Melhor serviço da região! Higienizaram minhas 6 cadeiras da mesa de jantar em Içara. Ficaram super limpinhas e secaram rápido. O simulador no site facilitou demais.',
+                        colorClass: 'bg-amber-600'
+                    },
+                    {
+                        name: 'Lucas Goulart',
+                        location: 'Bairro Centro, Criciúma',
+                        initials: 'LG',
+                        stars: 5,
+                        text: 'Serviço nota 10! Fiz a limpeza interna do meu SUV, bancos de tecido imaculados. Profissionais muito educados e cuidadosos com o carro. Atendimento 24h fez toda a diferença pra minha rotina.',
+                        colorClass: 'bg-indigo-600'
+                    },
+                    {
+                        name: 'Juliana Machado',
+                        location: 'Forquilhinha - SC',
+                        initials: 'JM',
+                        stars: 5,
+                        text: 'Surpreendida com a qualidade da impermeabilização! Tenho dois filhos pequenos e derrubaram suco de uva no sofá novo no dia seguinte. O líquido ficou flutuando sem penetrar no tecido. Incrível!',
+                        colorClass: 'bg-purple-600'
+                    }
+                ]);
+
+                const startReviewCarousel = () => {
+                    stopReviewCarousel();
+                    reviewTimer = setInterval(() => {
+                        currentReviewIndex.value = (currentReviewIndex.value + 1) % reviews.value.length;
+                    }, 3500);
+                };
+
+                const stopReviewCarousel = () => {
+                    if (reviewTimer) clearInterval(reviewTimer);
+                };
+
+                const pauseReviewCarousel = () => {
+                    stopReviewCarousel();
+                };
+
+                const setReview = (idx) => {
+                    currentReviewIndex.value = idx;
+                    startReviewCarousel();
+                };
+
+                onMounted(() => {
+                    startReviewCarousel();
+                });
+
+                onUnmounted(() => {
+                    stopReviewCarousel();
+                });
 
                 // Wizard State: Categories
                 const selectedCategories = ref(['sofas']);
@@ -1096,7 +1153,7 @@
                     preferredShift: 'Flexível'
                 });
 
-                // Wizard State: Customer (includes email)
+                // Wizard State: Customer (includes email for web capture)
                 const customer = ref({
                     name: '',
                     phone: '',
@@ -1157,6 +1214,7 @@
                     return list.length ? list : ['Nenhum item adicionado'];
                 };
 
+                // WhatsApp message generation (Email removed from string as requested)
                 const sendWhatsApp = () => {
                     const itemsText = getSelectedItemsFormatted().map(i => `  • ${i}`).join('\n');
                     
@@ -1170,7 +1228,6 @@
 👤 *Meus Dados:*
   • Nome: ${customer.value.name}
   • WhatsApp: ${customer.value.phone || 'Não informado'}
-  • E-mail: ${customer.value.email || 'Não informado'}
 
 🛋️ *Itens Selecionados:*
 ${itemsText}
@@ -1208,7 +1265,12 @@ _Solicitado através do site_`;
                     getSelectedItemsFormatted,
                     sendWhatsApp,
                     showAllCities,
-                    citiesList
+                    citiesList,
+                    reviews,
+                    currentReviewIndex,
+                    setReview,
+                    startReviewCarousel,
+                    pauseReviewCarousel
                 };
             }
         }).mount('#app');
