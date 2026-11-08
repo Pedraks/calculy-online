@@ -16,8 +16,8 @@
                             50: '#f0f4fa',
                             100: '#dce5f5',
                             200: '#bfd1ed',
-                            500: '#2858a7',
-                            600: '#13387C',
+                            500: '#1d4fb5',
+                            600: '#13387C', /* Primary Brand Blue */
                             700: '#0e2b61',
                             800: '#0a1f47',
                             900: '#06132d',
@@ -74,11 +74,14 @@
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
+        /* Hide cloak during Vue initialization to prevent curly braces from showing */
+        [v-cloak] { display: none; }
     </style>
 </head>
 <body class="text-slate-800 antialiased bg-slate-50 flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
 
-    <div id="app" class="flex flex-col min-h-screen">
+    <!-- ALL CONTENT MUST BE INSIDE THIS #app DIV -->
+    <div id="app" v-cloak class="flex flex-col min-h-screen relative">
 
         <!-- 1. HEADER & NAVIGATION -->
         <header class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-40 shadow-sm">
@@ -106,7 +109,7 @@
                     <a href="#servicos" class="hover:text-brand-600 transition-colors">Serviços</a>
                     <a href="#avaliacoes" class="hover:text-brand-600 transition-colors">Avaliações</a>
                     <a href="#regioes" class="hover:text-brand-600 transition-colors">Regiões</a>
-                    <a href="#cotador" class="hover:text-brand-600 transition-colors text-brand-600 font-bold">Simulador de Preço</a>
+                    <a href="#cotador" class="hover:text-brand-600 transition-colors text-brand-600 font-bold">Agende Agora</a>
                 </nav>
 
                 <!-- Action Buttons -->
@@ -132,21 +135,26 @@
             </div>
 
             <!-- Mobile Navigation Drawer -->
-            <div v-show="mobileMenuOpen" class="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3">
-                <a @click="mobileMenuOpen = false" href="#sobre" class="block py-2 text-slate-700 font-semibold">Sobre Nós</a>
-                <a @click="mobileMenuOpen = false" href="#servicos" class="block py-2 text-slate-700 font-semibold">Serviços</a>
-                <a @click="mobileMenuOpen = false" href="#avaliacoes" class="block py-2 text-slate-700 font-semibold">Avaliações</a>
-                <a @click="mobileMenuOpen = false" href="#regioes" class="block py-2 text-slate-700 font-semibold">Regiões de Atendimento</a>
-                <a @click="mobileMenuOpen = false" href="#cotador" class="block py-2 text-brand-600 font-bold">Simulador de Orçamento</a>
-                <div class="pt-2 flex flex-col space-y-2">
-                    <a href="#cotador" @click="mobileMenuOpen = false" class="w-full text-center py-3 rounded-xl bg-brand-600 text-white font-bold text-sm">
-                        Agende Agora
-                    </a>
-                    <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Mr.%20Clean." target="_blank" class="w-full text-center py-3 rounded-xl bg-emerald-500 text-white font-bold text-sm flex items-center justify-center gap-2">
+            <transition 
+                enter-active-class="transition duration-300 ease-out" 
+                enter-from-class="-translate-y-4 opacity-0" 
+                enter-to-class="translate-y-0 opacity-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="translate-y-0 opacity-100"
+                leave-to-class="-translate-y-4 opacity-0"
+            >
+                <div v-show="mobileMenuOpen" class="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 absolute w-full left-0 shadow-lg">
+                    <a @click="mobileMenuOpen = false" href="#sobre" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Sobre Nós</a>
+                    <a @click="mobileMenuOpen = false" href="#servicos" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Serviços</a>
+                    <a @click="mobileMenuOpen = false" href="#avaliacoes" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Avaliações</a>
+                    <a @click="mobileMenuOpen = false" href="#regioes" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Regiões de Atendimento</a>
+                    <a @click="mobileMenuOpen = false" href="#cotador" class="block py-2 text-brand-600 font-bold border-b border-slate-100">Agende Agora</a>
+                    <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es." target="_blank" class="block py-2 text-emerald-600 font-bold flex items-center gap-2">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                         Falar no WhatsApp
                     </a>
                 </div>
-            </div>
+            </transition>
         </header>
 
         <!-- 2. HERO SECTION -->
@@ -358,7 +366,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     
-                    <!-- Service Card 6 (Impermeabilização moved to the start) -->
+                    <!-- Service Card 1 (Impermeabilização - First) -->
                     <div class="bg-white rounded-3xl p-6 border-2 border-gold-400 shadow-md transition-shadow group flex flex-col justify-between relative">
                         <span class="absolute top-4 right-4 bg-gold-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">Proteção Total</span>
                         <div>
@@ -371,7 +379,7 @@
                         <a href="#cotador" class="text-xs font-bold text-gold-600 hover:text-gold-700 flex items-center gap-1">Simular Preço →</a>
                     </div>
 
-                    <!-- Service Card 1 -->
+                    <!-- Service Card 2 -->
                     <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
                         <div>
                             <div class="w-14 h-14 rounded-2xl bg-sky-100 text-brand-600 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
@@ -387,7 +395,7 @@
                         <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
                     </div>
 
-                    <!-- Service Card 2 -->
+                    <!-- Service Card 3 -->
                     <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
                         <div>
                             <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
@@ -403,7 +411,7 @@
                         <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
                     </div>
 
-                    <!-- Service Card 3 (Formerly Cadeiras) -->
+                    <!-- Service Card 4 -->
                     <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
                         <div>
                             <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
@@ -418,7 +426,7 @@
                         <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
                     </div>
 
-                    <!-- Service Card 4 (Formerly Tapetes) -->
+                    <!-- Service Card 5 -->
                     <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
                         <div>
                             <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
@@ -432,7 +440,7 @@
                         <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
                     </div>
 
-                    <!-- Service Card 5 (Formerly Automotiva) -->
+                    <!-- Service Card 6 -->
                     <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
                         <div>
                             <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
@@ -590,9 +598,9 @@
                     </span>
                 </div>
 
-                <div class="mt-8 text-center" v-if="!showAllCities">
-                    <button @click="showAllCities = true" class="px-6 py-2.5 rounded-xl border-2 border-brand-100 text-brand-700 font-bold text-sm hover:bg-brand-50 transition-colors">
-                        Ver todas as cidades +
+                <div class="mt-8 text-center">
+                    <button @click="showAllCities = !showAllCities" class="px-6 py-2.5 rounded-xl border-2 border-brand-100 text-brand-700 font-bold text-sm hover:bg-brand-50 transition-colors">
+                        {{ showAllCities ? 'Ver menos cidades -' : 'Ver todas as cidades +' }}
                     </button>
                 </div>
 
@@ -604,7 +612,7 @@
             <div class="max-w-xl mx-auto px-4">
                 
                 <!-- Wizard Wrapper Card -->
-                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-2xl overflow-hidden">
+                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-2xl overflow-hidden relative z-10">
                     
                     <!-- Wizard Header Banner -->
                     <div class="bg-slate-900 text-white p-5 text-center relative">
@@ -622,7 +630,7 @@
                     </div>
 
                     <!-- Step Container -->
-                    <div class="p-5 sm:p-6">
+                    <div class="p-5 sm:p-6 min-h-[300px]">
 
                         <!-- STEP 1: CATEGORIES -->
                         <transition name="step-transition" mode="out-in">
@@ -848,14 +856,14 @@
                                 <div class="space-y-3 pt-1">
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Cidade</label>
-                                        <select v-model="location.city" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-800">
+                                        <select v-model="location.city" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-800 outline-none focus:border-brand-500">
                                             <option v-for="city in citiesList" :key="city" :value="city + ' - SC'">{{ city }} - SC</option>
                                         </select>
                                     </div>
 
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Bairro</label>
-                                        <input type="text" v-model="location.neighborhood" placeholder="Ex: Centro, Próspera, Michel..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium">
+                                        <input type="text" v-model="location.neighborhood" placeholder="Ex: Centro, Próspera, Michel..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
                                     </div>
 
                                     <div>
@@ -864,7 +872,7 @@
                                             <button v-for="shift in ['Manhã', 'Tarde', 'Noite', 'Qualquer Horário (24h)']" :key="shift"
                                                     @click="location.preferredShift = shift"
                                                     :class="['py-2 px-1 text-[11px] font-bold border rounded-xl transition-all',
-                                                    location.preferredShift === shift ? 'bg-brand-600 border-brand-600 text-white' : 'bg-slate-50 border-slate-200 text-slate-700']">
+                                                    location.preferredShift === shift ? 'bg-brand-600 border-brand-600 text-white' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100']">
                                                 {{ shift }}
                                             </button>
                                         </div>
@@ -884,26 +892,26 @@
                                 <div class="space-y-3 pt-1">
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Seu Nome Completo</label>
-                                        <input type="text" v-model="customer.name" placeholder="Digite seu nome" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium">
+                                        <input type="text" v-model="customer.name" placeholder="Digite seu nome" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
                                     </div>
 
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp de Contato</label>
-                                        <input type="tel" v-model="customer.phone" placeholder="(48) 99999-9999" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium">
+                                        <input type="tel" v-model="customer.phone" placeholder="(48) 99999-9999" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
                                     </div>
 
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">E-mail</label>
-                                        <input type="email" v-model="customer.email" placeholder="seuemail@exemplo.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium">
+                                        <input type="email" v-model="customer.email" placeholder="seuemail@exemplo.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
                                     </div>
 
                                     <!-- Summary Box -->
-                                    <div class="bg-slate-900 text-white p-4 rounded-2xl space-y-2 text-xs">
-                                        <p class="font-bold text-brand-400 uppercase text-[10px]">Itens Selecionados:</p>
+                                    <div class="bg-slate-900 text-white p-4 rounded-2xl space-y-2 text-xs shadow-inner mt-2">
+                                        <p class="font-bold text-brand-400 uppercase text-[10px] tracking-wider">Itens Selecionados:</p>
                                         <ul class="space-y-1 text-slate-300">
                                             <li v-for="item in getSelectedItemsFormatted()" :key="item">• {{ item }}</li>
                                         </ul>
-                                        <p class="text-[11px] text-slate-400 pt-1 border-t border-slate-800">📍 {{ location.neighborhood || 'Bairro' }}, {{ location.city }}</p>
+                                        <p class="text-[11px] text-slate-400 pt-2 border-t border-slate-800 mt-2">📍 {{ location.neighborhood || 'Bairro' }}, {{ location.city }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -912,8 +920,8 @@
                     </div>
 
                     <!-- Wizard Bottom Bar -->
-                    <div class="bg-slate-50 border-t border-slate-200/80 p-4 flex items-center justify-between gap-3">
-                        <button v-if="currentStep > 1" @click="prevStep" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs bg-white hover:bg-slate-100">
+                    <div class="bg-slate-50 border-t border-slate-200/80 p-4 flex items-center justify-between gap-3 rounded-b-3xl">
+                        <button v-if="currentStep > 1" @click="prevStep" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs bg-white hover:bg-slate-100 transition-colors">
                             Voltar
                         </button>
                         <div v-else></div>
@@ -933,42 +941,51 @@
                     </div>
 
                 </div>
-
             </div>
         </section>
 
         <!-- 9. FLOATING WHATSAPP POPUP -->
-        <div class="fixed bottom-5 right-5 z-50">
+        <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end pointer-events-none">
+            
             <!-- Expanded Chat Widget -->
-            <div v-show="chatPopupOpen" class="mb-3 w-80 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 p-4 text-white flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm relative">
-                            MC
-                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-emerald-600"></span>
+            <transition 
+                enter-active-class="transition-all duration-300 ease-out origin-bottom-right" 
+                enter-from-class="scale-50 opacity-0 translate-y-4" 
+                enter-to-class="scale-100 opacity-100 translate-y-0"
+                leave-active-class="transition-all duration-200 ease-in origin-bottom-right"
+                leave-from-class="scale-100 opacity-100 translate-y-0"
+                leave-to-class="scale-50 opacity-0 translate-y-4"
+            >
+                <div v-show="chatPopupOpen" class="mb-4 w-[calc(100vw-40px)] max-w-[320px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden pointer-events-auto">
+                    <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 p-4 text-white flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm relative">
+                                MC
+                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-emerald-600"></span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Mr. Clean Atendimento</h4>
+                                <p class="text-[10px] text-emerald-100 font-medium">Online agora no WhatsApp</p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-sm">Mr. Clean Atendimento</h4>
-                            <p class="text-[10px] text-emerald-100 font-medium">Online agora no WhatsApp</p>
+                        <button @click="chatPopupOpen = false" class="text-emerald-100 hover:text-white font-bold text-lg leading-none p-1 focus:outline-none">&times;</button>
+                    </div>
+                    <div class="p-4 bg-slate-50 space-y-3 text-xs">
+                        <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-slate-700">
+                            👋 Olá! Atendemos 24 horas por dia em Criciúma e em um raio de até 50km. Como podemos ajudar?
                         </div>
+                        <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Preciso%20de%20atendimento%2024h%20para%20higieniza%C3%A7%C3%A3o." 
+                           target="_blank" 
+                           class="block w-full py-3 text-center bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md transition-colors">
+                            Falar no WhatsApp Agora (24h)
+                        </a>
                     </div>
-                    <button @click="chatPopupOpen = false" class="text-emerald-100 hover:text-white font-bold text-lg">&times;</button>
                 </div>
-                <div class="p-4 bg-slate-50 space-y-3 text-xs">
-                    <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-slate-700">
-                        👋 Olá! Atendemos 24 horas por dia em Criciúma e em um raio de até 50km. Como podemos ajudar?
-                    </div>
-                    <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Preciso%20de%20atendimento%2024h%20para%20higieniza%C3%A7%C3%A3o." 
-                       target="_blank" 
-                       class="block w-full py-3 text-center bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md transition-colors">
-                        Falar no WhatsApp Agora (24h)
-                    </a>
-                </div>
-            </div>
+            </transition>
 
             <!-- Floating Trigger Button -->
             <button @click="chatPopupOpen = !chatPopupOpen" 
-                    class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform relative group">
+                    class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform relative pointer-events-auto focus:outline-none z-50">
                 <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
                 <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
             </button>
@@ -985,7 +1002,7 @@
 
                 <div class="space-y-2">
                     <h4 class="font-bold text-white text-sm">Contato Direct</h4>
-                    <p>📲 WhatsApp: <a href="https://wa.me/5548920039561" class="text-white hover:underline">(48) 92003-9561</a></p>
+                    <p>📲 WhatsApp: <a href="https://wa.me/5548920039561" target="_blank" class="text-white hover:underline">(48) 92003-9561</a></p>
                     <p>📸 Instagram: <a href="https://instagram.com/mrcleancriciuma" target="_blank" class="text-white hover:underline">@mrcleancriciuma</a></p>
                     <p>📍 Criciúma - SC</p>
                 </div>
@@ -1010,6 +1027,7 @@
         </footer>
 
     </div>
+    <!-- END OF #app DIV -->
 
     <!-- VUE 3 APPLICATION SCRIPT -->
     <script>
@@ -1017,10 +1035,12 @@
 
         createApp({
             setup() {
+                // UI State
                 const mobileMenuOpen = ref(false);
-                const chatPopupOpen = ref(false);
+                const chatPopupOpen = ref(false); // Hidden by default as requested
                 const currentStep = ref(1);
                 
+                // Cities State
                 const showAllCities = ref(false);
                 const citiesList = ref([
                     'Criciúma', 'Forquilhinha', 'Siderópolis', 'Içara', 'Nova Veneza', 
@@ -1030,13 +1050,13 @@
                     'Jaguaruna', 'Orleans'
                 ]);
 
-                // Categories
+                // Wizard State: Categories
                 const selectedCategories = ref(['sofas']);
 
-                // Items list
+                // Wizard State: Items (Quantities start at 0)
                 const itemsList = ref({
                     sofas: [
-                        { id: 's2', name: 'Sofá 2 Lugares Standard', qty: 1 },
+                        { id: 's2', name: 'Sofá 2 Lugares Standard', qty: 0 },
                         { id: 's3', name: 'Sofá 3 Lugares Standard', qty: 0 },
                         { id: 's_ret', name: 'Sofá Retrátil / Reclinável', qty: 0 },
                         { id: 's_canto', name: 'Sofá de Canto em L', qty: 0 }
@@ -1063,27 +1083,27 @@
                     ]
                 });
 
-                // Services
+                // Wizard State: Services
                 const extraServices = ref({
                     stainRemoval: false,
                     waterproof: true
                 });
 
-                // Location
+                // Wizard State: Location
                 const location = ref({
                     city: 'Criciúma - SC',
                     neighborhood: '',
                     preferredShift: 'Flexível'
                 });
 
-                // Customer
+                // Wizard State: Customer (includes email)
                 const customer = ref({
                     name: '',
                     phone: '',
                     email: ''
                 });
 
-                // Selection Logic
+                // Methods
                 const isCategorySelected = (cat) => selectedCategories.value.includes(cat);
 
                 const toggleCategory = (cat) => {
@@ -1134,7 +1154,7 @@
                             if (item.qty > 0) list.push(`${item.name} (${item.qty}x)`);
                         });
                     });
-                    return list;
+                    return list.length ? list : ['Nenhum item adicionado'];
                 };
 
                 const sendWhatsApp = () => {
@@ -1153,7 +1173,7 @@
   • E-mail: ${customer.value.email || 'Não informado'}
 
 🛋️ *Itens Selecionados:*
-${itemsText || '  • A consultar'}
+${itemsText}
 
 ✨ *Serviços Selecionados:*
 ${servicesText}
@@ -1163,7 +1183,7 @@ ${servicesText}
   • Bairro: ${location.value.neighborhood || 'Não informado'}
   • Turno: ${location.value.preferredShift}
 
-_Solicitado através do site Mr. Clean_`;
+_Solicitado através do site_`;
 
                     const encodedMessage = encodeURIComponent(message);
                     window.open(`https://wa.me/5548920039561?text=${encodedMessage}`, '_blank');
