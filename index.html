@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- INSERIR IMAGEM AQUI (Favicon) -->
+    <!-- <link rel="icon" type="image/png" href="assets/sua-logo.png"> -->
+    <title>Mr. Clean | Higienização de Estofados em Criciúma e Região</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f4fa',
+                            100: '#dce5f5',
+                            200: '#bfd1ed',
+                            500: '#1d4fb5',
+                            600: '#13387C', /* Primary Brand Blue */
+                            700: '#0e2b61',
+                            800: '#0a1f47',
+                            900: '#06132d',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .step-transition-enter-active,
+        .step-transition-leave-active {
+            transition: all 0.25s ease-out;
+        }
+        .step-transition-enter-from {
+            opacity: 0;
+            transform: translateX(16px);
+        }
+        .step-transition-leave-to {
+            opacity: 0;
+            transform: translateX(-16px);
+        }
+        .badge-glow {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        .pulse-online {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulse 1.6s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .fade-carousel-enter-active, .fade-carousel-leave-active {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-carousel-enter-from {
+            opacity: 0;
+            transform: scale(0.96) translateY(8px);
+        }
+        .fade-carousel-leave-to {
+            opacity: 0;
+            transform: scale(0.96) translateY(-8px);
+        }
+        
+        /* Animação Digitando WhatsApp */
+        .typing-dot {
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        [v-cloak] { display: none; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased bg-slate-50 flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
+
+    <div id="app" v-cloak class="flex flex-col min-h-screen relative">
+
+        <!-- 1. HEADER & NAVIGATION -->
+        <header class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <!-- INSERIR IMAGEM AQUI (Logo Topo) -->
+                    <div class="w-11 h-11 rounded-full bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold overflow-hidden border border-slate-300">
+                        <!-- <img src="assets/sua-logo.png" class="w-full h-full object-cover"> -->
+                        SVG/IMG
+                    </div>
+                    <div>
+                        <div class="font-black text-slate-900 text-xl tracking-tight flex items-center gap-1.5">
+                            MR. CLEAN
+                            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-online" title="Atendimento 24h Online"></span>
+                        </div>
+                        <p class="text-xs text-brand-600 font-bold tracking-wide">HIGIENIZAÇÃO 24H</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                    <a href="#sobre" class="hover:text-brand-600 transition-colors">Sobre Nós</a>
+                    <a href="#servicos" class="hover:text-brand-600 transition-colors">Serviços</a>
+                    <a href="#avaliacoes" class="hover:text-brand-600 transition-colors">Avaliações</a>
+                    <a href="#regioes" class="hover:text-brand-600 transition-colors">Regiões</a>
+                    <a href="#cotador" class="hover:text-brand-600 transition-colors text-brand-600 font-bold">Agende Agora</a>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="hidden sm:flex items-center space-x-3">
+                    <a href="#cotador" class="px-4 py-2.5 rounded-xl bg-brand-50 text-brand-700 font-bold text-sm hover:bg-brand-100 transition-colors border border-brand-200">
+                        Simular Preço
+                    </a>
+                    <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20higieniza%C3%A7%C3%A3o%20de%20estofados." 
+                       target="_blank"
+                       class="px-4 py-2.5 rounded-xl bg-emerald-500 text-white font-bold text-sm shadow-md hover:bg-emerald-600 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                        WhatsApp
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-slate-600 focus:outline-none">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Drawer -->
+            <transition 
+                enter-active-class="transition duration-300 ease-out" 
+                enter-from-class="-translate-y-4 opacity-0" 
+                enter-to-class="translate-y-0 opacity-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="translate-y-0 opacity-100"
+                leave-to-class="-translate-y-4 opacity-0"
+            >
+                <div v-show="mobileMenuOpen" class="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 absolute w-full left-0 shadow-lg">
+                    <a @click="mobileMenuOpen = false" href="#sobre" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Sobre Nós</a>
+                    <a @click="mobileMenuOpen = false" href="#servicos" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Serviços</a>
+                    <a @click="mobileMenuOpen = false" href="#avaliacoes" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Avaliações</a>
+                    <a @click="mobileMenuOpen = false" href="#regioes" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Regiões de Atendimento</a>
+                    <a @click="mobileMenuOpen = false" href="#cotador" class="block py-2 text-brand-600 font-bold border-b border-slate-100">Agende Agora</a>
+                    <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es." target="_blank" class="block py-2 text-emerald-600 font-bold flex items-center gap-2">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                        Falar no WhatsApp
+                    </a>
+                </div>
+            </transition>
+        </header>
+
+        <!-- 2. HERO SECTION -->
+        <section class="relative bg-gradient-to-b from-brand-50/60 via-slate-50 to-slate-50 pt-10 pb-16 md:pt-16 md:pb-24 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Text Side -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        
+                        <!-- Trust Tag -->
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-brand-100 shadow-sm text-xs font-bold text-brand-700">
+                            <span class="flex text-gold-500">★★★★★</span>
+                            <span>4.9 de Avaliação no Google • Criciúma e Região</span>
+                        </div>
+
+                        <!-- Main Headline -->
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-black text-slate-900 leading-tight tracking-tight transition-all duration-300">
+                            Higienização Profunda & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-700 to-brand-500">Remoção de Manchas</span> para Seus Estofados
+                        </h1>
+
+                        <!-- Subheadline -->
+                        <p class="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 font-medium transition-all duration-300">
+                            Elimine 99,9% de fungos, ácaros e bactérias do seu sofá, colchão ou tapete com quem é especialista no Sul Catarinense. Atendimento no conforto da sua casa!
+                        </p>
+
+                        <!-- Key Benefits Pills -->
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                            <span class="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm">
+                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                Atendimento 24 Horas
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm">
+                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                Produtos Bio-Ecológicos
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm">
+                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                Seguro para Pets e Crianças
+                            </span>
+                        </div>
+
+                        <!-- CTA Action Area -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                            <a href="#cotador" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 text-white font-extrabold text-base shadow-lg shadow-brand-600/30 hover:scale-105 transition-all text-center">
+                                🚀 Simular Orçamento Agora
+                            </a>
+                            <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Quero%20um%20or%C3%A7amento%20r%C3%A1pido." target="_blank" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 text-slate-800 font-extrabold text-base hover:bg-slate-50 transition-all text-center flex items-center justify-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                Orçamento via WhatsApp
+                            </a>
+                        </div>
+
+                        <!-- Social Proof Stats -->
+                        <div class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
+                            <div>
+                                <p class="text-2xl sm:text-3xl font-black text-slate-900">+1.500</p>
+                                <p class="text-xs text-slate-500 font-medium">Estofados Higienizados</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl sm:text-3xl font-black text-slate-900">100%</p>
+                                <p class="text-xs text-slate-500 font-medium">Satisfação Garantida</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl sm:text-3xl font-black text-slate-900">Criciúma</p>
+                                <p class="text-xs text-slate-500 font-medium">& Toda Região</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Visual Side / Hero Card -->
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative mx-auto max-w-md bg-white rounded-3xl p-6 shadow-2xl border border-slate-100">
+                            
+                            <div class="absolute -top-3 -right-3 bg-gold-500 text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg badge-glow uppercase tracking-wider z-10">
+                                ✨ Efeito Novo de Novo
+                            </div>
+
+                            <div class="space-y-4">
+                                <!-- Illustrative Header Card (Placeholder for Main Image) -->
+                                <div class="h-64 md:h-72 rounded-2xl bg-slate-200 relative overflow-hidden flex flex-col justify-between p-6">
+                                    <!-- INSERIR IMAGEM AQUI (Imagem Hero Principal) -->
+                                    <div class="absolute inset-0 flex items-center justify-center text-slate-500 text-lg font-bold">
+                                        <!-- <img src="assets/sua-imagem-hero.jpg" class="w-full h-full object-cover"> -->
+                                        SVG/IMG (Ex: Foto Sofá / Extratora)
+                                    </div>
+                                    
+                                    <div class="relative z-10 text-white drop-shadow-md">
+                                        <span class="text-xs font-bold tracking-widest uppercase text-white/90">MR. CLEAN DEEP CARE</span>
+                                        <h3 class="text-xl font-black mt-1">Seu estofado limpo, cheiroso e livre de sujeiras invisíveis.</h3>
+                                    </div>
+                                </div>
+
+                                <!-- Feature List inside Card -->
+                                <div class="space-y-3 pt-2">
+                                    <div class="flex items-center space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs">Eliminação de Ácaros & Odor</p>
+                                            <p class="text-[11px] text-slate-500">Limpeza profunda da espuma interna</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                        <div class="w-8 h-8 rounded-lg bg-gold-100 text-gold-600 flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs">Blindagem Impermeabilizante</p>
+                                            <p class="text-[11px] text-slate-500">Protege contra líquidos e derramamentos</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SOBRE NÓS -->
+        <section id="sobre" class="py-16 bg-white border-y border-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <div class="space-y-5">
+                        <div class="inline-block px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold uppercase tracking-wider">
+                            Sobre a Mr. Clean
+                        </div>
+                        <h2 class="text-3xl font-black text-slate-900 tracking-tight leading-snug">
+                            Especialistas em Devolver a Vida e o Conforto aos Seus Estofados
+                        </h2>
+                        <p class="text-slate-600 text-base leading-relaxed">
+                            Fundada em Criciúma - SC, a <strong>Mr. Clean Limpeza de Estofados</strong> nasceu com a missão de transformar ambientes residenciais e corporativos através da higienização profunda e especializada.
+                        </p>
+                        <p class="text-slate-600 text-base leading-relaxed">
+                            Não fazemos apenas uma limpeza superficial. Utilizamos extratoras de alta pressão com sistema de enxágue antibacteriano, combinadas com detergentes biodegradáveis de padrão hospitalar que eliminam manchas, sujeiras impregnadas e micro-organismos prejudiciais à saúde da sua família.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                <h4 class="font-bold text-slate-900 text-sm mb-1">🌿 Biodegradável</h4>
+                                <p class="text-xs text-slate-500">Produtos dermatologicamente testados e sem cheiro forte.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                <h4 class="font-bold text-slate-900 text-sm mb-1">🏠 Em Domicílio</h4>
+                                <p class="text-xs text-slate-500">Levamos toda a estrutura técnica até a sua casa.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Stats Box / Info Graphic -->
+                    <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden min-h-[400px] flex flex-col justify-between">
+                        
+                        <!-- INSERIR IMAGEM AQUI (Background Sobre Nós - Opcional) -->
+                        <!-- <div class="absolute inset-0 opacity-20"><img src="assets/bg-sobre.jpg" class="w-full h-full object-cover"></div> -->
+                        
+                        <div class="relative z-10 space-y-6">
+                            <h3 class="text-2xl font-bold">Por que fazer a higienização periódica?</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-8 h-8 rounded-full bg-brand-500/30 border border-brand-400/40 flex items-center justify-center font-bold text-sm flex-shrink-0">1</div>
+                                    <div>
+                                        <p class="font-bold text-sm text-brand-100">Saúde Respiratória</p>
+                                        <p class="text-xs text-slate-300">Evita rinite, asma e crises de alergia provocadas pelo acúmulo de poeira e ácaros.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-8 h-8 rounded-full bg-brand-500/30 border border-brand-400/40 flex items-center justify-center font-bold text-sm flex-shrink-0">2</div>
+                                    <div>
+                                        <p class="font-bold text-sm text-brand-100">Preservação do Tecido</p>
+                                        <p class="text-xs text-slate-300">Aumenta a durabilidade das fibras do estofado em até 3x mais tempo.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-8 h-8 rounded-full bg-brand-500/30 border border-brand-400/40 flex items-center justify-center font-bold text-sm flex-shrink-0">3</div>
+                                    <div>
+                                        <p class="font-bold text-sm text-brand-100">Eliminação de Odores</p>
+                                        <p class="text-xs text-slate-300">Remove odores de urina de pet, suor, umidade e mofo represado.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-10 mt-6">
+                            <a href="#cotador" class="inline-block w-full text-center py-3.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-slate-900 font-extrabold text-sm transition-colors">
+                                Quero Proteger Meu Estofado
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SERVIÇOS -->
+        <section id="servicos" class="py-16 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+                    <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Nossas Soluções</span>
+                    <h2 class="text-3xl font-black text-slate-900">Serviços Especializados Mr. Clean</h2>
+                    <p class="text-slate-500 text-sm">Tecnologia de ponta para cada tipo de tecido e necessidade</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Service Card 1 (Impermeabilização - First) -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-gold-400 shadow-md transition-shadow group flex flex-col justify-between relative">
+                        <span class="absolute top-4 right-4 bg-gold-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">Proteção Total</span>
+                        <div>
+                            <!-- INSERIR IMAGEM AQUI (Ícone Serviço 1) -->
+                            <div class="w-14 h-14 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-5 overflow-hidden group-hover:scale-110 transition-transform">
+                                <!-- <img src="assets/icone-impermeabilizacao.png" class="w-full h-full object-contain p-2"> -->
+                                SVG/IMG
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">Impermeabilização</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Aplicação de resina protetora invisível que impede a penetração de sucos, água, café ou urina de pets no estofado.</p>
+                        </div>
+                        <a href="#cotador" class="text-xs font-bold text-gold-600 hover:text-gold-700 flex items-center gap-1">Simular Preço →</a>
+                    </div>
+
+                    <!-- Service Card 2 -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
+                        <div>
+                            <!-- INSERIR IMAGEM AQUI (Ícone Serviço 2) -->
+                            <div class="w-14 h-14 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-5 overflow-hidden group-hover:scale-110 transition-transform">
+                                <!-- <img src="assets/icone-sofa.png" class="w-full h-full object-contain p-2"> -->
+                                SVG/IMG
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">Higienização de Sofás</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Limpeza profunda para sofás retráteis, de canto, 2/3 lugares ou sofá-cama. Remove suor, gordura corporal e poeira acumulada.</p>
+                        </div>
+                        <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
+                    </div>
+
+                    <!-- Service Card 3 -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
+                        <div>
+                            <!-- INSERIR IMAGEM AQUI (Ícone Serviço 3) -->
+                            <div class="w-14 h-14 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-5 overflow-hidden group-hover:scale-110 transition-transform">
+                                <!-- <img src="assets/icone-colchao.png" class="w-full h-full object-contain p-2"> -->
+                                SVG/IMG
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">Sanificação de Colchões</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Elimina ácaros, pele morta e secreções acumuladas nas camadas profundas do colchão. Essencial para uma boa noite de sono saudável.</p>
+                        </div>
+                        <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
+                    </div>
+
+                    <!-- Service Card 4 -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
+                        <div>
+                            <!-- INSERIR IMAGEM AQUI (Ícone Serviço 4) -->
+                            <div class="w-14 h-14 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-5 overflow-hidden group-hover:scale-110 transition-transform">
+                                <!-- <img src="assets/icone-cadeiras.png" class="w-full h-full object-contain p-2"> -->
+                                SVG/IMG
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">Cadeiras & Poltronas</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Renovação completa para cadeiras de sala de jantar, poltronas de amamentação e cadeiras ergonômicas de escritório.</p>
+                        </div>
+                        <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
+                    </div>
+
+                    <!-- Service Card 5 -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
+                        <div>
+                            <!-- INSERIR IMAGEM AQUI (Ícone Serviço 5) -->
+                            <div class="w-14 h-14 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-5 overflow-hidden group-hover:scale-110 transition-transform">
+                                <!-- <img src="assets/icone-tapete.png" class="w-full h-full object-contain p-2"> -->
+                                SVG/IMG
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">Tapetes e Carpetes</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Lavagem técnica para remoção de terra, mancha de sapatos e ácaros incrustados na base de fibras do tapete.</p>
+                        </div>
+                        <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
+                    </div>
+
+                    <!-- Service Card 6 -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
+                        <div>
+                            <!-- INSERIR IMAGEM AQUI (Ícone Serviço 6) -->
+                            <div class="w-14 h-14 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-5 overflow-hidden group-hover:scale-110 transition-transform">
+                                <!-- <img src="assets/icone-carro.png" class="w-full h-full object-contain p-2"> -->
+                                SVG/IMG
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">Higienização Automotiva</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Higienização completa de bancos de tecido ou couro para carros hatch, sedan, SUVs e caminhonetes em Criciúma.</p>
+                        </div>
+                        <a href="#cotador" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-1">Simular Preço →</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. NOSSA EQUIPE & TECNOLOGIA -->
+        <section class="py-16 bg-white border-t border-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-2xl">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-4 relative z-10">
+                            <span class="text-gold-400 font-bold text-xs uppercase tracking-widest">Padrão de Excelência</span>
+                            <h2 class="text-3xl font-black text-white">Equipe Treinada & Equipamentos Profissionais</h2>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Nossos técnicos passam por treinamento constante sobre química de tecidos, tipos de fibras (Suede, Linho, Veludo, Couro) e técnicas corretas de extração sem danificar o móvel.
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-xs">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-gold-400"></span>
+                                    <span>Extratoras de alta sucção Alemãs</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-gold-400"></span>
+                                    <span>Neutralizadores bactericidas</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-gold-400"></span>
+                                    <span>Pontualidade no horário agendado</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-gold-400"></span>
+                                    <span>Respeito total ao seu imóvel</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Section for Team / Machine -->
+                        <div class="lg:col-span-5 relative">
+                            <!-- INSERIR IMAGEM AQUI (Foto Equipe / Equipamento) -->
+                            <div class="w-full h-64 sm:h-72 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 font-bold text-sm overflow-hidden border border-slate-700">
+                                <!-- <img src="assets/foto-equipe.jpg" class="w-full h-full object-cover"> -->
+                                SVG/IMG (Foto Equipe / Máquina)
+                            </div>
+                            
+                            <!-- Overlay Box -->
+                            <div class="absolute -bottom-6 -left-6 right-6 bg-slate-800/95 backdrop-blur-md p-6 rounded-2xl border border-slate-700 text-center space-y-3 shadow-lg">
+                                <h4 class="font-bold text-white text-base">Atendimento 24 Horas</h4>
+                                <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20atendimento%2024h." target="_blank" class="block w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-colors">
+                                    Chamar no WhatsApp Agora
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. AVALIAÇÕES (CARROSEL AUTOMÁTICO ROTATIVO DE 3.5s) -->
+        <section id="avaliacoes" class="py-16 bg-slate-50 mt-12 md:mt-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-2xl mx-auto space-y-2 mb-10">
+                    <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Depoimentos</span>
+                    <h2 class="text-3xl font-black text-slate-900">O que nossos clientes dizem</h2>
+                    <p class="text-slate-500 text-sm">Mais de 1.500 estofados limpos e famílias satisfeitas em Criciúma e região</p>
+                </div>
+
+                <!-- Carousel Container -->
+                <div class="max-w-2xl mx-auto relative px-2" @mouseenter="pauseReviewCarousel" @mouseleave="startReviewCarousel">
+                    
+                    <div class="min-h-[220px] flex items-center justify-center">
+                        <transition name="fade-carousel" mode="out-in">
+                            <div :key="currentReviewIndex" class="w-full bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xl space-y-5 text-center relative">
+                                <div class="flex justify-center text-gold-500 text-lg">
+                                    <span v-for="star in reviews[currentReviewIndex].stars" :key="star">★</span>
+                                </div>
+                                <p class="text-sm md:text-base text-slate-700 leading-relaxed italic font-medium">
+                                    "{{ reviews[currentReviewIndex].text }}"
+                                </p>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full font-extrabold text-white flex items-center justify-center text-xs shadow-md"
+                                         :class="reviews[currentReviewIndex].colorClass">
+                                        {{ reviews[currentReviewIndex].initials }}
+                                    </div>
+                                    <div class="text-left">
+                                        <h4 class="font-bold text-slate-900 text-sm leading-tight">{{ reviews[currentReviewIndex].name }}</h4>
+                                        <p class="text-xs text-slate-400 font-medium">{{ reviews[currentReviewIndex].location }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </transition>
+                    </div>
+
+                    <!-- Navigation Dots -->
+                    <div class="flex justify-center items-center space-x-2 mt-6">
+                        <button v-for="(rev, idx) in reviews" :key="idx"
+                                @click="setReview(idx)"
+                                :class="['h-2.5 rounded-full transition-all duration-300', 
+                                currentReviewIndex === idx ? 'w-8 bg-brand-600' : 'w-2.5 bg-slate-300 hover:bg-slate-400']"
+                                :title="'Depoimento ' + (idx + 1)">
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 7. REGIÕES DE ATENDIMENTO -->
+        <section id="regioes" class="py-16 bg-white border-t border-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-2xl mx-auto space-y-2 mb-10">
+                    <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Cidades Atendidas</span>
+                    <h2 class="text-3xl font-black text-slate-900">Regiões de Atendimento em SC</h2>
+                    <p class="text-slate-500 text-sm">Atendemos presencialmente em domicílio em todas as cidades abaixo</p>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto transition-all">
+                    <span v-for="(city, index) in citiesList" :key="city" 
+                          v-show="index < 6 || showAllCities"
+                          class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs shadow-sm hover:border-brand-300 transition-colors flex items-center gap-1.5">
+                        <span class="text-brand-600 text-sm">📍</span> {{ city }}
+                    </span>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button @click="showAllCities = !showAllCities" class="px-6 py-2.5 rounded-xl border-2 border-brand-100 text-brand-700 font-bold text-sm hover:bg-brand-50 transition-colors">
+                        {{ showAllCities ? 'Ver menos cidades -' : 'Ver todas as cidades +' }}
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 8. COTADOR ONLINE (CORE 5-STEP WIZARD) -->
+        <section id="cotador" class="py-16 bg-slate-100 border-t border-slate-200/80">
+            <div class="max-w-3xl w-full mx-auto px-4 transition-all duration-300">
+                
+                <!-- Wizard Wrapper Card -->
+                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-2xl overflow-hidden relative z-10">
+                    
+                    <!-- Wizard Header Banner -->
+                    <div class="bg-slate-900 text-white p-5 text-center relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-bold tracking-widest text-brand-400 uppercase">Simulador de Orçamento</span>
+                            <span class="bg-brand-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">Etapa {{ currentStep }} de 5</span>
+                        </div>
+                        <h3 class="text-xl font-black">Monte seu Orçamento Online</h3>
+                        
+                        <!-- Progress bar -->
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-4 overflow-hidden">
+                            <div class="bg-gradient-to-r from-brand-500 to-gold-500 h-full transition-all duration-300 ease-out"
+                                 :style="{ width: (currentStep / 5 * 100) + '%' }"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step Container -->
+                    <div class="p-5 sm:p-6 min-h-[300px]">
+
+                        <!-- STEP 1: CATEGORIES -->
+                        <transition name="step-transition" mode="out-in">
+                            <div v-if="currentStep === 1" key="step1" class="space-y-4">
+                                <div class="text-center">
+                                    <h4 class="text-lg sm:text-xl font-bold text-slate-900">O que vamos higienizar hoje?</h4>
+                                    <p class="text-xs sm:text-sm text-slate-500">Selecione uma ou mais opções abaixo:</p>
+                                </div>
+
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 pt-2">
+                                    
+                                    <!-- Sofa -->
+                                    <div @click="toggleCategory('sofas')" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                         isCategorySelected('sofas') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                        <div v-if="isCategorySelected('sofas')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                        <!-- INSERIR IMAGEM AQUI (Ícone Sofá Cotador) -->
+                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
+                                            <!-- <img src="assets/icone-sofa.png" class="w-full h-full object-contain p-2"> -->
+                                            SVG/IMG
+                                        </div>
+                                        <span class="font-bold text-slate-800 text-xs">Sofás & Estofados</span>
+                                    </div>
+
+                                    <!-- Mattress -->
+                                    <div @click="toggleCategory('mattresses')" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                         isCategorySelected('mattresses') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                        <div v-if="isCategorySelected('mattresses')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                        <!-- INSERIR IMAGEM AQUI (Ícone Colchão Cotador) -->
+                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
+                                            <!-- <img src="assets/icone-colchao.png" class="w-full h-full object-contain p-2"> -->
+                                            SVG/IMG
+                                        </div>
+                                        <span class="font-bold text-slate-800 text-xs">Colchões</span>
+                                    </div>
+
+                                    <!-- Chairs -->
+                                    <div @click="toggleCategory('chairs')" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                         isCategorySelected('chairs') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                        <div v-if="isCategorySelected('chairs')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                        <!-- INSERIR IMAGEM AQUI (Ícone Cadeiras Cotador) -->
+                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
+                                            <!-- <img src="assets/icone-cadeiras.png" class="w-full h-full object-contain p-2"> -->
+                                            SVG/IMG
+                                        </div>
+                                        <span class="font-bold text-slate-800 text-xs">Cadeiras / Poltronas</span>
+                                    </div>
+
+                                    <!-- Rugs -->
+                                    <div @click="toggleCategory('rugs')" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                         isCategorySelected('rugs') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                        <div v-if="isCategorySelected('rugs')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                        <!-- INSERIR IMAGEM AQUI (Ícone Tapetes Cotador) -->
+                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
+                                            <!-- <img src="assets/icone-tapete.png" class="w-full h-full object-contain p-2"> -->
+                                            SVG/IMG
+                                        </div>
+                                        <span class="font-bold text-slate-800 text-xs">Tapetes</span>
+                                    </div>
+
+                                    <!-- Vehicles -->
+                                    <div @click="toggleCategory('vehicles')" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                         isCategorySelected('vehicles') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                        <div v-if="isCategorySelected('vehicles')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                        <!-- INSERIR IMAGEM AQUI (Ícone Bancos Carro Cotador) -->
+                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
+                                            <!-- <img src="assets/icone-carro.png" class="w-full h-full object-contain p-2"> -->
+                                            SVG/IMG
+                                        </div>
+                                        <span class="font-bold text-slate-800 text-xs">Bancos de Veículo</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </transition>
+
+                        <!-- STEP 2: QUANTITIES -->
+                        <transition name="step-transition" mode="out-in">
+                            <div v-if="currentStep === 2" key="step2" class="space-y-4">
+                                <div class="text-center">
+                                    <h4 class="text-lg font-bold text-slate-900">Ajuste as quantidades</h4>
+                                    <p class="text-xs text-slate-500">Informe os itens para cada categoria escolhida:</p>
+                                </div>
+
+                                <div class="space-y-3 pt-1">
+                                    
+                                    <!-- Sofas List -->
+                                    <div v-if="selectedCategories.includes('sofas')" class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200 space-y-2">
+                                        <p class="text-xs font-bold text-brand-700 uppercase">🛋️ Sofás</p>
+                                        <div v-for="item in itemsList.sofas" :key="item.id" class="flex items-center justify-between">
+                                            <span class="text-xs font-semibold text-slate-700">{{ item.name }}</span>
+                                            <div class="flex items-center space-x-2 bg-white p-1 rounded-lg border border-slate-200">
+                                                <button @click="decrementItem('sofas', item.id)" class="w-7 h-7 rounded bg-slate-100 font-bold text-slate-600 text-xs" :disabled="item.qty === 0">-</button>
+                                                <span class="text-xs font-bold w-4 text-center">{{ item.qty }}</span>
+                                                <button @click="incrementItem('sofas', item.id)" class="w-7 h-7 rounded bg-brand-600 text-white font-bold text-xs">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mattresses List -->
+                                    <div v-if="selectedCategories.includes('mattresses')" class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200 space-y-2">
+                                        <p class="text-xs font-bold text-indigo-700 uppercase">🖏 Colchões</p>
+                                        <div v-for="item in itemsList.mattresses" :key="item.id" class="flex items-center justify-between">
+                                            <span class="text-xs font-semibold text-slate-700">{{ item.name }}</span>
+                                            <div class="flex items-center space-x-2 bg-white p-1 rounded-lg border border-slate-200">
+                                                <button @click="decrementItem('mattresses', item.id)" class="w-7 h-7 rounded bg-slate-100 font-bold text-slate-600 text-xs" :disabled="item.qty === 0">-</button>
+                                                <span class="text-xs font-bold w-4 text-center">{{ item.qty }}</span>
+                                                <button @click="incrementItem('mattresses', item.id)" class="w-7 h-7 rounded bg-brand-600 text-white font-bold text-xs">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chairs List -->
+                                    <div v-if="selectedCategories.includes('chairs')" class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200 space-y-2">
+                                        <p class="text-xs font-bold text-amber-700 uppercase">🪑 Cadeiras & Poltronas</p>
+                                        <div v-for="item in itemsList.chairs" :key="item.id" class="flex items-center justify-between">
+                                            <span class="text-xs font-semibold text-slate-700">{{ item.name }}</span>
+                                            <div class="flex items-center space-x-2 bg-white p-1 rounded-lg border border-slate-200">
+                                                <button @click="decrementItem('chairs', item.id)" class="w-7 h-7 rounded bg-slate-100 font-bold text-slate-600 text-xs" :disabled="item.qty === 0">-</button>
+                                                <span class="text-xs font-bold w-4 text-center">{{ item.qty }}</span>
+                                                <button @click="incrementItem('chairs', item.id)" class="w-7 h-7 rounded bg-brand-600 text-white font-bold text-xs">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Rugs List -->
+                                    <div v-if="selectedCategories.includes('rugs')" class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200 space-y-2">
+                                        <p class="text-xs font-bold text-emerald-700 uppercase">🧺 Tapetes</p>
+                                        <div v-for="item in itemsList.rugs" :key="item.id" class="flex items-center justify-between">
+                                            <span class="text-xs font-semibold text-slate-700">{{ item.name }}</span>
+                                            <div class="flex items-center space-x-2 bg-white p-1 rounded-lg border border-slate-200">
+                                                <button @click="decrementItem('rugs', item.id)" class="w-7 h-7 rounded bg-slate-100 font-bold text-slate-600 text-xs" :disabled="item.qty === 0">-</button>
+                                                <span class="text-xs font-bold w-4 text-center">{{ item.qty }}</span>
+                                                <button @click="incrementItem('rugs', item.id)" class="w-7 h-7 rounded bg-brand-600 text-white font-bold text-xs">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Vehicles List -->
+                                    <div v-if="selectedCategories.includes('vehicles')" class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200 space-y-2">
+                                        <p class="text-xs font-bold text-purple-700 uppercase">🚗 Bancos de Carro</p>
+                                        <div v-for="item in itemsList.vehicles" :key="item.id" class="flex items-center justify-between">
+                                            <span class="text-xs font-semibold text-slate-700">{{ item.name }}</span>
+                                            <div class="flex items-center space-x-2 bg-white p-1 rounded-lg border border-slate-200">
+                                                <button @click="decrementItem('vehicles', item.id)" class="w-7 h-7 rounded bg-slate-100 font-bold text-slate-600 text-xs" :disabled="item.qty === 0">-</button>
+                                                <span class="text-xs font-bold w-4 text-center">{{ item.qty }}</span>
+                                                <button @click="incrementItem('vehicles', item.id)" class="w-7 h-7 rounded bg-brand-600 text-white font-bold text-xs">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </transition>
+
+                        <!-- STEP 3: UPSELL & TRATAMENTOS -->
+                        <transition name="step-transition" mode="out-in">
+                            <div v-if="currentStep === 3" key="step3" class="space-y-4">
+                                <div class="text-center">
+                                    <h4 class="text-lg font-bold text-slate-900">Tratamentos Adicionais</h4>
+                                    <p class="text-xs text-slate-500">Escolha como deseja proteger seus estofados:</p>
+                                </div>
+
+                                <div class="space-y-3 pt-1">
+                                    
+                                    <div class="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-200 flex items-start space-x-3">
+                                        <span class="text-emerald-600 font-bold text-sm">✓</span>
+                                        <div>
+                                            <div class="flex items-center justify-between">
+                                                <h5 class="font-bold text-slate-900 text-xs">Higienização Profunda Anti-Ácaros</h5>
+                                                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">INCLUSO</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-500">Eliminação total de ácaros, bactérias e fungos.</p>
+                                        </div>
+                                    </div>
+
+                                    <div @click="extraServices.stainRemoval = !extraServices.stainRemoval" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex items-start space-x-3', 
+                                         extraServices.stainRemoval ? 'border-brand-600 bg-brand-50/40' : 'border-slate-100 bg-white hover:border-slate-200']">
+                                        <div :class="['w-4 h-4 rounded-md flex items-center justify-center text-[10px] text-white mt-0.5', 
+                                              extraServices.stainRemoval ? 'bg-brand-600' : 'border border-slate-300']">
+                                            ✓
+                                        </div>
+                                        <div>
+                                            <h5 class="font-bold text-slate-900 text-xs">Remoção Especial de Manchas Difíceis</h5>
+                                            <p class="text-[11px] text-slate-500">Tratamento específico para urina pet, vinho, gordura e caneta.</p>
+                                        </div>
+                                    </div>
+
+                                    <div @click="extraServices.waterproof = !extraServices.waterproof" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex items-start space-x-3', 
+                                         extraServices.waterproof ? 'border-gold-500 bg-amber-50/50 shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200']">
+                                        <div :class="['w-4 h-4 rounded-md flex items-center justify-center text-[10px] text-white mt-0.5', 
+                                              extraServices.waterproof ? 'bg-gold-500' : 'border border-slate-300']">
+                                            ✓
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center justify-between">
+                                                <h5 class="font-bold text-slate-900 text-xs">Impermeabilização Blindagem</h5>
+                                                <span class="text-[9px] bg-gold-500 text-white font-extrabold px-2 py-0.5 rounded-full">⭐ POPULAR</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-500">Proteção líquida invisível contra derramamentos acidentais.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </transition>
+
+                        <!-- STEP 4: LOCATION -->
+                        <transition name="step-transition" mode="out-in">
+                            <div v-if="currentStep === 4" key="step4" class="space-y-4">
+                                <div class="text-center">
+                                    <h4 class="text-lg font-bold text-slate-900">Local do Atendimento</h4>
+                                    <p class="text-xs text-slate-500">Onde faremos a higienização?</p>
+                                </div>
+
+                                <div class="space-y-3 pt-1">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Cidade</label>
+                                        <select v-model="location.city" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-800 outline-none focus:border-brand-500">
+                                            <option v-for="city in citiesList" :key="city" :value="city + ' - SC'">{{ city }} - SC</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Bairro</label>
+                                        <input type="text" v-model="location.neighborhood" placeholder="Ex: Centro, Próspera, Michel..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">Turno Preferencial (Atendimento 24h)</label>
+                                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                            <button v-for="shift in ['Manhã', 'Tarde', 'Noite', 'Qualquer Horário (24h)']" :key="shift"
+                                                    @click="location.preferredShift = shift"
+                                                    :class="['py-2.5 px-2 text-[11px] sm:text-xs font-bold border rounded-xl transition-all flex items-center justify-center text-center leading-tight',
+                                                    location.preferredShift === shift ? 'bg-brand-600 border-brand-600 text-white shadow-md' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100']">
+                                                {{ shift }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </transition>
+
+                        <!-- STEP 5: FINAL CONTACT & SUBMIT (REMOVED EMAIL) -->
+                        <transition name="step-transition" mode="out-in">
+                            <div v-if="currentStep === 5" key="step5" class="space-y-4">
+                                <div class="text-center">
+                                    <h4 class="text-lg font-bold text-slate-900">Finalizar Orçamento</h4>
+                                    <p class="text-xs text-slate-500">Receba a cotação imediata no WhatsApp:</p>
+                                </div>
+
+                                <div class="space-y-3 pt-1">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Seu Nome Completo</label>
+                                        <input type="text" v-model="customer.name" placeholder="Digite seu nome" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp de Contato</label>
+                                        <input type="tel" v-model="customer.phone" placeholder="(48) 99999-9999" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium outline-none focus:border-brand-500">
+                                    </div>
+                                    <!-- E-mail removed completely as requested -->
+
+                                    <!-- Summary Box -->
+                                    <div class="bg-slate-900 text-white p-4 rounded-2xl space-y-2 text-xs shadow-inner mt-2">
+                                        <p class="font-bold text-brand-400 uppercase text-[10px] tracking-wider">Itens Selecionados:</p>
+                                        <ul class="space-y-1 text-slate-300">
+                                            <li v-for="item in getSelectedItemsFormatted()" :key="item">• {{ item }}</li>
+                                        </ul>
+                                        <p class="text-[11px] text-slate-400 pt-2 border-t border-slate-800 mt-2">📍 {{ location.neighborhood || 'Bairro' }}, {{ location.city }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </transition>
+
+                    </div>
+
+                    <!-- Wizard Bottom Bar -->
+                    <div class="bg-slate-50 border-t border-slate-200/80 p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 rounded-b-3xl">
+                        <button v-if="currentStep > 1" @click="prevStep" class="order-2 sm:order-1 px-4 py-3 sm:py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs sm:text-sm bg-white hover:bg-slate-100 transition-colors w-full sm:w-auto text-center">
+                            Voltar
+                        </button>
+                        <div v-else class="hidden sm:block"></div>
+
+                        <button v-if="currentStep < 5" @click="nextStep" :disabled="!canProceed"
+                                :class="['order-1 sm:order-2 py-3 sm:py-2.5 px-6 rounded-xl font-bold text-xs sm:text-sm text-white transition-all w-full sm:w-auto text-center',
+                                canProceed ? 'bg-brand-600 hover:bg-brand-700 shadow-md' : 'bg-slate-300 cursor-not-allowed']">
+                            Avançar
+                        </button>
+
+                        <button v-else @click="sendWhatsApp" :disabled="!customer.name"
+                                :class="['order-1 sm:order-2 py-3 sm:py-3.5 px-6 rounded-xl font-extrabold text-xs sm:text-sm text-white transition-all flex items-center justify-center gap-2 w-full sm:w-auto',
+                                customer.name ? 'bg-emerald-500 hover:bg-emerald-600 shadow-lg badge-glow' : 'bg-slate-300 cursor-not-allowed']">
+                            <span>Solicitar no WhatsApp</span>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. FLOATING WHATSAPP POPUP & MINI AGENT -->
+        <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end pointer-events-none">
+            
+            <!-- Expanded Chat Widget -->
+            <transition 
+                enter-active-class="transition-all duration-300 ease-out origin-bottom-right" 
+                enter-from-class="scale-50 opacity-0 translate-y-4" 
+                enter-to-class="scale-100 opacity-100 translate-y-0"
+                leave-active-class="transition-all duration-200 ease-in origin-bottom-right"
+                leave-from-class="scale-100 opacity-100 translate-y-0"
+                leave-to-class="scale-50 opacity-0 translate-y-4"
+            >
+                <div v-show="chatPopupOpen" class="mb-4 w-[calc(100vw-40px)] max-w-[320px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden pointer-events-auto flex flex-col max-h-[80vh]">
+                    <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 p-4 text-white flex items-center justify-between shrink-0">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm relative">
+                                MC
+                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-emerald-600"></span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Mr. Clean Atendimento</h4>
+                                <p class="text-[10px] text-emerald-100 font-medium">Online agora no WhatsApp</p>
+                            </div>
+                        </div>
+                        <button @click="chatPopupOpen = false" class="text-emerald-100 hover:text-white font-bold text-lg leading-none p-1 focus:outline-none">&times;</button>
+                    </div>
+                    
+                    <div class="p-4 bg-slate-50 flex-1 overflow-y-auto space-y-3 text-xs">
+                        
+                        <!-- Mini Agente: Tela Inicial (Dúvidas) -->
+                        <div v-if="activeFaq === null" class="space-y-3">
+                            <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-slate-700 relative">
+                                👋 Olá! Atendemos 24 horas por dia em Criciúma e região. Como podemos ajudar?
+                                <div class="absolute -left-1.5 top-4 w-3 h-3 bg-white transform rotate-45 border-l border-b border-slate-100"></div>
+                            </div>
+                            
+                            <div class="space-y-1.5">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Dúvidas Frequentes:</p>
+                                <button v-for="(faq, index) in faqs" :key="index" @click="openFaq(index)" 
+                                        class="w-full text-left bg-white border border-emerald-100 p-2.5 rounded-xl text-emerald-700 hover:bg-emerald-50 transition-colors font-medium flex items-center justify-between shadow-sm">
+                                    <span>{{ faq.q }}</span>
+                                    <svg class="w-3 h-3 opacity-50 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mini Agente: Resposta da Dúvida -->
+                        <div v-else class="space-y-3">
+                            <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-slate-700 relative min-h-[70px]">
+                                <p class="font-bold text-emerald-700 mb-1.5 border-b border-slate-100 pb-1.5">{{ faqs[activeFaq].q }}</p>
+                                
+                                <!-- Animação "Digitando..." (1.5s) -->
+                                <div v-if="isTyping" class="flex items-center space-x-1.5 py-2 px-1">
+                                    <div class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></div>
+                                    <div class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></div>
+                                    <div class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></div>
+                                </div>
+                                
+                                <!-- Resposta (aparece após digitar) -->
+                                <p v-else class="leading-relaxed animate-fade-in">{{ faqs[activeFaq].a }}</p>
+                                
+                                <div class="absolute -left-1.5 top-4 w-3 h-3 bg-white transform rotate-45 border-l border-b border-slate-100"></div>
+                            </div>
+                            
+                            <button v-if="!isTyping" @click="activeFaq = null" class="text-slate-500 font-medium hover:text-slate-700 flex items-center gap-1.5 py-1 px-1 transition-colors animate-fade-in">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                Voltar para opções
+                            </button>
+                        </div>
+                        
+                    </div>
+                    
+                    <!-- Botão Principal de Conversão - SEMPRE VISÍVEL NO RODAPÉ -->
+                    <div class="p-3 bg-white border-t border-slate-100 shrink-0">
+                        <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Preciso%20de%20atendimento%20para%20higieniza%C3%A7%C3%A3o." 
+                           target="_blank" 
+                           class="block w-full py-3 text-center bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md transition-colors text-xs flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                            Falar no WhatsApp Agora (24h)
+                        </a>
+                    </div>
+                </div>
+            </transition>
+
+            <!-- Floating Trigger Button -->
+            <button @click="chatPopupOpen = !chatPopupOpen" 
+                    class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform relative pointer-events-auto focus:outline-none z-50">
+                <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
+                <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </button>
+        </div>
+
+        <!-- 10. FOOTER -->
+        <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 text-xs">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <div class="space-y-3">
+                    <div class="font-black text-white text-lg tracking-tight">MR. CLEAN</div>
+                    <p class="leading-relaxed">Especialistas em higienização, desinfecção e impermeabilização de estofados em Criciúma e Sul de Santa Catarina.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-white text-sm">Contato Direct</h4>
+                    <p>📲 WhatsApp: <a href="https://wa.me/5548920039561" target="_blank" class="text-white hover:underline">(48) 92003-9561</a></p>
+                    <p>📸 Instagram: <a href="https://instagram.com/mrcleancriciuma" target="_blank" class="text-white hover:underline">@mrcleancriciuma</a></p>
+                    <p>📍 Criciúma - SC</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-white text-sm">Horário de Atendimento</h4>
+                    <p class="text-emerald-400 font-bold">🟢 24 Horas por dia</p>
+                    <p>7 dias por semana (Segunda a Domingo)</p>
+                    <p class="text-slate-400 text-[11px]">Incluindo feriados e urgências em Criciúma e região.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-white text-sm">Garantia Mr. Clean</h4>
+                    <p>Produtos homologados pela ANVISA, seguros para crianças, idosos e animais de estimação.</p>
+                </div>
+
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 mt-8 border-t border-slate-800 text-center text-[11px] text-slate-500">
+                © 2026 Mr. Clean Limpeza de Estofados - Todos os direitos reservados. Criciúma/SC.
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- VUE 3 APPLICATION SCRIPT -->
+    <script>
+        const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
+
+        createApp({
+            setup() {
+                // UI State
+                const mobileMenuOpen = ref(false);
+                const chatPopupOpen = ref(false);
+                const currentStep = ref(1);
+                
+                // Mini Agent FAQ State (Atualizado com textos novos)
+                const activeFaq = ref(null);
+                const isTyping = ref(false);
+                const faqs = ref([
+                    { q: 'Qual o preço médio?', a: 'Possuímos o melhor preço da região, cobrindo todos os concorrentes.' },
+                    { q: 'Vocês atendem minha cidade?', a: 'Atendemos Criciúma e toda a região num raio de até 50km. Você pode conferir a lista completa na aba de regiões do nosso site!' },
+                    { q: 'Quanto tempo para realizar o serviço?', a: 'O serviço leva em média de 2 a 4 horas para ser realizado com perfeição.' },
+                    { q: 'Quanto tempo para secar?', a: 'O estofado leva em média de 2 a 4 horas para secar completamente.' },
+                    { q: 'Os produtos são seguros?', a: 'Sim! Nossos produtos são totalmente seguros para crianças e animais de estimação, pois são biodegradáveis e dermatologicamente testados.' }
+                ]);
+                
+                // Cities State
+                const showAllCities = ref(false);
+                const citiesList = ref([
+                    'Criciúma', 'Forquilhinha', 'Siderópolis', 'Içara', 'Nova Veneza', 
+                    'Cocal do Sul', 'Maracajá', 'Morro da Fumaça', 'Urussanga', 'Treviso', 
+                    'Balneário Rincão', 'Meleiro', 'Araranguá', 'Sangão', 'Treze de Maio', 
+                    'Morro Grande', 'Balneário Arroio do Silva', 'Lauro Müller', 'Turvo', 
+                    'Jaguaruna', 'Orleans'
+                ]);
+
+                // Carousel Reviews State (5 Reviews, 3.5s Rotation)
+                const currentReviewIndex = ref(0);
+                let reviewTimer = null;
+
+                const reviews = ref([
+                    {
+                        name: 'Mariana Lima',
+                        location: 'Bairro Michel, Criciúma',
+                        initials: 'ML',
+                        stars: 5,
+                        text: 'Meu sofá retrátil de 3 lugares estava com manchas velhas de café e pelo de cachorro. O pessoal do Mr. Clean deixou o sofá novo de novo! O cheirinho ficou maravilhoso. Recomendo muito!',
+                        colorClass: 'bg-brand-600'
+                    },
+                    {
+                        name: 'Rodrigo Santos',
+                        location: 'Bairro Próspera, Criciúma',
+                        initials: 'RS',
+                        stars: 5,
+                        text: 'Fiz a higienização do colchão queen e a impermeabilização do sofá de canto. Atendimento super rápido, pontuais no horário marcado e o resultado foi fantástico. Vale cada centavo.',
+                        colorClass: 'bg-emerald-600'
+                    },
+                    {
+                        name: 'Camila Becker',
+                        location: 'Içara - SC',
+                        initials: 'CB',
+                        stars: 5,
+                        text: 'Melhor serviço da região! Higienizaram minhas 6 cadeiras da mesa de jantar em Içara. Ficaram super limpinhas e secaram rápido. O simulador no site facilitou demais.',
+                        colorClass: 'bg-amber-600'
+                    },
+                    {
+                        name: 'Lucas Goulart',
+                        location: 'Bairro Centro, Criciúma',
+                        initials: 'LG',
+                        stars: 5,
+                        text: 'Serviço nota 10! Fiz a limpeza interna do meu SUV, bancos de tecido imaculados. Profissionais muito educados e cuidadosos com o carro. Atendimento 24h fez toda a diferença pra minha rotina.',
+                        colorClass: 'bg-indigo-600'
+                    },
+                    {
+                        name: 'Juliana Machado',
+                        location: 'Forquilhinha - SC',
+                        initials: 'JM',
+                        stars: 5,
+                        text: 'Surpreendida com a qualidade da impermeabilização! Tenho dois filhos pequenos e derrubaram suco de uva no sofá novo no dia seguinte. O líquido ficou flutuando sem penetrar no tecido. Incrível!',
+                        colorClass: 'bg-purple-600'
+                    }
+                ]);
+
+                const startReviewCarousel = () => {
+                    stopReviewCarousel();
+                    reviewTimer = setInterval(() => {
+                        currentReviewIndex.value = (currentReviewIndex.value + 1) % reviews.value.length;
+                    }, 3500);
+                };
+
+                const stopReviewCarousel = () => {
+                    if (reviewTimer) clearInterval(reviewTimer);
+                };
+
+                const pauseReviewCarousel = () => {
+                    stopReviewCarousel();
+                };
+
+                const setReview = (idx) => {
+                    currentReviewIndex.value = idx;
+                    startReviewCarousel();
+                };
+
+                onMounted(() => {
+                    startReviewCarousel();
+                });
+
+                onUnmounted(() => {
+                    stopReviewCarousel();
+                });
+
+                // Wizard State: Categories
+                const selectedCategories = ref(['sofas']);
+
+                // Wizard State: Items (Quantities start at 0)
+                const itemsList = ref({
+                    sofas: [
+                        { id: 's2', name: 'Sofá 2 Lugares Standard', qty: 0 },
+                        { id: 's3', name: 'Sofá 3 Lugares Standard', qty: 0 },
+                        { id: 's_ret', name: 'Sofá Retrátil / Reclinável', qty: 0 },
+                        { id: 's_canto', name: 'Sofá de Canto em L', qty: 0 }
+                    ],
+                    mattresses: [
+                        { id: 'm_solt', name: 'Colchão Solteiro', qty: 0 },
+                        { id: 'm_casal', name: 'Colchão Casal Standard', qty: 0 },
+                        { id: 'm_queen', name: 'Colchão Queen Size', qty: 0 },
+                        { id: 'm_king', name: 'Colchão King Size', qty: 0 }
+                    ],
+                    chairs: [
+                        { id: 'c_jantar', name: 'Cadeira de Jantar', qty: 0 },
+                        { id: 'c_poltrona', name: 'Poltrona Individual', qty: 0 },
+                        { id: 'c_escritorio', name: 'Cadeira de Escritório', qty: 0 }
+                    ],
+                    rugs: [
+                        { id: 'r_p', name: 'Tapete Pequeno (até 2m²)', qty: 0 },
+                        { id: 'r_m', name: 'Tapete Médio (até 4m²)', qty: 0 },
+                        { id: 'r_g', name: 'Tapete Grande (acima 5m²)', qty: 0 }
+                    ],
+                    vehicles: [
+                        { id: 'v_hatch', name: 'Bancos Carro Hatch / Sedan', qty: 0 },
+                        { id: 'v_suv', name: 'Bancos Carro SUV / Picape', qty: 0 }
+                    ]
+                });
+
+                // Wizard State: Services
+                const extraServices = ref({
+                    stainRemoval: false,
+                    waterproof: true
+                });
+
+                // Wizard State: Location
+                const location = ref({
+                    city: 'Criciúma - SC',
+                    neighborhood: '',
+                    preferredShift: 'Flexível'
+                });
+
+                // Wizard State: Customer (Only Name & Phone)
+                const customer = ref({
+                    name: '',
+                    phone: ''
+                });
+
+                // Methods
+                
+                // Abre o FAQ com animação de digitando 1.5s
+                const openFaq = (index) => {
+                    activeFaq.value = index;
+                    isTyping.value = true;
+                    setTimeout(() => {
+                        isTyping.value = false;
+                    }, 1500);
+                };
+
+                const isCategorySelected = (cat) => selectedCategories.value.includes(cat);
+
+                const toggleCategory = (cat) => {
+                    const idx = selectedCategories.value.indexOf(cat);
+                    if (idx > -1) {
+                        if (selectedCategories.value.length > 1) {
+                            selectedCategories.value.splice(idx, 1);
+                        }
+                    } else {
+                        selectedCategories.value.push(cat);
+                    }
+                };
+
+                const incrementItem = (cat, id) => {
+                    const item = itemsList.value[cat].find(i => i.id === id);
+                    if (item) item.qty++;
+                };
+
+                const decrementItem = (cat, id) => {
+                    const item = itemsList.value[cat].find(i => i.id === id);
+                    if (item && item.qty > 0) item.qty--;
+                };
+
+                const canProceed = computed(() => {
+                    if (currentStep.value === 1) return selectedCategories.value.length > 0;
+                    if (currentStep.value === 2) {
+                        let totalQty = 0;
+                        selectedCategories.value.forEach(cat => {
+                            itemsList.value[cat].forEach(item => totalQty += item.qty);
+                        });
+                        return totalQty > 0;
+                    }
+                    return true;
+                });
+
+                const nextStep = () => {
+                    if (currentStep.value < 5 && canProceed.value) currentStep.value++;
+                };
+
+                const prevStep = () => {
+                    if (currentStep.value > 1) currentStep.value--;
+                };
+
+                const getSelectedItemsFormatted = () => {
+                    const list = [];
+                    selectedCategories.value.forEach(cat => {
+                        itemsList.value[cat].forEach(item => {
+                            if (item.qty > 0) list.push(`${item.name} (${item.qty}x)`);
+                        });
+                    });
+                    return list.length ? list : ['Nenhum item adicionado'];
+                };
+
+                // WhatsApp message generation (Email completely removed)
+                const sendWhatsApp = () => {
+                    const itemsText = getSelectedItemsFormatted().map(i => `  • ${i}`).join('\n');
+                    
+                    let servicesText = '  • Higienização Profunda Anti-Ácaros (Incluso)';
+                    if (extraServices.value.stainRemoval) servicesText += '\n  • Remoção Especial de Manchas';
+                    if (extraServices.value.waterproof) servicesText += '\n  • Impermeabilização Blindagem (Proteção Total)';
+
+                    const message = 
+`👋 *Olá Mr. Clean! Gostaria de um orçamento:*
+
+👤 *Meus Dados:*
+  • Nome: ${customer.value.name}
+  • WhatsApp: ${customer.value.phone || 'Não informado'}
+
+🛋️ *Itens Selecionados:*
+${itemsText}
+
+✨ *Serviços Selecionados:*
+${servicesText}
+
+📍 *Local do Atendimento:*
+  • Cidade: ${location.value.city}
+  • Bairro: ${location.value.neighborhood || 'Não informado'}
+  • Turno: ${location.value.preferredShift}
+
+_Solicitado através do site_`;
+
+                    const encodedMessage = encodeURIComponent(message);
+                    window.open(`https://wa.me/5548920039561?text=${encodedMessage}`, '_blank');
+                };
+
+                return {
+                    mobileMenuOpen,
+                    chatPopupOpen,
+                    currentStep,
+                    activeFaq,
+                    isTyping,
+                    faqs,
+                    selectedCategories,
+                    itemsList,
+                    extraServices,
+                    location,
+                    customer,
+                    openFaq,
+                    isCategorySelected,
+                    toggleCategory,
+                    incrementItem,
+                    decrementItem,
+                    canProceed,
+                    nextStep,
+                    prevStep,
+                    getSelectedItemsFormatted,
+                    sendWhatsApp,
+                    showAllCities,
+                    citiesList,
+                    reviews,
+                    currentReviewIndex,
+                    setReview,
+                    startReviewCarousel,
+                    pauseReviewCarousel
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
