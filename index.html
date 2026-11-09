@@ -261,19 +261,25 @@
                             </div>
 
                             <div class="space-y-4">
-                                <!-- Illustrative Header Card (Placeholder for Main Image) -->
-                                <div class="h-64 md:h-72 rounded-2xl bg-slate-200 relative overflow-hidden flex flex-col justify-between p-6">
-                                    <!-- INSERIR IMAGEM AQUI (Imagem Hero Principal) -->
-                                    <div class="absolute inset-0 flex items-center justify-center text-slate-500 text-lg font-bold">
-                                        <!-- <img src="assets/sua-imagem-hero.jpg" class="w-full h-full object-cover"> -->
-                                        SVG/IMG (Ex: Foto Sofá / Extratora)
-                                    </div>
-                                    
-                                    <div class="relative z-10 text-white drop-shadow-md">
-                                        <span class="text-xs font-bold tracking-widest uppercase text-white/90">MR. CLEAN DEEP CARE</span>
-                                        <h3 class="text-xl font-black mt-1">Seu estofado limpo, cheiroso e livre de sujeiras invisíveis.</h3>
-                                    </div>
-                                </div>
+                                <!-- Illustrative Header Card (Vídeo de Fundo) -->
+                            <div class="h-64 md:h-72 rounded-2xl bg-slate-200 relative overflow-hidden flex flex-col justify-between p-6">
+    
+    <!-- VÍDEO AQUI -->
+                                <div class="absolute inset-0 z-0">
+        <!-- Adicione autoplay, loop e muted para o vídeo rodar sozinho como um GIF -->
+                                    <video autoplay loop muted playsinline class="w-full h-full object-cover">
+            <!-- Substitua 'seu-video.mp4' pelo nome do seu arquivo de vídeo -->
+                                        <source src="assets/video.mp4" type="video/mp4">
+                                    </video>
+        <!-- Overlay escuro para garantir que o texto branco fique legível em cima do vídeo -->
+                                <div class="absolute inset-0 bg-slate-900/30"></div>
+                            </div>
+    
+                            <div class="relative z-10 text-white drop-shadow-md mt-auto">
+                                <span class="text-xs font-bold tracking-widest uppercase text-white/90">MR. CLEAN DEEP CARE</span>
+                                <h3 class="text-xl font-black mt-1">Seu estofado limpo, cheiroso e livre de sujeiras invisíveis.</h3>
+                            </div>
+                        </div>
 
                                 <!-- Feature List inside Card -->
                                 <div class="space-y-3 pt-2">
