@@ -491,13 +491,16 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-2xl">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                        <div class="lg:col-span-7 space-y-4 relative z-10">
+                        
+                        <!-- Coluna de Texto + Botão -->
+                        <div class="lg:col-span-7 space-y-6 relative z-10">
                             <span class="text-gold-400 font-bold text-xs uppercase tracking-widest">Padrão de Excelência</span>
                             <h2 class="text-3xl font-black text-white">Equipe Treinada & Equipamentos Profissionais</h2>
                             <p class="text-slate-300 text-sm leading-relaxed">
                                 Nossos técnicos passam por treinamento constante sobre química de tecidos, tipos de fibras (Suede, Linho, Veludo, Couro) e técnicas corretas de extração sem danificar o móvel.
                             </p>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-xs">
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                                 <div class="flex items-center space-x-2">
                                     <span class="w-2 h-2 rounded-full bg-gold-400"></span>
                                     <span>Extratoras de alta sucção Alemãs</span>
@@ -515,24 +518,30 @@
                                     <span>Respeito total ao seu imóvel</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Image Section for Team / Machine -->
-                        <div class="lg:col-span-5 relative">
-                            <!-- INSERIR IMAGEM AQUI (Foto Equipe / Equipamento) -->
-                            <div class="w-full h-64 sm:h-72 rounded-2xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 font-bold text-sm overflow-hidden border border-slate-700">
-                                <!-- <img src="assets/foto-equipe.jpg" class="w-full h-full object-cover"> -->
-                                <img src="assets/equipamento.png" class="w-full h-full object-cover">
-                            </div>
-                            
-                            <!-- Overlay Box -->
-                            <div class="relative mt-4 sm:mt-0 sm:absolute sm:-bottom-6 sm:-left-6 sm:right-6 bg-slate-800/95 backdrop-blur-md p-6 rounded-2xl border border-slate-700 text-center space-y-3 shadow-lg z-10">
-                                <h4 class="font-bold text-white text-base">Atendimento 24 Horas</h4>
-                                <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20atendimento%2024h." target="_blank" class="block w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-colors">
-                                    Chamar no WhatsApp Agora
+        
+                            <!-- Botão CTA Integrado ao Texto -->
+                            <div class="pt-2">
+                                <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20atendimento%2024h." 
+                                   target="_blank" 
+                                   class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-all shadow-lg hover:scale-105">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                    Chamar no WhatsApp (Atendimento 24h)
                                 </a>
                             </div>
                         </div>
+        
+                        <!-- Coluna de Mídia (Vídeo 100% limpo com tag discreta) -->
+                        <div class="lg:col-span-5">
+                            <div class="w-full h-72 sm:h-80 rounded-2xl bg-slate-800 shadow-xl overflow-hidden border border-slate-700 relative">
+                                <img src="assets/equipamento.png" type="image/png">
+                                <!-- Tag discreta no topo superior sem tapar os equipamentos -->
+                                <div class="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-slate-700/50 text-[11px] font-semibold text-emerald-400 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-online"></span>
+                                    Atendimento 24h
+                                </div>
+                            </div>
+                        </div>
+        
                     </div>
                 </div>
             </div>
