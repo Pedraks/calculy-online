@@ -526,7 +526,7 @@
                             </div>
                             
                             <!-- Overlay Box -->
-                            <div class="absolute -bottom-6 -left-6 right-6 bg-slate-800/95 backdrop-blur-md p-6 rounded-2xl border border-slate-700 text-center space-y-3 shadow-lg">
+                            <div class="relative mt-4 sm:mt-0 sm:absolute sm:-bottom-6 sm:-left-6 sm:right-6 bg-slate-800/95 backdrop-blur-md p-6 rounded-2xl border border-slate-700 text-center space-y-3 shadow-lg z-10">
                                 <h4 class="font-bold text-white text-base">Atendimento 24 Horas</h4>
                                 <a href="https://wa.me/5548920039561?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20atendimento%2024h." target="_blank" class="block w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-colors">
                                     Chamar no WhatsApp Agora
@@ -642,83 +642,79 @@
                     <div class="p-5 sm:p-6 min-h-[300px]">
 
                         <!-- STEP 1: CATEGORIES -->
-                        <transition name="step-transition" mode="out-in">
-                            <div v-if="currentStep === 1" key="step1" class="space-y-4">
-                                <div class="text-center">
-                                    <h4 class="text-lg sm:text-xl font-bold text-slate-900">O que vamos higienizar hoje?</h4>
-                                    <p class="text-xs sm:text-sm text-slate-500">Selecione uma ou mais opções abaixo:</p>
-                                </div>
-
-                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 pt-2">
-                                    
-                                    <!-- Sofa -->
-                                    <div @click="toggleCategory('sofas')" 
-                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
-                                         isCategorySelected('sofas') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
-                                        <div v-if="isCategorySelected('sofas')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
-                                        <!-- INSERIR IMAGEM AQUI (Ícone Sofá Cotador) -->
-                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
-                                            <!-- <img src="assets/icone-sofa.png" class="w-full h-full object-contain p-2"> -->
-                                            <img src="assets/sofa.png" class="w-full h-full object-contain p-2">
-                                        </div>
-                                        <span class="font-bold text-slate-800 text-xs">Sofás & Estofados</span>
-                                    </div>
-
-                                    <!-- Mattress -->
-                                    <div @click="toggleCategory('mattresses')" 
-                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
-                                         isCategorySelected('mattresses') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
-                                        <div v-if="isCategorySelected('mattresses')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
-                                        <!-- INSERIR IMAGEM AQUI (Ícone Colchão Cotador) -->
-                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
-                                            <!-- <img src="assets/icone-colchao.png" class="w-full h-full object-contain p-2"> -->
-                                            <img src="assets/colchoes.png" class="w-full h-full object-contain p-2">
-                                        </div>
-                                        <span class="font-bold text-slate-800 text-xs">Colchões</span>
-                                    </div>
-
-                                    <!-- Chairs -->
-                                    <div @click="toggleCategory('chairs')" 
-                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
-                                         isCategorySelected('chairs') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
-                                        <div v-if="isCategorySelected('chairs')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
-                                        <!-- INSERIR IMAGEM AQUI (Ícone Cadeiras Cotador) -->
-                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
-                                            <!-- <img src="assets/icone-cadeiras.png" class="w-full h-full object-contain p-2"> -->
-                                            <img src="assets/poltrona.png" class="w-full h-full object-contain p-2">
-                                        </div>
-                                        <span class="font-bold text-slate-800 text-xs">Cadeiras / Poltronas</span>
-                                    </div>
-
-                                    <!-- Rugs -->
-                                    <div @click="toggleCategory('rugs')" 
-                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
-                                         isCategorySelected('rugs') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
-                                        <div v-if="isCategorySelected('rugs')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
-                                        <!-- INSERIR IMAGEM AQUI (Ícone Tapetes Cotador) -->
-                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
-                                            <!-- <img src="assets/icone-tapete.png" class="w-full h-full object-contain p-2"> -->
-                                            <img src="assets/tapete.png" class="w-full h-full object-contain p-2">
-                                        </div>
-                                        <span class="font-bold text-slate-800 text-xs">Tapetes</span>
-                                    </div>
-
-                                    <!-- Vehicles -->
-                                    <div @click="toggleCategory('vehicles')" 
-                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
-                                         isCategorySelected('vehicles') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
-                                        <div v-if="isCategorySelected('vehicles')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
-                                        <!-- INSERIR IMAGEM AQUI (Ícone Bancos Carro Cotador) -->
-                                        <div class="w-16 h-16 rounded-xl bg-slate-200 shadow-sm flex items-center justify-center text-slate-500 text-[10px] font-bold mb-2 overflow-hidden border border-slate-300">
-                                            <!-- <img src="assets/icone-carro.png" class="w-full h-full object-contain p-2"> -->
-                                            <img src="assets/carro.png" class="w-full h-full object-contain p-2">
-                                        </div>
-                                        <span class="font-bold text-slate-800 text-xs">Bancos de Veículo</span>
-                                    </div>
-
-                                </div>
+                        <!-- STEP 1: CATEGORIES -->
+                    <transition name="step-transition" mode="out-in">
+                        <div v-if="currentStep === 1" key="step1" class="space-y-4">
+                            <div class="text-center">
+                                <h4 class="text-lg sm:text-xl font-bold text-slate-900">O que vamos higienizar hoje?</h4>
+                                <p class="text-xs sm:text-sm text-slate-500">Selecione uma ou mais opções abaixo:</p>
                             </div>
-                        </transition>
+                    
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 pt-2">
+                                
+                                <!-- Sofa -->
+                                <div @click="toggleCategory('sofas')" 
+                                     :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                     isCategorySelected('sofas') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                    <div v-if="isCategorySelected('sofas')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                    <!-- IMAGEM ATUALIZADA -->
+                                    <div class="w-16 h-16 rounded-xl shadow-sm flex items-center justify-center mb-2 overflow-hidden">
+                                        <img src="assets/sofa.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-xs">Sofás & Estofados</span>
+                                </div>
+                    
+                                <!-- Mattress -->
+                                <div @click="toggleCategory('mattresses')" 
+                                     :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                     isCategorySelected('mattresses') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                    <div v-if="isCategorySelected('mattresses')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                    <!-- IMAGEM ATUALIZADA -->
+                                    <div class="w-16 h-16 rounded-xl shadow-sm flex items-center justify-center mb-2 overflow-hidden">
+                                        <img src="assets/colchoes.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-xs">Colchões</span>
+                                </div>
+                    
+                                <!-- Chairs -->
+                                <div @click="toggleCategory('chairs')" 
+                                     :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                     isCategorySelected('chairs') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                    <div v-if="isCategorySelected('chairs')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                    <!-- IMAGEM ATUALIZADA -->
+                                    <div class="w-16 h-16 rounded-xl shadow-sm flex items-center justify-center mb-2 overflow-hidden">
+                                        <img src="assets/poltrona.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-xs">Cadeiras / Poltronas</span>
+                                </div>
+                    
+                                <!-- Rugs -->
+                                <div @click="toggleCategory('rugs')" 
+                                     :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                     isCategorySelected('rugs') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                    <div v-if="isCategorySelected('rugs')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                    <!-- IMAGEM ATUALIZADA -->
+                                    <div class="w-16 h-16 rounded-xl shadow-sm flex items-center justify-center mb-2 overflow-hidden">
+                                        <img src="assets/tapete.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-xs">Tapetes</span>
+                                </div>
+                    
+                                <!-- Vehicles -->
+                                <div @click="toggleCategory('vehicles')" 
+                                     :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col items-center text-center relative group', 
+                                     isCategorySelected('vehicles') ? 'border-brand-600 bg-brand-50/60 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-slate-200']">
+                                    <div v-if="isCategorySelected('vehicles')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs z-10">✓</div>
+                                    <!-- IMAGEM ATUALIZADA -->
+                                    <div class="w-16 h-16 rounded-xl shadow-sm flex items-center justify-center mb-2 overflow-hidden">
+                                        <img src="assets/carro.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-xs">Bancos de Veículo</span>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </transition>
 
                         <!-- STEP 2: QUANTITIES -->
                         <transition name="step-transition" mode="out-in">
@@ -1220,7 +1216,7 @@
                 // Wizard State: Services
                 const extraServices = ref({
                     stainRemoval: false,
-                    waterproof: true
+                    waterproof: false
                 });
 
                 // Wizard State: Location
