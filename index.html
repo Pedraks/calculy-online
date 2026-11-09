@@ -805,13 +805,15 @@
 
                                 <div class="space-y-3 pt-1">
                                     
-                                    <div class="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-200 flex items-start space-x-3">
-                                        <span class="text-emerald-600 font-bold text-sm">✓</span>
-                                        <div>
-                                            <div class="flex items-center justify-between">
-                                                <h5 class="font-bold text-slate-900 text-xs">Higienização Profunda Anti-Ácaros</h5>
-                                                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">INCLUSO</span>
-                                            </div>
+                                    <div @click="extraServices.deepCleaning = !extraServices.deepCleaning" 
+                                         :class="['p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex items-start space-x-3', 
+                                         extraServices.deepCleaning ? 'border-brand-600 bg-brand-50/40' : 'border-slate-100 bg-white hover:border-slate-200']">
+                                        <div :class="['w-4 h-4 rounded-md flex items-center justify-center text-[10px] text-white mt-0.5 shrink-0', 
+                                              extraServices.deepCleaning ? 'bg-brand-600' : 'border border-slate-300']">
+                                            ✓
+                                        </div>
+                                        <div class="flex-1">
+                                            <h5 class="font-bold text-slate-900 text-xs">Higienização Profunda Anti-Ácaros</h5>
                                             <p class="text-[11px] text-slate-500">Eliminação total de ácaros, bactérias e fungos.</p>
                                         </div>
                                     </div>
@@ -1215,6 +1217,7 @@
 
                 // Wizard State: Services
                 const extraServices = ref({
+                    deepCleaning: false,
                     stainRemoval: false,
                     waterproof: false
                 });
@@ -1297,13 +1300,22 @@
                 };
 
                 // WhatsApp message generation (Email completely removed)
+                // WhatsApp message generation
                 const sendWhatsApp = () => {
                     const itemsText = getSelectedItemsFormatted().map(i => `  • ${i}`).join('\n');
                     
-                    let servicesText = '  • Higienização Profunda Anti-Ácaros (Incluso)';
-                    if (extraServices.value.stainRemoval) servicesText += '\n  • Remoção Especial de Manchas';
-                    if (extraServices.value.waterproof) servicesText += '\n  • Impermeabilização Blindagem (Proteção Total)';
-
+                    let servicesText = '';
+                    if (extraServices.value.deepCleaning) servicesText += '  • Higienização Profunda Anti-Ácaros\n';
+                    if (extraServices.value.stainRemoval) servicesText += '  • Remoção Especial de Manchas\n';
+                    if (extraServices.value.waterproof) servicesText += '  • Impermeabilização Blindagem (Proteção Total)\n';
+                    
+                    // Se nenhum for selecionado
+                    if (servicesText === '') {
+                        servicesText = '  • Apenas orçamento padrão';
+                    } else {
+                        servicesText = servicesText.trimEnd(); // Remove a última quebra de linha
+                    }
+                
                     const message = 
 `👋 *Olá Mr. Clean! Gostaria de um orçamento:*
 
@@ -1324,8 +1336,8 @@ ${servicesText}
 
 _Solicitado através do site_`;
 
-                    const encodedMessage = encodeURIComponent(message);
-                    window.open(`https://wa.me/5548920039561?text=${encodedMessage}`, '_blank');
+                const encodedMessage = encodeURIComponent(message);
+                window.open(`https://wa.me/5548920039561?text=${encodedMessage}`, '_blank');
                 };
 
                 return {
